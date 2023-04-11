@@ -1,0 +1,318 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: Futura;
+    src: url("../assets/fonts/futura/Futura\ Bold\ font.ttf") format("ttf");
+    font-style: normal;
+    font-weight: 300 800;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: 'Mukta';
+    scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    // background-color: purple;
+    // overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+@mixin released_songs_row_style () {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5vh;
+    height: 18%;
+    width: 100%;
+    // background-color: pink;
+
+    .artist_no_name_and_img {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        width: 55%;
+        height: 100%;
+
+        // background-color: yellow;
+
+        .spacer_x_small {
+            width: 5%;
+            height: 100%;
+        }
+
+        .sno_play_pause_icon {
+            width: 5%;
+            // height: 100%;
+            // background-color: brown;
+
+            h2 {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 500;
+                font-size: 1.5rem;
+                color: #c4c4c5;
+            }
+        }
+
+
+        .song_text_column {
+            margin-left: 5%;
+            width: 92%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            // background-color: yellow;
+
+            h2 {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 500;
+                font-size: 1.38rem;
+            }
+
+            .spacer_y_small {
+                height: 8%;
+            }
+
+            .artist_name_row {
+                display: flex;
+                align-items: center;
+                justify-content: start;
+                width: 75%;
+                // background-color: pink;
+                color: #c4c4c5;
+                font-size: 0.8rem;
+
+
+                p {
+                    margin-left: 0.5vh;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-weight: 400;
+                    color: #c4c4c5;
+                    font-size: 1.15rem;
+                }
+            }
+
+
+
+        }
+    }
+
+    .three_dot_x_icon {
+        width: 44%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        // background-color: red;
+        font-size: 1.7rem;
+
+        i {
+            color: #c4c4c5;
+        }
+
+        p {
+            margin-right: 1vh;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 400;
+            color: #c4c4c5;
+            font-size: 1.23rem;
+        }
+
+    }
+}
+
+.musicpage {
+    position: fixed;
+    width: 92.7vw;
+    height: 97.5vh;
+    margin-top: 0.5%;
+    margin-bottom: 0.5%;
+    margin-right: 0.5%;
+    margin-left: 6.4%;
+    opacity: 1;
+    z-index: 3;
+    background-color: white;
+    border-radius: 25px;
+
+    .music_main_row {
+        position: absolute;
+        display: flex;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: red;
+
+        .covering_container {
+            position: absolute;
+            top: 1.8%;
+            bottom: 0.8%;
+            left: 2%;
+            right: 28.6%;
+            border-radius: 25px;
+            background-color: #e7e8f2;
+        }
+
+        .music_first_column {
+            position: absolute;
+            top: 2%;
+            bottom: 1%;
+            left: 2.6%;
+            right: 29.6%;
+            display: flex;
+            flex-direction: column;
+
+            .first_music_row {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                height: 13%;
+                display: flex;
+                justify-content: start;
+                align-items: center;
+                background-color: pink;
+
+                h1 {
+                    font-size: 3.2rem;
+                    color: #c4c4c5;
+                }
+
+            }
+
+            .second_music_row {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 12%;
+                height: 47%;
+                display: flex;
+                justify-content: space-between;
+                background-color: yellowgreen;
+
+                .image_column {
+                    display: flex;
+                    flex-direction: column;
+                    width: 34%;
+                    height: 98%;
+                    background-color: orange;
+
+                    .image_title {
+
+                        height: 15%;
+
+                        h2 {
+                            font-family: 'Mukta', sans-serif;
+                            font-weight: 500;
+                            font-size: 2.5rem;
+                        }
+                    }
+
+                    .image_box {
+                        height: 88%;
+                        width: 96%;
+                        border-radius: 20px;
+                        background-color: darkcyan;
+
+                        img {
+                            border-radius: 20px;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                    }
+                }
+
+                .songs_column {
+                    display: flex;
+                    // margin-top: 5.8%;
+                    // margin-bottom: 10%;
+                    flex-direction: column;
+                    width: 65%;
+                    height: 98%;
+                    // overflow-y: scroll;
+                    background-color: lightcoral;
+
+                    .see_more_row {
+                        display: flex;
+                        justify-content: end;
+                        align-items: center;
+                        height: 12%;
+                        width: 100%;
+                        color: rgba(0, 0, 255, 0.527);
+
+                        p {
+                            font-family: 'Mukta', sans-serif;
+                            font-weight: 500;
+                            font-size: 1.5rem;
+                        }
+                    }
+
+                    .first_song_row {
+                        @include released_songs_row_style;
+                    }
+
+                }
+
+            }
+
+            .third_music_row {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 60%;
+                bottom: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: end;
+                background-color: rgb(22, 50, 206);
+
+                .heading_playlist{
+                    display: flex;
+                    justify-content: start;
+                    align-items: center;
+                    height: 10%;
+                    width: 100%;
+                    color: black;
+
+                    h2 {
+                        font-family: 'Mukta', sans-serif;
+                        font-weight: 500;
+                        font-size: 2.5rem;
+                    }
+
+                }
+
+                .playlist_grid_blocks{
+                    display: grid;
+                    
+                }
+            }
+
+        }
+
+        .music_second_column {
+            position: absolute;
+            top: 2%;
+            bottom: 1%;
+            left: 73.6%;
+            right: 2.6%;
+            display: flex;
+            flex-direction: column;
+            background-color: violet;
+        }
+    }
+
+
+}
