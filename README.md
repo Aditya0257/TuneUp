@@ -4,8 +4,10 @@ This is a music website project that allows users to browse and play songs from 
 user-friendly interface similar to popular music streaming services, allowing users to search for songs, create queues, and enjoy their favorite music.
 
 ## Technologies Used
-Frontend: HTML, CSS, JavaScript \n
-Backend: Python, Flask, YTMusic API \n
+Frontend: HTML, CSS, JavaScript 
+
+Backend: Python, Flask, YTMusic API 
+
 Database: MongoDB
 
 ## TuneUp Prototype -:
