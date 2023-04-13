@@ -1,8 +1,8 @@
-*.js    linguist-language=JavaScript
-*.html  linguist-language=HTML
-*.css   linguist-language=CSS
-*.py    linguist-language=Python
-*.flask linguist-language=Python
-*.mongo linguist-language=MongoDB
+* linguist-language=JavaScript
+* linguist-language=HTML
+* linguist-language=CSS
+* linguist-language=Python
+* linguist-language=MongoDB
+
 
 
