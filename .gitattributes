@@ -1,8 +1,8 @@
-*.py   linguist-language=python
-*.js   linguist-language=javascript
-*.html linguist-language=html
-*.ajax linguist-language=javascript
-*.css linguist-language=css
-*.flask linguist-language=python
-*.mongodb linguist-language=mongodb
+*.py   linguist-language=Python
+*.js   linguist-language=Javascript
+*.html linguist-language=Html
+*.ajax linguist-language=Javascript
+*.css linguist-language=Css
+*.flask linguist-language=Python
+*.mongodb linguist-language=Mongodb
 
