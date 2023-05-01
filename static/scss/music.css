@@ -28,14 +28,27 @@ body {
   position: fixed;
   width: 92.7vw;
   height: 97.5vh;
-  margin-top: 0.5%;
-  margin-bottom: 0.5%;
-  margin-right: 0.5%;
-  margin-left: 6.4%;
   opacity: 1;
   z-index: 3;
   background-color: white;
   border-radius: 25px;
+}
+.musicpage .test_div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  bottom: 0;
+  z-index: 10;
+}
+.musicpage .test_div .vl {
+  border-left: 4px solid grey;
+  height: 100px;
+  border-radius: 15px;
+  position: absolute;
+  top: 39%;
+  left: 25%;
+  margin-left: -3px;
 }
 .musicpage .music_main_row {
   position: absolute;
@@ -44,7 +57,6 @@ body {
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: red;
 }
 .musicpage .music_main_row .covering_container {
   position: absolute;
@@ -73,7 +85,6 @@ body {
   display: flex;
   justify-content: start;
   align-items: center;
-  background-color: pink;
 }
 .musicpage .music_main_row .music_first_column .first_music_row h1 {
   font-size: 3.2rem;
@@ -87,14 +98,12 @@ body {
   height: 47%;
   display: flex;
   justify-content: space-between;
-  background-color: yellowgreen;
 }
 .musicpage .music_main_row .music_first_column .second_music_row .image_column {
   display: flex;
   flex-direction: column;
   width: 34%;
   height: 98%;
-  background-color: orange;
 }
 .musicpage .music_main_row .music_first_column .second_music_row .image_column .image_title {
   height: 15%;
@@ -108,7 +117,6 @@ body {
   height: 88%;
   width: 96%;
   border-radius: 20px;
-  background-color: darkcyan;
 }
 .musicpage .music_main_row .music_first_column .second_music_row .image_column .image_box img {
   border-radius: 20px;
@@ -122,7 +130,6 @@ body {
   flex-direction: column;
   width: 65%;
   height: 98%;
-  background-color: lightcoral;
 }
 .musicpage .music_main_row .music_first_column .second_music_row .songs_column .see_more_row {
   display: flex;

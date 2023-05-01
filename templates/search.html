@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/scss/search.css">
+    <!-- Mukta - font style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- fontawesome - icons -->
+    <script
+      src="https://kit.fontawesome.com/79727bd9ce.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="searchpage">
+        <div class="test_div">
+           <div class="vl"></div>
+        </div>
+        <div class="main_column">
+            <div class="first_search_row">
+                <div class="search_song_name">
+                  <h1 id="search-heading"></h1>
+                </div>
+                <div class="searchpage_searchbar">
+                  <div class="notification_icon">
+                    <div class="spacer_x_small"></div>
+                    <i class="fa-regular fa-bell"></i>
+                  </div>
+      
+                  <div class="search_icon_and_bar">
+                    <input type="text" placeholder="Search" id="search-input" />
+                    <i class="fa-solid fa-magnifying-glass" onclick="search()""></i>
+                  </div>
+                </div>
+            </div>
+            
+            <div class="second_search_row">
+                <div class="first_song_community_search_column">
+                    <div class="first_song_search_heading_row">
+                      <div class="inner_heading_row">
+                        <div><h2>Songs</h2></div>
+                      </div>
+        
+                      <div>
+                        <p><u>See all</u></p>
+                      </div>
+                    </div>
+                    <div class="songs_column">
+                      {% for song in songs %} 
+                      {% set videoId = song["videoId"] %}
+                      <div
+                        class="first_song_row"
+                        onclick="playSong('{{ videoId|escape }}')"
+                      >
+                        <div class="artist_no_name_and_img">
+                          <div class="spacer_x_small"></div>
+                          <div class="sno_play_pause_icon">
+                            {% if loop.index <= 9 %}
+                            <h2>0{{loop.index}}</h2>
+                            {% else %}
+                            <h2>{{loop.index}}</h2>
+                            {% endif %}
+                          </div>
+                          <div class="image_box">
+                            <img
+                              src="{{song['thumbnails'][song['thumbnails']|length-1]['url']}}"
+                              alt=""
+                            />
+                          </div>
+                          <div class="song_text_column">
+                            <div><h2>{{song["title"]}}</h2></div>
+                            <div class="spacer_y_small"></div>
+                            <div class="artist_name_row">
+                              <i class="fa-solid fa-user"></i>
+                              <p>{{song["artists"][0]["name"]}}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="three_dot_x_icon">
+                          <div class="heart_three_dot_row">
+                            <i class="fa-regular fa-heart"></i>
+                            <i class="fa-solid fa-ellipsis"></i>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+
+                    <div class="first_community_search_heading_row">
+                      <div class="inner_heading_row">
+                        <div><h2>Community</h2></div>
+                      </div>
+        
+                      <div>
+                        <p><u>See all</u></p>
+                      </div>
+                    </div>
+                    <div class="community_column">
+                      <div class="playlists_container">
+                        {%for playlist in community_playlist%}
+                        <div class="community_playlist">
+                          <div class="community_playlist_cover">
+                            <img
+                              src="{{playlist['thumbnails'][playlist['thumbnails']|length-1]['url']}}"
+                              alt=""
+                            />
+                          </div>
+                          <p>{{playlist["title"]}}</p>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  
+                </div>
+                <div class="space_x_medium"></div>
+                <div class="second_artist_album_search_column">
+                  <div class="second_artist_search_heading_row">
+                    <div class="inner_heading_row">
+                      <div><h2>Artists</h2></div>
+                    </div>
+      
+                    <div>
+                      <p><u>See all</u></p>
+                    </div>
+                  </div>
+                    <div class="artist_search_column">
+                      {%for artist in artists%}
+                      <div class="artist_row">
+                        <div class="artist_name_and_img">
+                          <div class="image_box">
+                            <img src="{{artist['thumbnails'][artist['thumbnails']|length-1]['url']}}" alt="" />
+                          </div>
+                          <div class="artist_text_column">
+                            <div>
+                              <h2>{{artist["artist"]}}</h2>
+                            </div>
+                            <div class="spacer_y_small"></div>
+                            <div class="artist_detail_row">
+                              <div class="followers_row">
+                                <img src="../assets/images/box_heart_icon.png" alt="" />
+                                <p>28k Followers</p>
+                              </div>
+                              <div class="plays_row">
+                                <img
+                                  src="../assets/images/play_vibration_icon.png"
+                                  alt=""
+                                />
+                                <p>128M Plays</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="three_dot_x_icon">
+                          <i class="fa-solid fa-ellipsis"></i>
+                        </div>
+                        <!-- <div class="artist">
+                          <img
+                            src="{{artist['thumbnails'][artist['thumbnails']|length-1]['url']}}"
+                            alt=""
+                          />
+                        </div>
+                        <p>{{artist["artist"]}}</p> -->
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <div class="second_album_search_heading_row">
+                      <div class="inner_heading_row">
+                        <div><h2>Albums</h2></div>
+                      </div>
+        
+                      <div>
+                        <p><u>See all</u></p>
+                      </div>
+                    </div>
+                    <div class="album_search_column">
+                      <div class="flex_container">
+                        {%for album in albums%}
+                        <div class="album">
+                          <div class="album_cover">
+                            <img
+                              src="{{album['thumbnails'][album['thumbnails']|length-1]['url']}}"
+                              alt=""
+                            />
+                          </div>
+                          <p>{{album["title"]}}</p>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="../static/javascript/searchSong.js"></script>
+</html>

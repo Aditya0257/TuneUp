@@ -38,8 +38,8 @@
               </div>
   
               <div class="search_icon_and_bar">
-                <input type="text" placeholder="Search" />
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search" id="search-input" />
+                <i class="fa-solid fa-magnifying-glass" onclick="search()"></i>
               </div>
             </div>
           </div>
@@ -129,7 +129,7 @@
             <div class="column_songs_section">
               <div class="top_artist_heading_row">
                 <div class="inner_heading_row">
-                  <div><h2>Top Artist</h2></div>
+                  <div><h2>Recommended Artist</h2></div>
                 </div>
   
                 <div>
@@ -137,7 +137,7 @@
                 </div>
               </div>
               <div class="spacer_y_small"></div>
-              {% for artist in topArtists %}
+              {% for artist in recommendedArtists %}
               <div class="first_artist_row">
                 <div class="artist_name_and_img">
                   <div class="image_box">
@@ -151,14 +151,14 @@
                     <div class="artist_detail_row">
                       <div class="followers_row">
                         <img src="../assets/images/box_heart_icon.png" alt="" />
-                        <p>100 Followers</p>
+                        <p>{{ artist['followers'] }} Followers</p>
                       </div>
                       <div class="plays_row">
                         <img
                           src="../assets/images/play_vibration_icon.png"
                           alt=""
                         />
-                        <p>{{artist['total_views']}}M Plays</p>
+                        <p>{{artist['views']}} Views</p>
                       </div>
                     </div>
                   </div>
@@ -563,4 +563,5 @@
   <script src="../static/javascript/musicPlayer.js"></script>
   <script src="../static/javascript/changePage.js"></script>
   <script src="../static/javascript/verticalCarouselSlider.js"></script>
+  <script src="../static/javascript/searchSong.js"></script>
 </html>

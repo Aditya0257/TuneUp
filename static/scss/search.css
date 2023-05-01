@@ -1,0 +1,572 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: Futura;
+  src: url("../assets/fonts/futura/Futura Bold font.ttf") format("ttf");
+  font-style: normal;
+  font-weight: 300 800;
+}
+html {
+  font-size: 62.5%;
+  font-family: "Mukta";
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  background-color: rgb(57, 51, 87);
+  overflow-y: hidden;
+}
+
+/* Responsive changes */
+@media (max-width: 768px) {
+  .artist_row_style {
+    flex-direction: column;
+    height: auto;
+  }
+  .artist_row_style .artist_name_and_img {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+  .artist_row_style .artist_name_and_img .image_box {
+    width: 100%;
+    height: 300px;
+  }
+  .artist_row_style .artist_name_and_img .image_box img {
+    margin-left: 0;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .artist_row_style .artist_name_and_img .artist_text_column {
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+  }
+  .artist_row_style .artist_name_and_img .artist_text_column h2 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+  .artist_row_style .artist_name_and_img .artist_text_column .artist_detail_row {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .artist_row_style .artist_name_and_img .artist_text_column .artist_detail_row .followers_row,
+  .artist_row_style .artist_name_and_img .artist_text_column .artist_detail_row .plays_row {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .artist_row_style .artist_name_and_img .artist_text_column .artist_detail_row .followers_row {
+    justify-content: flex-start;
+    margin-bottom: 5px;
+  }
+  .artist_row_style .artist_name_and_img .artist_text_column .artist_detail_row .followers_row img {
+    margin-right: 10px;
+  }
+  .artist_row_style .artist_name_and_img .artist_text_column .artist_detail_row .plays_row {
+    justify-content: flex-start;
+    margin-bottom: 0;
+  }
+  .artist_row_style .artist_name_and_img .artist_text_column .artist_detail_row .plays_row img {
+    margin-right: 10px;
+  }
+  .artist_row_style .three_dot_x_icon {
+    margin-top: 10px;
+    justify-content: flex-end;
+    width: 100%;
+    font-size: 1.7rem;
+  }
+}
+.searchpage {
+  position: fixed;
+  width: 92.7vw;
+  height: 97.5vh;
+  opacity: 1;
+  z-index: 3;
+  border-radius: 25px;
+}
+.searchpage .test_div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  bottom: 0;
+  z-index: 10;
+}
+.searchpage .test_div .vl {
+  border-left: 4px solid grey;
+  height: 100px;
+  border-radius: 15px;
+  position: absolute;
+  top: 39%;
+  left: 25%;
+  margin-left: -3px;
+}
+.searchpage .main_column {
+  position: absolute;
+  top: 2%;
+  bottom: 1%;
+  left: 2.6%;
+  right: 2.6%;
+  display: flex;
+  flex-direction: column;
+}
+.searchpage .main_column .first_search_row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 13%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.searchpage .main_column .first_search_row .search_song_name {
+  display: flex;
+  width: 20%;
+}
+.searchpage .main_column .first_search_row .search_song_name h1 {
+  font-size: 3.2rem;
+  color: #c4c4c5;
+}
+.searchpage .main_column .first_search_row .searchpage_searchbar {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.searchpage .main_column .first_search_row .searchpage_searchbar .notification_icon {
+  display: flex;
+  width: 15%;
+}
+.searchpage .main_column .first_search_row .searchpage_searchbar .notification_icon i {
+  font-size: 20px;
+}
+.searchpage .main_column .first_search_row .searchpage_searchbar .notification_icon .spacer_x_small {
+  width: 70%;
+  height: 100%;
+}
+.searchpage .main_column .first_search_row .searchpage_searchbar .search_icon_and_bar {
+  position: relative;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 44%;
+  width: 78%;
+}
+.searchpage .main_column .first_search_row .searchpage_searchbar .search_icon_and_bar i {
+  position: absolute;
+  left: 5%;
+  font-size: 18px;
+  color: grey;
+}
+.searchpage .main_column .first_search_row .searchpage_searchbar .search_icon_and_bar input {
+  position: absolute;
+  border-radius: 10px;
+  border: none;
+  height: 100%;
+  width: 100%;
+  padding-left: 50px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.searchpage .main_column .second_search_row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 13%;
+  bottom: 0;
+  display: flex;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 50%;
+  height: 100%;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .first_song_search_heading_row {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 3%;
+  height: 15%;
+  width: 100%;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .first_song_search_heading_row .inner_heading_row {
+  width: 80%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .first_song_search_heading_row .inner_heading_row h2 {
+  font-weight: 500;
+  font-size: 2.4rem;
+  font-family: "Mukta", sans-serif;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .first_song_search_heading_row p {
+  color: rgba(0, 0, 255, 0.527);
+  font-size: 1.5rem;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column {
+  display: flex;
+  flex-direction: column;
+  height: 55%;
+  width: 100%;
+  overflow-y: scroll;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5vh;
+  height: 21%;
+  width: 100%;
+  cursor: pointer;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 65%;
+  height: 100%;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .spacer_x_small {
+  width: 5%;
+  height: 100%;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .sno_play_pause_icon {
+  width: 5%;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .sno_play_pause_icon h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: #c4c4c5;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .image_box {
+  width: 23%;
+  height: 90%;
+  margin-right: 1.5vh;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .image_box img {
+  margin-left: 25%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: 7vh;
+  width: 7vh;
+  border-radius: 13px;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .song_text_column {
+  width: 62%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .song_text_column h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: 1.38rem;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .song_text_column .spacer_y_small {
+  height: 5%;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .song_text_column .artist_name_row {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 75%;
+  color: #c4c4c5;
+  font-size: 0.8rem;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .song_text_column .artist_name_row p {
+  margin-left: 0.5vh;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  color: #c4c4c5;
+  font-size: 1rem;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .three_dot_x_icon {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  font-size: 1.7rem;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .three_dot_x_icon .heart_three_dot_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 70%;
+  height: 100%;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .first_community_search_heading_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 3%;
+  height: 15%;
+  width: 100%;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .first_community_search_heading_row .inner_heading_row {
+  width: 80%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .first_community_search_heading_row .inner_heading_row h2 {
+  font-weight: 500;
+  font-size: 2.4rem;
+  font-family: "Mukta", sans-serif;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .first_community_search_heading_row p {
+  color: rgba(0, 0, 255, 0.527);
+  font-size: 1.5rem;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .community_column {
+  display: flex;
+  flex-direction: column;
+  height: 68%;
+  width: 100%;
+  overflow-y: scroll;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .community_column .playlists_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 850px;
+  padding: 5px;
+  border-radius: 10px;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .community_column .playlists_container .community_playlist {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 47.5%;
+  height: 250px;
+  margin-bottom: 30px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 1.5px rgba(0, 0, 0, 0.3);
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .community_column .playlists_container .community_playlist .community_playlist_cover {
+  width: 100%;
+  height: 80%;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .community_column .playlists_container .community_playlist .community_playlist_cover img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+.searchpage .main_column .second_search_row .first_song_community_search_column .community_column .playlists_container .community_playlist p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333333;
+  padding: 10px 0;
+}
+.searchpage .main_column .second_search_row .space_x_medium {
+  width: 4%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 40%;
+  height: 100%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .second_artist_search_heading_row {
+  margin-top: 3%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 3%;
+  height: 15%;
+  width: 100%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .second_artist_search_heading_row .inner_heading_row {
+  width: 80%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .second_artist_search_heading_row .inner_heading_row h2 {
+  font-weight: 500;
+  font-size: 2.4rem;
+  font-family: "Mukta", sans-serif;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .second_artist_search_heading_row p {
+  color: rgba(0, 0, 255, 0.527);
+  font-size: 1.5rem;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 100%;
+  height: 55%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30%;
+  width: 100%;
+  padding-bottom: 1.6vh;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 80%;
+  height: 100%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .image_box {
+  width: 22%;
+  height: 100%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .image_box img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: 100%;
+  width: 65%;
+  margin-left: 15%;
+  border-radius: 13px;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .artist_text_column {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .artist_text_column h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .artist_text_column .spacer_y_small {
+  height: 7%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .artist_text_column .artist_detail_row {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .artist_text_column .artist_detail_row .followers_row {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 40%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .artist_text_column .artist_detail_row .followers_row p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  color: #c4c4c5;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .artist_text_column .artist_detail_row .plays_row {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 30%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .artist_name_and_img .artist_text_column .artist_detail_row .plays_row p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  color: #c4c4c5;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .artist_search_column .artist_row .three_dot_x_icon {
+  width: 8%;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1.7rem;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .second_album_search_heading_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 3%;
+  height: 15%;
+  width: 100%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .second_album_search_heading_row .inner_heading_row {
+  width: 80%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .second_album_search_heading_row .inner_heading_row h2 {
+  font-weight: 500;
+  font-size: 2.4rem;
+  font-family: "Mukta", sans-serif;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .second_album_search_heading_row p {
+  color: rgba(0, 0, 255, 0.527);
+  font-size: 1.5rem;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .album_search_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 100%;
+  height: 45%;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .album_search_column .flex_container {
+  display: flex;
+  padding: 10px;
+  flex-wrap: nowrap; /* to prevent wrapping to a new line */
+  overflow-x: scroll; /* to allow horizontal scrolling */
+  scroll-snap-type: x mandatory; /* to enable smooth scrolling to each item */
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .album_search_column .flex_container .album {
+  flex: 0 0 auto; /* to prevent flexbox from growing/shrinking */
+  width: 220px; /* adjust as needed */
+  margin-right: 20px; /* adjust as needed */
+  scroll-snap-align: start; /* to snap each item to the start of the viewport */
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .album_search_column .flex_container .album .album_cover {
+  display: block;
+  width: 100%;
+  border-radius: 20px; /* to create the curved effect */
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .album_search_column .flex_container .album .album_cover img {
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.searchpage .main_column .second_search_row .second_artist_album_search_column .album_search_column .flex_container .album p {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 16px; /* adjust as needed */
+  font-weight: bold;
+}/*# sourceMappingURL=search.css.map */
