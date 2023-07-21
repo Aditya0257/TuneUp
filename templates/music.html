@@ -45,13 +45,13 @@
               </div>
 
               <div class="liked_song_container">
-                {% for song in liked_songs %}
+                {% for song in liked_songs %} {% set videoId = song["videoId"] %}
                 <!-- Song Container -->
                 <div class="song_container">
                   <!-- First Song Row -->
                   <div class="first_song_row">
                     <div class="clickable_row">
-                      <div class="artist_no_name_and_img">
+                      <div class="artist_no_name_and_img" onclick="playSong('{{ videoId|escape }}')">
                         <div class="sno_play_pause_icon">
                           {% if loop.index <= 9 %}
                           <h2>0{{loop.index}}</h2>
@@ -255,4 +255,5 @@
 
   <script src="../static/javascript/searchSong.js"></script>
   <script src="../static/javascript/sendLikedSongsToServer.js"></script>
+  <script src="../static/javascript/musicPlayer.js"></script>
 </html>
