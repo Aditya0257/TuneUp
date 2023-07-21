@@ -14,6 +14,12 @@ html {
   font-size: 62.5%;
   font-family: "Mukta";
   scroll-behavior: smooth;
+  /* Adjust font size for smaller screens */
+}
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 50%; /* For example, you can set 1rem = 8px (8px/16px = 50%) */
+  }
 }
 
 ::-webkit-scrollbar {
@@ -37,6 +43,18 @@ body {
   z-index: 3;
   background-color: white;
   border-radius: 25px;
+  /* Responsive adjustments for smaller screens */
+}
+@media screen and (max-width: 768px) {
+  .homepage {
+    width: 90vw;
+    height: 90vh;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    border-radius: 20px;
+  }
 }
 .homepage .test_div {
   position: absolute;
@@ -45,6 +63,7 @@ body {
   width: 38px;
   bottom: 0;
   z-index: 10;
+  /* Responsive adjustments for smaller screens */
 }
 .homepage .test_div .vl {
   border-left: 4px solid grey;
@@ -55,6 +74,17 @@ body {
   left: 25%;
   margin-left: -3px;
 }
+@media screen and (max-width: 768px) {
+  .homepage .test_div {
+    width: 24px;
+  }
+  .homepage .test_div .vl {
+    height: 60px;
+    top: 34%;
+    left: 28%;
+    margin-left: -2px;
+  }
+}
 .homepage .main_column {
   position: absolute;
   top: 2%;
@@ -63,6 +93,15 @@ body {
   right: 2.6%;
   display: flex;
   flex-direction: column;
+  /* Responsive adjustments for smaller screens */
+}
+@media screen and (max-width: 768px) {
+  .homepage .main_column {
+    top: 5%;
+    bottom: 5%;
+    left: 2%;
+    right: 2%;
+  }
 }
 .homepage .main_column .first_home_row {
   position: absolute;
@@ -73,6 +112,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* Responsive adjustments */
 }
 .homepage .main_column .first_home_row .homepage_name {
   display: flex;
@@ -123,6 +163,37 @@ body {
   padding-left: 50px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .first_home_row .first_home_row {
+    height: 20%;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  .homepage .main_column .first_home_row .first_home_row .homepage_name {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .homepage .main_column .first_home_row .first_home_row .homepage_name h1 {
+    font-size: 2.5rem;
+  }
+  .homepage .main_column .first_home_row .first_home_row .homepage_searchbar {
+    width: 100%;
+    justify-content: center;
+  }
+  .homepage .main_column .first_home_row .first_home_row .homepage_searchbar .notification_icon {
+    display: none;
+  }
+  .homepage .main_column .first_home_row .first_home_row .homepage_searchbar .search_icon_and_bar {
+    width: 90%;
+  }
+  .homepage .main_column .first_home_row .first_home_row .homepage_searchbar .search_icon_and_bar i {
+    left: 10px;
+  }
+  .homepage .main_column .first_home_row .first_home_row .homepage_searchbar .search_icon_and_bar input {
+    padding-left: 35px;
+  }
+}
 .homepage .main_column .second_home_row {
   position: absolute;
   left: 0;
@@ -130,11 +201,12 @@ body {
   top: 13%;
   height: 30%;
   display: flex;
+  /* Responsive adjustments */
 }
 .homepage .main_column .second_home_row .vertical_slider_box {
   position: relative;
   width: 62%;
-  height: 27vh;
+  height: 90%;
   border-radius: 35px;
 }
 .homepage .main_column .second_home_row .vertical_slider_box .carousel_gradient_container {
@@ -162,7 +234,7 @@ body {
 }
 .homepage .main_column .second_home_row .vertical_slider_box .slider .slide {
   width: 100%;
-  height: 27vh;
+  height: 195.5px;
   display: flex;
 }
 .homepage .main_column .second_home_row .vertical_slider_box .slider .slide .slider_text {
@@ -228,6 +300,7 @@ body {
   padding-left: 15%;
   height: 15%;
   width: 100%;
+  /* Responsive adjustments */
 }
 .homepage .main_column .second_home_row .column_songs_section .top_artist_heading_row .inner_heading_row {
   width: 80%;
@@ -244,6 +317,17 @@ body {
   color: rgba(0, 0, 255, 0.527);
   font-size: 1.5rem;
 }
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .second_home_row .column_songs_section .top_artist_heading_row {
+    height: 10%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .top_artist_heading_row .inner_heading_row h2 {
+    font-size: 2rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .top_artist_heading_row p {
+    font-size: 1.2rem;
+  }
+}
 .homepage .main_column .second_home_row .column_songs_section .spacer_y_small {
   height: 3%;
 }
@@ -254,6 +338,7 @@ body {
   align-items: center;
   height: 26.5%;
   width: 87.8%;
+  /* Responsive adjustments */
 }
 .homepage .main_column .second_home_row .column_songs_section .first_artist_row .artist_name_and_img {
   display: flex;
@@ -283,9 +368,11 @@ body {
   align-items: start;
 }
 .homepage .main_column .second_home_row .column_songs_section .first_artist_row .artist_name_and_img .artist_text_column h2 {
+  padding-left: 5%;
+  width: 10vw;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 .homepage .main_column .second_home_row .column_songs_section .first_artist_row .artist_name_and_img .artist_text_column .spacer_y_small {
   height: 7%;
@@ -331,6 +418,54 @@ body {
   justify-content: end;
   font-size: 1.7rem;
 }
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row {
+    margin-left: 5%;
+    height: auto;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row .image_box {
+    width: 30%;
+    height: 100%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row .image_box img {
+    -o-object-fit: cover;
+       object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 13px;
+    margin-left: 3vw;
+    margin-top: 6px;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row .artist_text_column h2 {
+    padding-left: 35%;
+    width: 15vw;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row .artist_detail_row {
+    display: flex;
+    align-items: center;
+    margin-left: 23%;
+    justify-content: start;
+    width: 100%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row .artist_detail_row .followers_row img {
+    width: 12%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row .artist_detail_row .followers_row p {
+    font-size: 0.9rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row .artist_detail_row .plays_row img {
+    width: 13%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row .artist_detail_row .plays_row p {
+    font-size: 0.9rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .first_artist_row .three_dot_x_icon {
+    font-size: 1.5rem;
+  }
+}
 .homepage .main_column .second_home_row .column_songs_section .second_artist_row {
   display: flex;
   justify-content: space-between;
@@ -338,6 +473,7 @@ body {
   align-items: center;
   height: 26.5%;
   width: 87.8%;
+  /* Responsive adjustments */
 }
 .homepage .main_column .second_home_row .column_songs_section .second_artist_row .artist_name_and_img {
   display: flex;
@@ -367,9 +503,11 @@ body {
   align-items: start;
 }
 .homepage .main_column .second_home_row .column_songs_section .second_artist_row .artist_name_and_img .artist_text_column h2 {
+  padding-left: 5%;
+  width: 10vw;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 .homepage .main_column .second_home_row .column_songs_section .second_artist_row .artist_name_and_img .artist_text_column .spacer_y_small {
   height: 7%;
@@ -415,6 +553,54 @@ body {
   justify-content: end;
   font-size: 1.7rem;
 }
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row {
+    margin-left: 5%;
+    height: auto;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row .image_box {
+    width: 30%;
+    height: 100%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row .image_box img {
+    -o-object-fit: cover;
+       object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 13px;
+    margin-left: 3vw;
+    margin-top: 6px;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row .artist_text_column h2 {
+    padding-left: 35%;
+    width: 15vw;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row .artist_detail_row {
+    display: flex;
+    align-items: center;
+    margin-left: 23%;
+    justify-content: start;
+    width: 100%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row .artist_detail_row .followers_row img {
+    width: 12%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row .artist_detail_row .followers_row p {
+    font-size: 0.9rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row .artist_detail_row .plays_row img {
+    width: 13%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row .artist_detail_row .plays_row p {
+    font-size: 0.9rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .second_artist_row .three_dot_x_icon {
+    font-size: 1.5rem;
+  }
+}
 .homepage .main_column .second_home_row .column_songs_section .third_artist_row {
   display: flex;
   justify-content: space-between;
@@ -422,6 +608,7 @@ body {
   align-items: center;
   height: 26.5%;
   width: 87.8%;
+  /* Responsive adjustments */
 }
 .homepage .main_column .second_home_row .column_songs_section .third_artist_row .artist_name_and_img {
   display: flex;
@@ -451,9 +638,11 @@ body {
   align-items: start;
 }
 .homepage .main_column .second_home_row .column_songs_section .third_artist_row .artist_name_and_img .artist_text_column h2 {
+  padding-left: 5%;
+  width: 10vw;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 .homepage .main_column .second_home_row .column_songs_section .third_artist_row .artist_name_and_img .artist_text_column .spacer_y_small {
   height: 7%;
@@ -498,6 +687,91 @@ body {
   display: flex;
   justify-content: end;
   font-size: 1.7rem;
+}
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row {
+    margin-left: 5%;
+    height: auto;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row .image_box {
+    width: 30%;
+    height: 100%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row .image_box img {
+    -o-object-fit: cover;
+       object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 13px;
+    margin-left: 3vw;
+    margin-top: 6px;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row .artist_text_column h2 {
+    padding-left: 35%;
+    width: 15vw;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row .artist_detail_row {
+    display: flex;
+    align-items: center;
+    margin-left: 23%;
+    justify-content: start;
+    width: 100%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row .artist_detail_row .followers_row img {
+    width: 12%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row .artist_detail_row .followers_row p {
+    font-size: 0.9rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row .artist_detail_row .plays_row img {
+    width: 13%;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row .artist_detail_row .plays_row p {
+    font-size: 0.9rem;
+  }
+  .homepage .main_column .second_home_row .column_songs_section .third_artist_row .three_dot_x_icon {
+    font-size: 1.5rem;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .second_home_row .second_home_row {
+    flex-direction: column;
+    top: 25%;
+    height: auto;
+  }
+  .homepage .main_column .second_home_row .second_home_row .vertical_slider_box {
+    width: 100%;
+    height: auto;
+  }
+  .homepage .main_column .second_home_row .second_home_row .vertical_slider_box .carousel_gradient_container {
+    width: 100%;
+    border-radius: 0;
+  }
+  .homepage .main_column .second_home_row .second_home_row .vertical_slider_box .slider {
+    height: auto;
+  }
+  .homepage .main_column .second_home_row .second_home_row .vertical_slider_box .slider .slide {
+    height: 50px;
+  }
+  .homepage .main_column .second_home_row .second_home_row .column_songs_section {
+    width: 100%;
+    padding: 5% 2%;
+  }
+  .homepage .main_column .second_home_row .second_home_row .column_songs_section .top_artist_heading_row h2 {
+    font-size: 2rem;
+  }
+  .homepage .main_column .second_home_row .second_home_row .column_songs_section .top_artist_heading_row p {
+    font-size: 1.6rem;
+  }
+  .homepage .main_column .second_home_row .second_home_row .column_songs_section .first_artist_row,
+  .homepage .main_column .second_home_row .second_home_row .column_songs_section .second_artist_row,
+  .homepage .main_column .second_home_row .second_home_row .column_songs_section .third_artist_row {
+    width: 100%;
+    margin-bottom: 5%;
+  }
 }
 .homepage .main_column .third_home_row {
   position: absolute;
@@ -562,6 +836,7 @@ body {
   padding-left: 3%;
   height: 15%;
   width: 100%;
+  /* Responsive adjustments */
 }
 .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_heading_row .inner_heading_row {
   width: 80%;
@@ -578,6 +853,17 @@ body {
   color: rgba(0, 0, 255, 0.527);
   font-size: 1.5rem;
 }
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_heading_row {
+    height: 10%;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_heading_row .inner_heading_row h2 {
+    font-size: 2rem;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_heading_row p {
+    font-size: 1.2rem;
+  }
+}
 .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column {
   display: flex;
   flex-direction: column;
@@ -593,6 +879,7 @@ body {
   height: 19%;
   width: 100%;
   cursor: pointer;
+  /* Responsive adjustments */
 }
 .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img {
   display: flex;
@@ -673,6 +960,43 @@ body {
   width: 70%;
   height: 100%;
 }
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row {
+    height: 15%;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img {
+    width: 60%;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img .sno_play_pause_icon {
+    width: 8%;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img .sno_play_pause_icon h2 {
+    font-size: 1.3rem;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img .image_box {
+    width: 30%;
+    height: 85%;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img .image_box img {
+    height: 6vh;
+    width: 6vh;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img .song_text_column {
+    width: 50%;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img .song_text_column h2 {
+    font-size: 1.2rem;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img .artist_name_row {
+    font-size: 0.7rem;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .artist_no_name_and_img .artist_name_row p {
+    font-size: 0.9rem;
+  }
+  .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row .three_dot_x_icon {
+    font-size: 1.4rem;
+  }
+}
 .homepage .main_column .third_home_row .mixed_column_section {
   position: relative;
   width: 38%;
@@ -681,6 +1005,7 @@ body {
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  /* Responsive adjustments */
 }
 .homepage .main_column .third_home_row .mixed_column_section .mixed_heading {
   display: flex;
@@ -689,6 +1014,7 @@ body {
   padding-left: 15%;
   height: 15%;
   width: 100%;
+  /* Responsive adjustments */
 }
 .homepage .main_column .third_home_row .mixed_column_section .mixed_heading .inner_heading_row {
   width: 80%;
@@ -704,6 +1030,17 @@ body {
 .homepage .main_column .third_home_row .mixed_column_section .mixed_heading p {
   color: rgba(0, 0, 255, 0.527);
   font-size: 1.5rem;
+}
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_heading {
+    height: 10%;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_heading .inner_heading_row h2 {
+    font-size: 2rem;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_heading p {
+    font-size: 1.2rem;
+  }
 }
 .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data {
   position: absolute;
@@ -724,6 +1061,7 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
+  /* Responsive adjustments */
 }
 .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .first_grid_block .image_box {
   height: 24.1vh;
@@ -756,11 +1094,31 @@ body {
   font-size: 1.2rem;
   line-height: 1.1;
 }
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .first_grid_block {
+    height: 22vh;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .first_grid_block .image_box {
+    height: 20vh;
+    width: 20vh;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .first_grid_block .image_box img {
+    height: 100%;
+    width: 100%;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .first_grid_block .text_column h2 {
+    font-size: 1.5rem;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .first_grid_block .text_column p {
+    font-size: 1rem;
+  }
+}
 .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .second_grid_block {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  /* Responsive adjustments */
 }
 .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .second_grid_block .image_box {
   height: 24.1vh;
@@ -793,6 +1151,74 @@ body {
   font-size: 1.2rem;
   line-height: 1.1;
 }
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .second_grid_block {
+    height: 22vh;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .second_grid_block .image_box {
+    height: 20vh;
+    width: 20vh;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .second_grid_block .image_box img {
+    height: 100%;
+    width: 100%;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .second_grid_block .text_column h2 {
+    font-size: 1.5rem;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .mixed_grid_data .second_grid_block .text_column p {
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row {
+    flex-direction: column;
+    top: 55%;
+    height: auto;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .song_genre_column {
+    width: 100%;
+    border-radius: 0;
+    padding: 2%;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .song_genre_column .genre {
+    overflow-y: visible;
+    height: auto;
+    flex-wrap: nowrap;
+    flex-direction: row;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .song_genre_column .genre .category {
+    margin-bottom: 0;
+    margin-right: 10px;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .song_genre_column .genre .category p {
+    font-size: 15px;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .quickPicks_column_section {
+    width: 100%;
+    padding: 2% 0;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .quickPicks_column_section .quickPicks_songs_column {
+    height: auto;
+    overflow-y: visible;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .quickPicks_column_section .quickPicks_songs_column .first_song_row {
+    margin-bottom: 5%;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .mixed_column_section {
+    width: 100%;
+    padding: 2% 0;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .mixed_column_section .mixed_grid_data {
+    padding-left: 0;
+    grid-template-columns: 1fr;
+  }
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .mixed_column_section .mixed_grid_data .first_grid_block,
+  .homepage .main_column .third_home_row .mixed_column_section .third_home_row .mixed_column_section .mixed_grid_data .second_grid_block {
+    width: 100%;
+    margin-bottom: 5%;
+  }
+}
 
 .fixed_side_navbar {
   position: fixed;
@@ -808,6 +1234,7 @@ body {
   justify-content: space-between;
   font-size: 2.2vh;
   color: #c4c4c5;
+  /* Responsive adjustments for smaller screens */
 }
 .fixed_side_navbar .logo_box {
   height: 3.5vw;
@@ -830,6 +1257,25 @@ body {
   border: 0.5px solid #c4c4c5;
   width: 190%;
 }
+@media screen and (max-width: 768px) {
+  .fixed_side_navbar {
+    width: 10%;
+    top: 3vh;
+    left: 1vw;
+    bottom: 3vh;
+    font-size: 2vh;
+  }
+  .fixed_side_navbar .logo_box {
+    height: 6vw;
+    width: 6vw;
+  }
+  .fixed_side_navbar .navbar_sub_column {
+    height: 35vh;
+  }
+  .fixed_side_navbar .navbar_sub_column hr {
+    width: 90%;
+  }
+}
 
 .backpage {
   position: fixed;
@@ -841,6 +1287,7 @@ body {
   z-index: 2;
   background-color: #3e3a60;
   border-radius: 25px;
+  /* Responsive adjustments for smaller screens */
 }
 .backpage .back_main_column {
   display: flex;
@@ -878,6 +1325,7 @@ body {
   height: 100%;
   margin-right: 1.8%;
   border-radius: 15px;
+  /* Responsive adjustments */
 }
 .backpage .back_main_column .next_composition_block .composition_row .first_song_box img {
   border-radius: 15px;
@@ -951,12 +1399,64 @@ body {
   width: 60%;
   height: 60%;
 }
+@media only screen and (max-width: 768px) {
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box {
+    width: 100%;
+    height: 40vh;
+    margin-right: 0;
+    margin-bottom: 1.5vh;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box img {
+    width: 100%;
+    height: 60%;
+    border-radius: 15px 15px 0 0;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .three_dot_x_icon {
+    top: 2%;
+    right: 2%;
+    font-size: 1.6rem;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box {
+    bottom: 0;
+    height: 40%;
+    border-radius: 0 0 15px 15px;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row {
+    flex-direction: column;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column {
+    width: 100%;
+    padding-left: 5%;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column h3 {
+    padding-left: 0;
+    padding-bottom: 1%;
+    font-size: 1.1rem;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column p {
+    font-size: 0.9rem;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column .artist_name_row {
+    justify-content: flex-start;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .play_button {
+    width: 100%;
+    padding-top: 1.5%;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .play_button img {
+    width: 40%;
+    height: 40%;
+  }
+}
 .backpage .back_main_column .next_composition_block .composition_row .second_song_box {
   position: relative;
   width: 18%;
   height: 100%;
   margin-right: 1.8%;
   border-radius: 15px;
+  /* Responsive adjustments */
 }
 .backpage .back_main_column .next_composition_block .composition_row .second_song_box img {
   border-radius: 15px;
@@ -1029,6 +1529,57 @@ body {
      object-fit: fill;
   width: 60%;
   height: 60%;
+}
+@media only screen and (max-width: 768px) {
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box {
+    width: 100%;
+    height: 40vh;
+    margin-right: 0;
+    margin-bottom: 1.5vh;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box img {
+    width: 100%;
+    height: 60%;
+    border-radius: 15px 15px 0 0;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .three_dot_x_icon {
+    top: 2%;
+    right: 2%;
+    font-size: 1.6rem;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box {
+    bottom: 0;
+    height: 40%;
+    border-radius: 0 0 15px 15px;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row {
+    flex-direction: column;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column {
+    width: 100%;
+    padding-left: 5%;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column h3 {
+    padding-left: 0;
+    padding-bottom: 1%;
+    font-size: 1.1rem;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column p {
+    font-size: 0.9rem;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column .artist_name_row {
+    justify-content: flex-start;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .play_button {
+    width: 100%;
+    padding-top: 1.5%;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .play_button img {
+    width: 40%;
+    height: 40%;
+  }
 }
 .backpage .back_main_column .current_music_block {
   display: flex;
@@ -1135,4 +1686,38 @@ body {
   width: 50%;
   height: 100%;
   background-color: lightgreen;
+}
+@media screen and (max-width: 768px) {
+  .backpage {
+    left: 2%;
+    border-radius: 15px;
+  }
+  .backpage .back_main_column {
+    padding-top: 2vh;
+    padding-bottom: 1vh;
+  }
+  .backpage .back_main_column .next_composition_block {
+    height: 30%;
+  }
+  .backpage .back_main_column .next_composition_block .composition_row {
+    height: 70%;
+  }
+  .backpage .back_main_column .current_music_block .music_play_column {
+    padding-top: 10%;
+  }
+  .backpage .back_main_column .current_music_block .music_play_column .img_box {
+    height: 25vh;
+  }
+  .backpage .back_main_column .current_music_block .music_play_column h2 {
+    font-size: 2rem;
+  }
+  .backpage .back_main_column .current_music_block .music_play_column p {
+    font-size: 1.3rem;
+  }
+  .backpage .back_main_column .current_music_block .music_play_column .play_pause_loop_row {
+    font-size: 1.5rem;
+  }
+  .backpage .back_main_column .current_music_block .music_play_column .play_pause_loop_row .mid_play_pause_row {
+    font-size: 2rem;
+  }
 }/*# sourceMappingURL=main.css.map */

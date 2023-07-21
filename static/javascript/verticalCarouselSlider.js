@@ -38,3 +38,4 @@ const slides = document.querySelector(".slides");
       }
       goToSlide(currentSlide);
     }, 2000);
+

@@ -6,7 +6,7 @@
 
 @font-face {
     font-family: Futura;
-    src: url("../assets/fonts/futura/Futura\ Bold\ font.ttf") format("ttf");
+    src: url("../assets/fonts/futura/Futura Bold font.ttf") format("ttf");
     font-style: normal;
     font-weight: 300 800;
 }
@@ -22,114 +22,123 @@ html {
 }
 
 body {
-    // background-color: purple;
-    // overflow-x: hidden;
     overflow-y: hidden;
 }
 
-@mixin released_songs_row_style () {
+@mixin released_songs_row_style() {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5vh;
     height: 18%;
     width: 100%;
-    // background-color: pink;
 
-    .artist_no_name_and_img {
+    .clickable_row {
         display: flex;
         align-items: center;
         justify-content: start;
-        width: 55%;
         height: 100%;
+        width: 100%;
 
-        // background-color: yellow;
-
-        .spacer_x_small {
-            width: 5%;
-            height: 100%;
-        }
-
-        .sno_play_pause_icon {
-            width: 5%;
-            // height: 100%;
-            // background-color: brown;
-
-            h2 {
-                font-family: Arial, Helvetica, sans-serif;
-                font-weight: 500;
-                font-size: 1.5rem;
-                color: #c4c4c5;
-            }
-        }
-
-
-        .song_text_column {
-            margin-left: 5%;
-            width: 92%;
-            height: 100%;
+        .artist_no_name_and_img {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: start;
-            // background-color: yellow;
+            align-items: center;
 
-            h2 {
-                font-family: Arial, Helvetica, sans-serif;
-                font-weight: 500;
-                font-size: 1.38rem;
-            }
+            .song_thumbnail {
+                width: 7vw;
+                height: 7vw;
+                max-width: 46px;
+                max-height: 46px;
+                border-radius: 8px;
+                overflow: hidden;
+                margin-right: 1rem;
+                margin-left: 1.5rem;
 
-            .spacer_y_small {
-                height: 8%;
-            }
-
-            .artist_name_row {
-                display: flex;
-                align-items: center;
-                justify-content: start;
-                width: 75%;
-                // background-color: pink;
-                color: #c4c4c5;
-                font-size: 0.8rem;
-
-
-                p {
-                    margin-left: 0.5vh;
-                    font-family: Arial, Helvetica, sans-serif;
-                    font-weight: 400;
-                    color: #c4c4c5;
-                    font-size: 1.15rem;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
                 }
             }
 
+            .sno_play_pause_icon {
+                width: 5%;
 
+                h2 {
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-weight: 500;
+                    font-size: 1.5rem;
+                    color: #c4c4c5;
+                }
+            }
 
+            .song_text_column {
+                margin-left: 1rem;
+                margin-top: auto;
+                margin-bottom: auto;
+                // width: calc(100% - 10vw - 1rem - 5%);
+                width: 100%;
+                // background-color: blue;
+
+                h2 {
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-weight: 500;
+                    font-size: 1.29rem;
+                }
+
+                .spacer_y_small {
+                    height: 5px;
+                }
+
+                .artist_name_row {
+                    display: flex;
+                    align-items: center;
+                    justify-content: start;
+                    width: 100%;
+                    color: #c4c4c5;
+                    font-size: 0.8rem;
+                    //   background-color: yellow;
+
+                    p {
+                        margin-left: 0.5vh;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-weight: 400;
+                        color: #c4c4c5;
+                        font-size: 1.1rem;
+                    }
+                }
+            }
+        }
+
+        .space_x_medium {
+            width: 4.1vw;
+        }
+
+        .three_dot_x_icon {
+            width: 44%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.7rem;
+            //   background-color: yellow;
+
+            i {
+                color: #c4c4c5;
+            }
+
+            p {
+                margin-right: 1vh;
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 400;
+                color: #c4c4c5;
+                font-size: 1.23rem;
+            }
         }
     }
 
-    .three_dot_x_icon {
-        width: 44%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        // background-color: red;
-        font-size: 1.7rem;
 
-        i {
-            color: #c4c4c5;
-        }
 
-        p {
-            margin-right: 1vh;
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: 400;
-            color: #c4c4c5;
-            font-size: 1.23rem;
-        }
 
-    }
 }
 
 .musicpage {
@@ -169,6 +178,7 @@ body {
         right: 0;
         top: 0;
         bottom: 0;
+        max-height: 100vh;
         // background-color: red;
 
         .covering_container {
@@ -178,7 +188,8 @@ body {
             left: 2%;
             right: 28.6%;
             border-radius: 25px;
-            background-color: #e7e8f2;
+            background-color: #F5F5F5;
+            max-height: 100%;
         }
 
         .music_first_column {
@@ -189,6 +200,7 @@ body {
             right: 29.6%;
             display: flex;
             flex-direction: column;
+            max-height: 100%;
 
             .first_music_row {
                 position: absolute;
@@ -240,7 +252,7 @@ body {
                         height: 88%;
                         width: 96%;
                         border-radius: 20px;
-                        // background-color: darkcyan;
+
 
                         img {
                             border-radius: 20px;
@@ -265,14 +277,17 @@ body {
                         display: flex;
                         justify-content: end;
                         align-items: center;
+                        margin-bottom: 2rem;
                         height: 12%;
                         width: 100%;
                         color: rgba(0, 0, 255, 0.527);
+                        // background-color: yellow;
 
                         p {
                             font-family: 'Mukta', sans-serif;
                             font-weight: 500;
                             font-size: 1.5rem;
+                            padding-right: 1.4rem;
                         }
                     }
 
@@ -289,13 +304,12 @@ body {
                 left: 0;
                 right: 0;
                 top: 60%;
-                bottom: 0;
+                bottom: 1.5%;
                 display: flex;
                 flex-direction: column;
-                justify-content: end;
-                background-color: rgb(22, 50, 206);
+                // background-color: rgb(22, 50, 206);
 
-                .heading_playlist{
+                .heading_playlist {
                     display: flex;
                     justify-content: start;
                     align-items: center;
@@ -308,12 +322,68 @@ body {
                         font-weight: 500;
                         font-size: 2.5rem;
                     }
-
                 }
 
-                .playlist_grid_blocks{
+                .playlist_grid_blocks {
                     display: grid;
-                    
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 1rem;
+                    padding: 1rem;
+                    overflow: hidden;
+
+                    .playlist_block {
+                        border-radius: 10px;
+                        background-color: #ecedf3;
+                        // padding: 0.2rem;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                        /* box shadow for the elevated effect */
+                        transition: box-shadow 0.3s ease;
+                        /* smooth transition effect for box shadow */
+
+                        &:hover {
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                            /* Increase the box shadow on hover */
+                        }
+
+                        .playlist_image {
+                            width: 100%;
+                            height: 170px;
+                            border-radius: 10px 10px 0px 0px;
+                            overflow: hidden;
+
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                            }
+                        }
+
+                        .playlist_details {
+                            margin-top: 0.5rem;
+                            padding-left: 1rem;
+                            display: flex;
+                            flex-direction: column;
+
+                            h3 {
+                                font-family: 'Mukta', sans-serif;
+                                font-weight: 500;
+                                font-size: 1.8rem;
+                                color: #333;
+                            }
+
+                            p {
+                                margin-top: 0.2rem;
+                                padding-bottom: 0.3rem;
+                                font-family: 'Mukta', sans-serif;
+                                font-weight: 400;
+                                font-size: 1.4rem;
+                                color: #666;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -324,11 +394,145 @@ body {
             top: 2%;
             bottom: 1%;
             left: 73.6%;
-            right: 2.6%;
+            width: 25%;
             display: flex;
             flex-direction: column;
-            background-color: violet;
+            max-height: 96vh;
+
+            .musicpage_searchbar {
+                width: 90%;
+                min-height: 80px;
+                height: auto;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .notification_icon {
+                    display: flex;
+                    width: 15%;
+
+                    i {
+                        font-size: 20px;
+                    }
+
+                    .spacer_x_small {
+                        width: 70%;
+                        height: 100%;
+                    }
+                }
+
+                .search_icon_and_bar {
+                    position: relative;
+                    display: flex;
+                    justify-content: start;
+                    align-items: center;
+                    height: 44%;
+                    width: 78%;
+
+                    i {
+                        position: absolute;
+                        left: 5%;
+                        font-size: 18px;
+                        color: grey;
+                    }
+
+                    input {
+                        position: absolute;
+                        border-radius: 10px;
+                        border: none;
+                        height: 100%;
+                        width: 100%;
+                        padding-left: 50px;
+                        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+                    }
+                }
+            }
+
+            .artists_container {
+                h2 {
+                    font-family: 'Mukta', sans-serif;
+                    font-weight: 500;
+                    font-size: 2.5rem;
+                }
+
+                .elevated_card {
+                    background-color: #F5F5F5;
+                    padding: 1.5rem;
+                    border-radius: 20px;
+                    padding: 1rem;
+                    height: 78.2vh;
+                    overflow-y: auto;
+                    /* for vertical scrolling */
+                    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+
+                    .artist_list {
+                        display: grid;
+                        grid-template-columns: repeat(1, 1fr);
+                        gap: 1rem;
+
+                        .artist_item {
+                            display: flex;
+                            align-items: center;
+                            text-align: left;
+                            padding: 1rem;
+                            background-color: #f0f0f0;
+                            border-radius: 10px;
+
+                            .artist_image {
+                                /* Circular image */
+                                width: 100px;
+                                height: 100px;
+                                border-radius: 50%;
+                                overflow: hidden;
+                                margin-right: 1rem;
+
+                                img {
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                }
+                            }
+
+                            .artist_details {
+                                flex: 1;
+
+                                h3 {
+                                    font-family: 'Mukta', sans-serif;
+                                    font-weight: 500;
+                                    font-size: 1.6rem;
+                                    color: #333;
+                                    margin-bottom: 0.5rem;
+                                }
+
+                                p {
+                                    font-family: 'Mukta', sans-serif;
+                                    font-weight: 400;
+                                    font-size: 1.3rem;
+                                    color: #666;
+                                    margin-bottom: 1rem;
+                                }
+
+                                .top_songs {
+                                    p {
+                                        margin: 0;
+                                        font-size: 1.2rem;
+                                    }
+                                }
+
+                                .genre_name {
+                                    font-size: 1.2rem;
+                                    font-style: italic;
+                                    color: #888;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
         }
+
+
     }
 
 

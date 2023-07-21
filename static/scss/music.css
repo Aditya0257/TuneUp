@@ -57,6 +57,7 @@ body {
   right: 0;
   top: 0;
   bottom: 0;
+  max-height: 100vh;
 }
 .musicpage .music_main_row .covering_container {
   position: absolute;
@@ -65,7 +66,8 @@ body {
   left: 2%;
   right: 28.6%;
   border-radius: 25px;
-  background-color: #e7e8f2;
+  background-color: #F5F5F5;
+  max-height: 100%;
 }
 .musicpage .music_main_row .music_first_column {
   position: absolute;
@@ -75,6 +77,7 @@ body {
   right: 29.6%;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
 }
 .musicpage .music_main_row .music_first_column .first_music_row {
   position: absolute;
@@ -135,6 +138,7 @@ body {
   display: flex;
   justify-content: end;
   align-items: center;
+  margin-bottom: 2rem;
   height: 12%;
   width: 100%;
   color: rgba(0, 0, 255, 0.527);
@@ -143,6 +147,7 @@ body {
   font-family: "Mukta", sans-serif;
   font-weight: 500;
   font-size: 1.5rem;
+  padding-right: 1.4rem;
 }
 .musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row {
   display: flex;
@@ -152,70 +157,85 @@ body {
   height: 18%;
   width: 100%;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .artist_no_name_and_img {
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row {
   display: flex;
   align-items: center;
   justify-content: start;
-  width: 55%;
   height: 100%;
+  width: 100%;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .artist_no_name_and_img .spacer_x_small {
-  width: 5%;
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img {
+  display: flex;
+  align-items: center;
+}
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img .song_thumbnail {
+  width: 7vw;
+  height: 7vw;
+  max-width: 46px;
+  max-height: 46px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 1rem;
+  margin-left: 1.5rem;
+}
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img .song_thumbnail img {
+  width: 100%;
   height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .artist_no_name_and_img .sno_play_pause_icon {
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img .sno_play_pause_icon {
   width: 5%;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .artist_no_name_and_img .sno_play_pause_icon h2 {
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img .sno_play_pause_icon h2 {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
   font-size: 1.5rem;
   color: #c4c4c5;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .artist_no_name_and_img .song_text_column {
-  margin-left: 5%;
-  width: 92%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img .song_text_column {
+  margin-left: 1rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 100%;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .artist_no_name_and_img .song_text_column h2 {
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img .song_text_column h2 {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
-  font-size: 1.38rem;
+  font-size: 1.29rem;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .artist_no_name_and_img .song_text_column .spacer_y_small {
-  height: 8%;
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img .song_text_column .spacer_y_small {
+  height: 5px;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .artist_no_name_and_img .song_text_column .artist_name_row {
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img .song_text_column .artist_name_row {
   display: flex;
   align-items: center;
   justify-content: start;
-  width: 75%;
+  width: 100%;
   color: #c4c4c5;
   font-size: 0.8rem;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .artist_no_name_and_img .song_text_column .artist_name_row p {
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .artist_no_name_and_img .song_text_column .artist_name_row p {
   margin-left: 0.5vh;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 400;
   color: #c4c4c5;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .three_dot_x_icon {
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .space_x_medium {
+  width: 4.1vw;
+}
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .three_dot_x_icon {
   width: 44%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 1.7rem;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .three_dot_x_icon i {
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .three_dot_x_icon i {
   color: #c4c4c5;
 }
-.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .three_dot_x_icon p {
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .first_song_row .clickable_row .three_dot_x_icon p {
   margin-right: 1vh;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 400;
@@ -227,11 +247,9 @@ body {
   left: 0;
   right: 0;
   top: 60%;
-  bottom: 0;
+  bottom: 1.5%;
   display: flex;
   flex-direction: column;
-  justify-content: end;
-  background-color: rgb(22, 50, 206);
 }
 .musicpage .music_main_row .music_first_column .third_music_row .heading_playlist {
   display: flex;
@@ -248,14 +266,175 @@ body {
 }
 .musicpage .music_main_row .music_first_column .third_music_row .playlist_grid_blocks {
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+}
+.musicpage .music_main_row .music_first_column .third_music_row .playlist_grid_blocks .playlist_block {
+  border-radius: 10px;
+  background-color: #ecedf3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* box shadow for the elevated effect */
+  transition: box-shadow 0.3s ease;
+  /* smooth transition effect for box shadow */
+}
+.musicpage .music_main_row .music_first_column .third_music_row .playlist_grid_blocks .playlist_block:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Increase the box shadow on hover */
+}
+.musicpage .music_main_row .music_first_column .third_music_row .playlist_grid_blocks .playlist_block .playlist_image {
+  width: 100%;
+  height: 170px;
+  border-radius: 10px 10px 0px 0px;
+  overflow: hidden;
+}
+.musicpage .music_main_row .music_first_column .third_music_row .playlist_grid_blocks .playlist_block .playlist_image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.musicpage .music_main_row .music_first_column .third_music_row .playlist_grid_blocks .playlist_block .playlist_details {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.musicpage .music_main_row .music_first_column .third_music_row .playlist_grid_blocks .playlist_block .playlist_details h3 {
+  font-family: "Mukta", sans-serif;
+  font-weight: 500;
+  font-size: 1.8rem;
+  color: #333;
+}
+.musicpage .music_main_row .music_first_column .third_music_row .playlist_grid_blocks .playlist_block .playlist_details p {
+  margin-top: 0.2rem;
+  padding-bottom: 0.3rem;
+  font-family: "Mukta", sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  color: #666;
 }
 .musicpage .music_main_row .music_second_column {
   position: absolute;
   top: 2%;
   bottom: 1%;
   left: 73.6%;
-  right: 2.6%;
+  width: 25%;
   display: flex;
   flex-direction: column;
-  background-color: violet;
+  max-height: 96vh;
+}
+.musicpage .music_main_row .music_second_column .musicpage_searchbar {
+  width: 90%;
+  min-height: 80px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.musicpage .music_main_row .music_second_column .musicpage_searchbar .notification_icon {
+  display: flex;
+  width: 15%;
+}
+.musicpage .music_main_row .music_second_column .musicpage_searchbar .notification_icon i {
+  font-size: 20px;
+}
+.musicpage .music_main_row .music_second_column .musicpage_searchbar .notification_icon .spacer_x_small {
+  width: 70%;
+  height: 100%;
+}
+.musicpage .music_main_row .music_second_column .musicpage_searchbar .search_icon_and_bar {
+  position: relative;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 44%;
+  width: 78%;
+}
+.musicpage .music_main_row .music_second_column .musicpage_searchbar .search_icon_and_bar i {
+  position: absolute;
+  left: 5%;
+  font-size: 18px;
+  color: grey;
+}
+.musicpage .music_main_row .music_second_column .musicpage_searchbar .search_icon_and_bar input {
+  position: absolute;
+  border-radius: 10px;
+  border: none;
+  height: 100%;
+  width: 100%;
+  padding-left: 50px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.musicpage .music_main_row .music_second_column .artists_container h2 {
+  font-family: "Mukta", sans-serif;
+  font-weight: 500;
+  font-size: 2.5rem;
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card {
+  background-color: #F5F5F5;
+  padding: 1.5rem;
+  border-radius: 20px;
+  padding: 1rem;
+  height: 78.2vh;
+  overflow-y: auto;
+  /* for vertical scrolling */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card .artist_list {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card .artist_list .artist_item {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  padding: 1rem;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card .artist_list .artist_item .artist_image {
+  /* Circular image */
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 1rem;
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card .artist_list .artist_item .artist_image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card .artist_list .artist_item .artist_details {
+  flex: 1;
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card .artist_list .artist_item .artist_details h3 {
+  font-family: "Mukta", sans-serif;
+  font-weight: 500;
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card .artist_list .artist_item .artist_details p {
+  font-family: "Mukta", sans-serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card .artist_list .artist_item .artist_details .top_songs p {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.musicpage .music_main_row .music_second_column .artists_container .elevated_card .artist_list .artist_item .artist_details .genre_name {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #888;
 }/*# sourceMappingURL=music.css.map */

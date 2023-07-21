@@ -149,8 +149,9 @@ def index():
     genre = ytmusic.get_mood_categories()
     # return genre
     quick_picks = []
-    my_mixes = []
-    recommended_artists = []
+    new_releases = []
+    recommended_music = []
+    # recommended_artists = []
 
     # ?
     # ?
@@ -162,8 +163,10 @@ def index():
     for data in home_data:
         if (data['title'] == 'Quick picks' or data['title'][0:7] == 'Welcome'):
             quick_picks = data['contents']
-        elif (data['title'] == 'Mixed for you'):
-            my_mixes = data['contents']
+        elif (data['title'] == 'New releases'):
+            new_releases = data['contents']
+        elif (data['title'] == 'Recommended music videos'):
+            recommended_music = data['contents']
 
     # # Loop through each quick pick item
     # for quick_pick in quick_picks:
@@ -245,7 +248,7 @@ def index():
     # songs = db.songs.find()
     # print(songs)
 
-    return render_template('index.html', quickPicks=quick_picks, myMixes=my_mixes, recommendedArtists=[], genre_category=genre)
+    return render_template('index.html', quickPicks=quick_picks, newReleases=new_releases, recommendedMusic=recommended_music, genre_category=genre)
 
 # * Music page route
 
@@ -324,7 +327,7 @@ def play_song():
         'videoId': video_id,
         'title': song_detail['videoDetails']['title'],
         'artist': song_detail['videoDetails']['author'],
-        "$set": {'url': 'lakshyabuoy'}
+        "$set": {'url': 'https://www.example.com/path'}
     }
     result = db.songs.insert_one(song_data)
     print(result.inserted_id)

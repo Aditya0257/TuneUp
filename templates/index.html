@@ -137,28 +137,32 @@
                 </div>
               </div>
               <div class="spacer_y_small"></div>
-              {% for artist in recommendedArtists %}
+              {% for musicArtist in recommendedMusic[0:3] %}
               <div class="first_artist_row">
                 <div class="artist_name_and_img">
                   <div class="image_box">
-                    <img src="{{artist['image_url']}}" alt="" />
+                    <img src="{{musicArtist['thumbnails'][0]['url']}}" alt="" />
                   </div>
                   <div class="artist_text_column">
                     <div>
-                      <h2>{{artist['name']}}</h2>
+                      <h2>{{musicArtist['artists'][0]['name']}}</h2>
                     </div>
                     <div class="spacer_y_small"></div>
                     <div class="artist_detail_row">
                       <div class="followers_row">
                         <img src="../assets/images/box_heart_icon.png" alt="" />
-                        <p>{{ artist['followers'] }} Followers</p>
+                        <!-- <p>{{ musicArtist['followers'] }} Followers</p> -->
+                        <p>250M Followers</p>
                       </div>
                       <div class="plays_row">
                         <img
                           src="../assets/images/play_vibration_icon.png"
                           alt=""
                         />
-                        <p>{{artist['views']}} Views</p>
+                        <!-- <p>{{musicArtist['thumbnails']['views']}} Views</p>  -->
+                        <!-- yt music api not working for views value, so taken static data -->
+                        <p>111M Views</p> 
+                        
                       </div>
                     </div>
                   </div>
@@ -236,18 +240,18 @@
             <div class="mixed_column_section">
               <div class="mixed_heading">
                 <div class="inner_heading_row">
-                  <h2>Mixed for You</h2>
+                  <h2>New Releases</h2>
                 </div>
               </div>
               <div class="mixed_grid_data">
-                {% for mixes in myMixes %}
+                {% for releases in newReleases %}
                 <div class="first_grid_block">
                   <div class="image_box">
-                    <img src="{{mixes['thumbnails'][0]['url']}}" alt="" />
+                    <img src="{{releases['thumbnails'][0]['url']}}" alt="" />
                   </div>
                   <div class="text_column">
-                    <h2>{{mixes['title']}}</h2>
-                    <p>{{mixes['description']}}</p>
+                    <h2>{{releases['title']}}</h2>
+                    <p>{{releases['description']}}</p>
                   </div>
                 </div>
                 {% endfor %}
