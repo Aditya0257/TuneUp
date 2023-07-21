@@ -20,7 +20,7 @@ To run the TuneUp music website project locally, follow the steps below:
 
 ```bash
 # Clone the Repository:
-git clone https://github.com/your-username/tuneup-music-website.git
+git clone https://github.com/Aditya0257/tuneup-music-website.git
 
 # Navigate to the project folder
 cd tuneup-music-website
