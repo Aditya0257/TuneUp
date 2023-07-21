@@ -50,6 +50,7 @@ Open your web browser and navigate to http://localhost:5000. You should now be a
 
 Browse and play songs from YouTube Music
 Search for songs, albums, artists, and community playlists
+Navigate to the Library to view your liked songs and update them according to your preference.
 
 ## License
 
