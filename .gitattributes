@@ -1,8 +1,4 @@
-* linguist-language=JavaScript
-* linguist-language=HTML
-* linguist-language=CSS
-* linguist-language=Python
-
-
-
-
+script.js linguist-language=JavaScript
+index.html linguist-language=HTML
+styles.css linguist-language=CSS
+main.py linguist-language=Python
