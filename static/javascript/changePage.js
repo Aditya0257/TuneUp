@@ -1,4 +1,4 @@
-function changePage(route){
+function changePage(route, callback){
    
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/${route}`, true);
@@ -10,14 +10,17 @@ function changePage(route){
   
         // Change the URL displayed in the address bar
         history.pushState(null, '', `/${route}`);
-        
+        if (typeof callback === 'function') {
+          callback(); // Call the callback function if provided
+        }
+
       }
     };
     xhr.send();
   }
 
 
-  function changePageWithComponent(route, componentId = null) {
+  function changePageWithComponent(route, componentId = null, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', `/${route}`, true);
   
@@ -41,6 +44,9 @@ function changePage(route){
   
         // Change the URL displayed in the address bar
         history.pushState(null, '', `/${route}`);
+        if (typeof callback === 'function') {
+          callback(); // Call the callback function if provided
+        }
       }
     };
   
