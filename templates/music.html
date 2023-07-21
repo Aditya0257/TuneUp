@@ -43,166 +43,52 @@
               <div class="see_more_row">
                 <p><u>See all</u></p>
               </div>
-              <!-- First Song Row -->
-              <div class="first_song_row">
-                <div class="clickable_row">
-                  <div class="artist_no_name_and_img">
-                    <div class="sno_play_pause_icon">
-                      <h2>01</h2>
-                    </div>
-                    <div class="spacer_x_small"></div>
-                    <div class="song_thumbnail">
-                      <img
-                        src="https://picsum.photos/seed/picsum/200/300"
-                        alt="Song Thumbnail"
-                      />
-                    </div>
-                    <div class="spacer_x_small"></div>
 
-                    <div class="song_text_column">
-                      <div><h2>Sleep 4Ever</h2></div>
-                      <div class="spacer_y_small"></div>
-                      <div class="artist_name_row">
-                        <i class="fa-solid fa-user"></i>
-                        <p>MAGGIE ANDREW, blackbear</p>
+              <div class="liked_song_container">
+                {% for song in liked_songs %}
+                <!-- Song Container -->
+                <div class="song_container">
+                  <!-- First Song Row -->
+                  <div class="first_song_row">
+                    <div class="clickable_row">
+                      <div class="artist_no_name_and_img">
+                        <div class="sno_play_pause_icon">
+                          {% if loop.index <= 9 %}
+                          <h2>0{{loop.index}}</h2>
+                          {% else %}
+                          <h2>{{loop.index}}</h2>
+                          {% endif %}
+                        </div>
+                        <div class="spacer_x_small"></div>
+                        <div class="song_thumbnail">
+                          <img
+                            src="{{ song.thumbnail }}"
+                            alt="Song Thumbnail"
+                          />
+                        </div>
+                        <div class="spacer_x_small"></div>
+
+                        <div class="song_text_column">
+                          <div><h2>{{ song.title }}</h2></div>
+                          <div class="spacer_y_small"></div>
+                          <div class="artist_name_row">
+                            <i class="fa-solid fa-user"></i>
+                            <p>{{ song.artist }}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="space_x_medium"></div>
+                      <div class="three_dot_x_icon">
+                        <p> Plays: N/A</p>
+                        <p>Duration: N/A</p>
+                        <i class="fa-solid fa-ellipsis"></i>
                       </div>
                     </div>
                   </div>
-                  <div class="space_x_medium"></div>
-                  <div class="three_dot_x_icon">
-                    <p>3,516,168 Plays</p>
-                    <p>2:42</p>
-                    <i class="fa-solid fa-ellipsis"></i>
-                  </div>
+                  <!-- End of First Song Row -->
                 </div>
-              </div>
-              <div class="first_song_row">
-                <div class="clickable_row">
-                  <div class="artist_no_name_and_img">
-                    <div class="sno_play_pause_icon">
-                      <h2>01</h2>
-                    </div>
-                    <div class="spacer_x_small"></div>
-                    <div class="song_thumbnail">
-                      <img
-                        src="https://picsum.photos/seed/picsum/200/300"
-                        alt="Song Thumbnail"
-                      />
-                    </div>
-                    <div class="spacer_x_small"></div>
-
-                    <div class="song_text_column">
-                      <div><h2>Sleep 4Ever</h2></div>
-                      <div class="spacer_y_small"></div>
-                      <div class="artist_name_row">
-                        <i class="fa-solid fa-user"></i>
-                        <p>MAGGIE ANDREW, blackbear</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="space_x_medium"></div>
-                  <div class="three_dot_x_icon">
-                    <p>3,516,168 Plays</p>
-                    <p>2:42</p>
-                    <i class="fa-solid fa-ellipsis"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="first_song_row">
-                <div class="clickable_row">
-                  <div class="artist_no_name_and_img">
-                    <div class="sno_play_pause_icon">
-                      <h2>01</h2>
-                    </div>
-                    <div class="spacer_x_small"></div>
-                    <div class="song_thumbnail">
-                      <img
-                        src="https://picsum.photos/seed/picsum/200/300"
-                        alt="Song Thumbnail"
-                      />
-                    </div>
-                    <div class="spacer_x_small"></div>
-
-                    <div class="song_text_column">
-                      <div><h2>Sleep 4Ever</h2></div>
-                      <div class="spacer_y_small"></div>
-                      <div class="artist_name_row">
-                        <i class="fa-solid fa-user"></i>
-                        <p>MAGGIE ANDREW, blackbear</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="space_x_medium"></div>
-                  <div class="three_dot_x_icon">
-                    <p>3,516,168 Plays</p>
-                    <p>2:42</p>
-                    <i class="fa-solid fa-ellipsis"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="first_song_row">
-                <div class="clickable_row">
-                  <div class="artist_no_name_and_img">
-                    <div class="sno_play_pause_icon">
-                      <h2>01</h2>
-                    </div>
-                    <div class="spacer_x_small"></div>
-                    <div class="song_thumbnail">
-                      <img
-                        src="https://picsum.photos/seed/picsum/200/300"
-                        alt="Song Thumbnail"
-                      />
-                    </div>
-                    <div class="spacer_x_small"></div>
-
-                    <div class="song_text_column">
-                      <div><h2>Sleep 4Ever</h2></div>
-                      <div class="spacer_y_small"></div>
-                      <div class="artist_name_row">
-                        <i class="fa-solid fa-user"></i>
-                        <p>MAGGIE ANDREW, blackbear</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="space_x_medium"></div>
-                  <div class="three_dot_x_icon">
-                    <p>3,516,168 Plays</p>
-                    <p>2:42</p>
-                    <i class="fa-solid fa-ellipsis"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="first_song_row">
-                <div class="clickable_row">
-                  <div class="artist_no_name_and_img">
-                    <div class="sno_play_pause_icon">
-                      <h2>01</h2>
-                    </div>
-                    <div class="spacer_x_small"></div>
-                    <div class="song_thumbnail">
-                      <img
-                        src="https://picsum.photos/seed/picsum/200/300"
-                        alt="Song Thumbnail"
-                      />
-                    </div>
-                    <div class="spacer_x_small"></div>
-
-                    <div class="song_text_column">
-                      <div><h2>Sleep 4Ever</h2></div>
-                      <div class="spacer_y_small"></div>
-                      <div class="artist_name_row">
-                        <i class="fa-solid fa-user"></i>
-                        <p>MAGGIE ANDREW, blackbear</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="space_x_medium"></div>
-                  <div class="three_dot_x_icon">
-                    <p>3,516,168 Plays</p>
-                    <p>2:42</p>
-                    <i class="fa-solid fa-ellipsis"></i>
-                  </div>
-                </div>
+                <!-- End of Song Container -->
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -368,4 +254,5 @@
   </body>
 
   <script src="../static/javascript/searchSong.js"></script>
+  <script src="../static/javascript/sendLikedSongsToServer.js"></script>
 </html>

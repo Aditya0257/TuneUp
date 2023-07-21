@@ -32,8 +32,10 @@ body {
     margin-bottom: 0.5vh;
     height: 18%;
     width: 100%;
+    margin-bottom: 2vh;
 
     .clickable_row {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: start;
@@ -115,12 +117,15 @@ body {
         }
 
         .three_dot_x_icon {
-            width: 44%;
+            position: absolute;
+
+            right: 1.2%;
+            width: 30%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-size: 1.7rem;
-            //   background-color: yellow;
+            // background-color: yellow;
 
             i {
                 color: #c4c4c5;
@@ -291,8 +296,17 @@ body {
                         }
                     }
 
-                    .first_song_row {
-                        @include released_songs_row_style;
+                    .liked_song_container {
+                        max-height: 40vh;
+                        // background-color: pink;
+                        overflow-y: auto;
+                        padding-right: 1rem;
+                        .song_container {
+                            .first_song_row {
+                                @include released_songs_row_style;
+                            }
+                        }
+                        
                     }
 
                 }

@@ -18,7 +18,8 @@ html {
 
     /* Adjust font size for smaller screens */
     @media screen and (max-width: 768px) {
-        font-size: 50%; /* For example, you can set 1rem = 8px (8px/16px = 50%) */
+        font-size: 50%;
+        /* For example, you can set 1rem = 8px (8px/16px = 50%) */
     }
 }
 
@@ -221,7 +222,7 @@ body {
             margin-left: 23%;
             justify-content: start;
             width: 100%;
-            
+
             .followers_row {
                 img {
                     width: 12%;
@@ -366,7 +367,6 @@ body {
             width: 70%;
             height: 100%;
             // background-color: lightgreen;
-
         }
     }
 
@@ -1538,7 +1538,3 @@ body {
         }
     }
 }
-
-
-
-
