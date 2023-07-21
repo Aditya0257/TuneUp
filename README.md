@@ -3,7 +3,9 @@
 TuneUp is a music website project that allows users to browse and play songs from YouTube Music (YTMusic) using the official YTMusic API. It provides a user-friendly interface similar to popular music streaming services, allowing users to search for songs, create queues, and enjoy their favorite music.
 
 ![TuneUp Prototype](https://user-images.githubusercontent.com/114610458/231032953-1a95d4e5-ff3a-431d-a9d7-eab127394501.png)
-![TuneUp Prototype2](https://github.com/Aditya0257/TuneUp/blob/main/homepage_img.png?raw=true)
+![TuneUp homepage](https://github.com/Aditya0257/TuneUp/blob/main/homepage_img.png?raw=true)
+![TuneUp musicpage](https://github.com/Aditya0257/TuneUp/blob/main/musicpage_img.png?raw=true)
+![TuneUp searchpage](https://github.com/Aditya0257/TuneUp/blob/main/searchresult_img.png?raw=true)
 
 ## Technologies Used
 
