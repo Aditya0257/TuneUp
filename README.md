@@ -23,7 +23,7 @@ To run the TuneUp music website project locally, follow the steps below:
 git clone https://github.com/Aditya0257/TuneUp.git
 
 # Navigate to the project folder
-cd tuneup-music-website
+cd music-website
 
 # Install Python dependencies
 pip install -r requirements.txt
