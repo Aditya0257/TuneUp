@@ -4,25 +4,30 @@ from pymongo import MongoClient
 from ytmusicapi import YTMusic
 import youtube_dl
 from pytube import YouTube
+import random
+
+
 
 app = Flask(__name__)
-
 app.secret_key = os.environ.get('FLASK_SECRET_KEY')
+
+
 
 mongo_client = MongoClient('mongodb://localhost:27017/')
 db = mongo_client['music']
-collection_songs = db.songs
-
+collection_played_songs = db.songs
 collection_liked_songs = db.liked_songs
 
 
 @app.route('/', methods=["GET"])
 def index():
     home_data = ytmusic.get_home(10)
-    genre = ytmusic.get_mood_categories()
     quick_picks = []
     new_releases = []
     recommended_music = []
+    # Static data for genres and moods
+    genres = ['Pop', 'Rock', 'Orchestral', 'Hip Hop', 'Electronic', 'Classical', 'Jazz']
+    moods = ['Happy', 'Sad', 'Energetic', 'Romantic', 'Motivated', 'Classic Country', 'Chill']
     for data in home_data:
         if (data['title'] == 'Quick picks' or data['title'][0:7] == 'Welcome'):
             quick_picks = data['contents']
@@ -31,7 +36,8 @@ def index():
         elif (data['title'] == 'Recommended music videos'):
             recommended_music = data['contents']
 
-    return render_template('index.html', quickPicks=quick_picks, newReleases=new_releases, recommendedMusic=recommended_music, genre_category=genre)
+    return render_template('index.html', quickPicks=quick_picks, newReleases=new_releases, recommendedMusic=recommended_music, genre_category={'Genres': genres, 'Moods & moments': moods})
+
 
 
 @app.route('/music', methods=["GET"])
@@ -56,6 +62,7 @@ def music():
         return render_template('music.html', liked_songs=liked_songs_received)
 
 
+
 @app.route('/music', methods=["POST"])
 def liked_songs_to_musicpage():
 
@@ -67,10 +74,42 @@ def liked_songs_to_musicpage():
     return jsonify({"message": "Liked songs received successfully", "liked_songs": liked_songs_received})
 
 
+
+# Function to add a song to the MongoDB database
+def addSongToDatabase(video_id, title, artist, url):
+    song_data = {
+        'videoId': video_id,
+        'title': title,
+        'artist': artist,
+        'url': url
+    }
+    collection_played_songs.insert_one(song_data)
+
+
+# Function to get a random video ID
+@app.route('/getRandomVideoIds', methods=["GET"])
+def get_random_video_id():
+    # Generate a random query
+    random_query = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=10))
+
+    # Search for videos using the random query
+    search_results = ytmusic.search(query=random_query, filter="video", limit=1)
+
+    # Extract the video ID from the search results
+    if search_results and 'videoId' in search_results[0]:
+        return search_results[0]['videoId']
+
+    # If no video ID is found, return None
+    return None
+
+
 @app.route('/playSong', methods=["POST"])
 def play_song():
 
     video_id = request.args.get('videoId')
+    # If no videoId is provided, generate a random one
+    if not video_id:
+        video_id = get_random_video_id() 
     song_detail = ytmusic.get_song(videoId=video_id)
     song_url = f"https://music.youtube.com/watch?v={video_id}"
     print("waiting")
@@ -95,17 +134,25 @@ def play_song():
     except:
         yt = YouTube(f'https://www.youtube.com/watch?v={video_id}')
         url = yt.streams.filter(only_audio=True).first().url
-    print(url)
-    song_data = {
-        'videoId': video_id,
+    # print(url)
+
+    # Extract the thumbnail URL from the song_detail dictionary
+    thumbnail_url = song_detail['videoDetails']['thumbnail']['thumbnails'][-1]['url']
+
+    # Construct the response data with all the required information
+    response_data = {
         'title': song_detail['videoDetails']['title'],
         'artist': song_detail['videoDetails']['author'],
-        "$set": {'url': 'https://www.example.com/path'}
+        'thumbnail_url': thumbnail_url,  # Include the thumbnail URL
+        'videoId': song_detail['videoDetails']['videoId'],
+        'url': url,
     }
-    result = db.songs.insert_one(song_data)
-    print(result.inserted_id)
+
+    # Store song data in MongoDB database
+    addSongToDatabase(video_id, song_detail['videoDetails']['title'], song_detail['videoDetails']['author'], url)
     print('ended')
-    return jsonify({'url': url, 'songDetail': song_detail})
+    return jsonify(response_data)
+
 
 
 @app.route('/search', methods=['GET'])
@@ -133,6 +180,7 @@ def search():
         return
 
 
+
 def add_liked_song(video_id, title, artist, thumbnail):
     song_data = {
         'videoId': video_id,
@@ -142,8 +190,12 @@ def add_liked_song(video_id, title, artist, thumbnail):
     }
     collection_liked_songs.insert_one(song_data)
 
+
+
 def remove_liked_song(video_id):
     collection_liked_songs.delete_one({'videoId': video_id})
+
+
 
 # Route to handle like/unlike song
 @app.route('/likeSong', methods=['POST'])
@@ -177,6 +229,8 @@ def like_song():
     except Exception as e:
         print("Error:", e)
         return jsonify({"error": "Internal Server Error"}), 500
+
+
 
 if __name__ == "__main__":
     ytmusic = YTMusic(
