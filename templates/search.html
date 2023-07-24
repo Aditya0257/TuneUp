@@ -76,7 +76,7 @@
                             />
                           </div>
                           <div class="song_text_column">
-                            <div><h2>{{song["title"]}}</h2></div>
+                            <div><h2 class="song-title">{{song["title"]}}</h2></div>
                             <div class="spacer_y_small"></div>
                             <div class="artist_name_row">
                               <i class="fa-solid fa-user"></i>
@@ -86,7 +86,12 @@
                         </div>
                         <div class="three_dot_x_icon">
                           <div class="heart_three_dot_row">
-                            <i class="fa-regular fa-heart"></i>
+                            <i id="heart-icon-{{ videoId }}" 
+                            class="fa-regular fa-heart" 
+                            title="{{ song["title"] }}"
+                            artist_name="{{ song["artists"][0]["name"] }}"
+                            image_url="{{ song["thumbnails"][-1]["url"] }}" 
+                            onclick="updateLikedSongs('{{ videoId|escape }}')"></i>
                             <i class="fa-solid fa-ellipsis"></i>
                           </div>
                         </div>
@@ -201,5 +206,6 @@
     </div>
 </body>
 
+<script src="../static/javascript/updateLikedSongs.js"></script>
 <script src="../static/javascript/searchSong.js"></script>
 </html>

@@ -206,6 +206,13 @@ body {
   margin-bottom: auto;
   width: 100%;
 }
+.musicpage .music_main_row .music_first_column .second_music_row .songs_column .liked_song_container .song_container .first_song_row .clickable_row .artist_no_name_and_img .song_text_column .song-title {
+  width: 150px;
+  /* Add ellipsis to the song title if it exceeds the container width */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .musicpage .music_main_row .music_first_column .second_music_row .songs_column .liked_song_container .song_container .first_song_row .clickable_row .artist_no_name_and_img .song_text_column h2 {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;

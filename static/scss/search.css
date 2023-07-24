@@ -276,6 +276,13 @@ body {
   justify-content: center;
   align-items: start;
 }
+.searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .song_text_column .song-title {
+  width: 150px;
+  /* Add ellipsis to the song title if it exceeds the container width */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .searchpage .main_column .second_search_row .first_song_community_search_column .songs_column .first_song_row .artist_no_name_and_img .song_text_column h2 {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 500;
