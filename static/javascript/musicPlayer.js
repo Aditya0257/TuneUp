@@ -8,23 +8,6 @@ let isLooping = false;
 // Initialize the Web Worker
 const fetchSongsWorker = new Worker("../static/javascript/fetchSongsWorker.js");
 
-
-
-// //* Create a proxy for the currentQueue
-// const currentQueueProxy = new Proxy(currentQueue, {
-//   set: function (target, property, value) {
-//     target[property] = value;
-//     updateCurrentQueueUI(); // Call the function to update the UI whenever the currentQueue is modified
-//     return true;
-//   },
-// });
-
-
-
-
-
-
-
 //TODO: <<< PLAYING SONG AND HANDLING ITS FEATURES >>>
 //* Homepage progress bar update -:
 function updateTime() {
@@ -33,6 +16,9 @@ function updateTime() {
   document.querySelector(".current-time").innerHTML =
     minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   progressBarValue.value = song.currentTime;
+  if(song.currentTime === song.duration ){
+    playNextSong();
+  }
 }
 
 song.addEventListener("timeupdate", updateTime);
@@ -165,7 +151,6 @@ const handleSongOnLoop = () => {
   else repeat_on_loop_button.classList.remove("active");
 };
 
-
 //TODO: <<< PLAYING SONG FUNCTIONS END >>>
 
 //TODO: <<< QUEUE FUNCTIONS START >>>
@@ -173,16 +158,19 @@ const handleSongOnLoop = () => {
 //! <<< Load queue from local storage when the page loads >>>
 function loadQueueFromLocalStorage() {
   currentQueue = JSON.parse(localStorage.getItem("songsQueue")) || [];
+  updateCurrentQueueUI();
 }
 
 //! <<< Update the local storage queue with the latest data >>>
 function updateLocalStorageQueue() {
   localStorage.setItem("songsQueue", JSON.stringify(currentQueue));
+  updateCurrentQueueUI();
 }
 
 //! <<< Function to add a song to the local storage queue >>>
 function addToLocalStorageQueue(songData) {
   currentQueue.push(songData); // Add to the currentQueue
+  updateCurrentQueueUI();
   updateLocalStorageQueue(); // Update local storage
 }
 
@@ -217,131 +205,13 @@ const fetchRandomSongs = async (count) => {
   }
 };
 
-// // Function to fetch random songs data
-// const fetchRandomSongs = async (count) => {
-
-//   // Check if fetchRandomSongs is already running
-//   if (isFetchingRandomSongs) {
-//     console.log("fetchRandomSongs is already running. Skipping the request.");
-//     return null;
-//   }
-//   try {
-//     isFetchingRandomSongs = true;
-//     let randomSongsData = [];
-//     const fetchRandomSingleSong = async () => {
-//       try {
-//         const response = await fetch("/playSong", {
-//           method: "POST",
-//           headers: {
-//             "Content-type": "application/json",
-//           },
-//         });
-
-//         if (!response.ok) {
-//           // Handle non-200 status codes (e.g., 404, 500)
-//           console.error(
-//             "Error fetching random single song. Status Code:",
-//             response.status
-//           );
-//           return null;
-//         }
-
-//         const data = await response.json();
-//         return data;
-//       } catch (error) {
-//         console.error("Error fetching random single song:", error.message);
-//         return null;
-//       }
-//     };
-
-//     console.log("Fetching", count, "random songs...");
-
-//     const fetchPromise = Array.from({ length: count }, () =>
-//       fetchRandomSingleSong()
-//     );
-
-//     /*
-//     Array.from({ length: count }, () => fetchRandomSingleSong()): This line creates an array with a length of
-//     count. The array elements are initialized with the result of calling the fetchRandomSingleSong function.
-//     Essentially, it creates an array of count promises, where each promise represents the result of calling
-//     fetchRandomSingleSong().
-
-//     await Promise.all(fetchPromise): This line uses Promise.all to wait for all the promises in the fetchPromise
-//     array to resolve. Promise.all takes an array of promises and returns a new promise that resolves to an array
-//     of the resolved values from each input promise. In this case, it waits for all the fetch requests to complete
-//     and resolves to an array of the fetched song data.
-//     */
-
-//     const fetchedSongs = await Promise.all(fetchPromise);
-//     console.log("Fetched raw song data:", fetchedSongs);
-
-//     // Filter out any null values (songs that failed to fetch)
-//     const validSongs = fetchedSongs.filter((songData) => songData !== null);
-//     // console.log("Filtered valid songs:", validSongs);
-
-//     // Map each fetched song data to the desired format (songData object)
-//     const formattedSongs = validSongs.map((data) => ({
-//       title: data.title,
-//       artist: data.artist,
-//       thumbnail_url: data.thumbnail_url,
-//       videoId: data.videoId,
-//       url: data.url,
-//     }));
-//     console.log("Formatted songs:", formattedSongs);
-
-//     // Add the fetched songs to the randomSongsData array
-//     randomSongsData.push(...formattedSongs);
-//     console.log("Random songs data:", randomSongsData);
-
-//     if (randomSongsData.length === 0) {
-//       // If no valid songs were fetched, get liked songs from local storage
-//       const likedSongsFromLocalStorage = JSON.parse(
-//         localStorage.getItem("likedSongs")
-//       );
-
-//       if (likedSongsFromLocalStorage && likedSongsFromLocalStorage.length > 0) {
-//         try {
-//           // Fetch URLs for liked songs from local storage
-//           const likedSongsWithUrls = await fetchUrlsForLikedSongs(
-//             likedSongsFromLocalStorage
-//           );
-
-//           // Check if likedSongsWithUrls is an array and has at least one song with a URL
-//           if (
-//             Array.isArray(likedSongsWithUrls) &&
-//             likedSongsWithUrls.some((song) => song.url)
-//           ) {
-//             // Add the liked songs with URLs to the randomSongsData array
-//             randomSongsData.push(...likedSongsWithUrls);
-//             console.log(
-//               "edge case randomSongsData List is : ",
-//               randomSongsData
-//             );
-//           }
-//         } catch (error) {
-//           console.error("Error fetching URLs for liked songs:", error.message);
-//         }
-//       } else {
-//         // Throw a custom error if no valid songs or liked songs were found
-//         console.log("No valid songs or liked songs found");
-//       }
-//     }
-//     // Set the flag back to false when fetchRandomSongs is completed (either success or error)
-//     isFetchingRandomSongs = false;
-//     return randomSongsData;
-//   } catch (error) {
-//     console.log("Error fetching random songs.");
-//     isFetchingRandomSongs = false;
-//     return null;
-//   }
-// };
-
 const getPreFetchedRandomSongs = (count) => {
   // Check if there are any pre-fetched songs in local storage (currentQueue)
   currentQueue = JSON.parse(localStorage.getItem("songsQueue")) || [];
 
   // Check if currentQueue contains enough pre-fetched songs
   if (currentQueue.length >= count) {
+    updateCurrentQueueUI();
     return currentQueue.slice(0, count);
   }
 
@@ -358,8 +228,6 @@ async function checkAndUpdateQueue(count) {
       console.log(
         "Error: No random songs data fetched while checking and updating queue."
       );
-      // You can display an error message to the user or take appropriate action
-      // alert("Failed to fetch random songs. Please try again later.");
       return;
     }
     console.log("Fetched random songs data:", randomSongsData);
@@ -371,6 +239,7 @@ async function checkAndUpdateQueue(count) {
 
     console.log("Queue after populating it with random songs:", currentQueue);
     maintainQueueSize();
+    updateCurrentQueueUI();
   }
 }
 
@@ -407,6 +276,7 @@ const playNextSong = async (videoId = null) => {
         // Ensure the queue has a maximum of 25 songs
         maintainQueueSize();
         console.log("Queue after maintaining its size:", currentQueue);
+        updateCurrentQueueUI();
       } catch (error) {
         console.error("Error in playNextSong:", error);
       }
@@ -420,6 +290,7 @@ const playNextSong = async (videoId = null) => {
           "after moving the current playing song to previous queue: ",
           currentQueue
         );
+        updateCurrentQueueUI();
         maintainPreviousQueueSize();
         console.log("Previous queue after shifting:", previousQueue);
 
@@ -433,7 +304,7 @@ const playNextSong = async (videoId = null) => {
             .setAttribute("src", nextSong.url);
           document
             .getElementById("song-image")
-            .setAttribute("src", nextSong.thumbnail);
+            .setAttribute("src", nextSong.thumbnail_url);
           document.getElementById("song-name").innerHTML =
             setSongNameWithEllipsis(nextSong.title, 30);
           document.getElementById("song-artist").innerHTML = nextSong.artist;
@@ -465,6 +336,7 @@ const playNextSong = async (videoId = null) => {
         if (preFetchedSongs && preFetchedSongs.length > 0) {
           console.log("Using pre-fetched random songs...");
           console.log(preFetchedSongs);
+
           return preFetchedSongs;
         } else {
           const randomSongsData = await fetchRandomSongs(25);
@@ -560,6 +432,7 @@ const playPreviousSong = () => {
   if (previousQueue.length > 0) {
     // Remove the last played song from the previous queue and add it to the beginning of the current queue
     currentQueue.unshift(previousQueue.pop());
+    updateCurrentQueueUI();
 
     // Get the next song (which is now the previous song) from the current queue
     const nextSong = getCurrentSongFromCurrentQueue();
@@ -568,7 +441,7 @@ const playPreviousSong = () => {
       document.querySelector(".audio-link").setAttribute("src", nextSong.url);
       document
         .getElementById("song-image")
-        .setAttribute("src", nextSong.thumbnail);
+        .setAttribute("src", nextSong.thumbnail_url);
       document.getElementById("song-name").innerHTML = setSongNameWithEllipsis(
         nextSong.title,
         30
@@ -684,12 +557,15 @@ const handleShuffleSongs = () => {
   current_shuffled_song.classList.toggle("active", isShuffled);
   // Shuffle the currentQueue
   shuffleArray(currentQueue);
+  updateCurrentQueueUI();
 
   // Since the current song might have changed its position in the queue after shuffling, update the UI with the new song data
   const nextSong = getCurrentSongFromCurrentQueue();
   if (nextSong) {
     document.querySelector(".audio-link").setAttribute("src", nextSong.url);
-    document.getElementById("song-image").setAttribute("src", nextSong.thumbnail);
+    document
+      .getElementById("song-image")
+      .setAttribute("src", nextSong.thumbnail_url);
     document.getElementById("song-name").innerHTML = setSongNameWithEllipsis(
       nextSong.title,
       30
@@ -717,8 +593,8 @@ const updateCurrentQueueUI = () => {
   currentQueueSection.innerHTML = "";
 
   // Loop through the currentQueue and add each song's box to the current queue section
-  currentQueue.forEach((songData, index) => {
-    const songBox = createSongBox(songData, index);
+  currentQueue.slice(1).forEach((songData, index) => {
+    const songBox = createSongBox(songData, index + 1);
     currentQueueSection.appendChild(songBox);
   });
 };
@@ -726,7 +602,7 @@ const updateCurrentQueueUI = () => {
 // Function to create a song box HTML element
 const createSongBox = (songData, index) => {
   const songBox = document.createElement("div");
-  songBox.classList.add("upcoming-song-box");
+  songBox.classList.add("first_song_box");
   songBox.innerHTML = `
     <img src="${songData.thumbnail_url}" alt="" />
     <div class="three_dot_x_icon">
@@ -735,10 +611,10 @@ const createSongBox = (songData, index) => {
     <div class="inner_text_box">
       <div class="content_row">
         <div class="song_name_artist_column">
-          <div><h3>${songData.title}</h3></div>
+          <div><h3>${setSongNameWithEllipsis(songData.title, 30)}</h3></div>
           <div class="artist_name_row">
             <i style="color: white; font-size: 0.9rem" class="fa-solid fa-music"></i>
-            <p>${songData.artist}</p>
+            <p>${setSongNameWithEllipsis(songData.artist, 30)}</p>
           </div>
         </div>
         <div class="play_button">
@@ -751,3 +627,50 @@ const createSongBox = (songData, index) => {
 };
 
 //TODO: <<< Update the current queue list in the UI -> END>>>
+
+//* Add to Queue Option to add the particular song anywhere in the queue except at the first 3 indexes of current Queue.
+const handleAddToQueue = async(videoId) => {
+  try {
+    console.log("Selected specific song to add to queue :", videoId);
+    const response = await fetch(`/playSong?videoId=${videoId}`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    const data = await response.json();
+    const songData = {
+      title: data.title,
+      artist: data.artist,
+      thumbnail_url: data.thumbnail_url,
+      videoId: data.videoId,
+      url: data.url,
+    };
+    addToQueue(songData);
+  } catch (error) {
+    console.error("Error in playNextSong:", error);
+  }
+}
+
+// Function to add a song to the end of the queue
+const addToQueue = (songData) => {
+  currentQueue.push(songData);
+
+  // Check if the queue size exceeds the maximum size
+  if (currentQueue.length > 25) {
+    removeRandomFromQueue();
+  }
+
+  // Update the UI with the new queue
+  updateCurrentQueueUI();
+};
+
+// Function to remove a random song from the queue, excluding the first three songs
+const removeRandomFromQueue = () => {
+  // Check if the queue size is greater than the minimum size to avoid removal
+  if (currentQueue.length > 2) {
+    const randomIndex =
+      Math.floor(Math.random() * (currentQueue.length - 2)) + 2;
+    currentQueue.splice(randomIndex, 1);
+  }
+};

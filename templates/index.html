@@ -21,7 +21,13 @@
     ></script>
   </head>
   <body>
-    
+    <div class="homepage_searchbar">
+
+      <div class="search_icon_and_bar">
+        <input type="text" placeholder="Search" id="search-input" />
+        <i class="fa-solid fa-magnifying-glass" onclick="search()"></i>
+      </div>
+    </div>
       <div class="homepage" id="home_DraggableDiv">
         <div id="changable">
           <div class="test_div">
@@ -32,17 +38,7 @@
             <div class="homepage_name">
               <h1>Home</h1>
             </div>
-            <div class="homepage_searchbar">
-              <div class="notification_icon">
-                <div class="spacer_x_small"></div>
-                <i class="fa-regular fa-bell"></i>
-              </div>
-  
-              <div class="search_icon_and_bar">
-                <input type="text" placeholder="Search" id="search-input" />
-                <i class="fa-solid fa-magnifying-glass" onclick="search()"></i>
-              </div>
-            </div>
+            
           </div>
           <div class="second_home_row">
             <div class="vertical_slider_box">
@@ -240,7 +236,7 @@
                           
                         <!-- Dropdown content (options) -->
                         <div class="dropdown-content">
-                          <a href="#" >Add to Queue</a>
+                          <a href="#" onclick="handleAddToQueue('{{ videoId|escape }}')">Add to Queue</a>
                           <a href="#" onclick="playNextSong('{{ videoId|escape }}')">Play Next</a>
                         </div>
                       </div>
@@ -284,8 +280,8 @@
           <div class="next_composition_heading">
             <h2>Next Composition</h2>
           </div>
-          <div class="composition_row">
-            <div class="first_song_box">
+          <div id="current-queue">
+            <!-- <div class="first_song_box">
               <img src="https://picsum.photos/id/265/400/600" alt="" />
               <div class="three_dot_x_icon">
                 <i class="fa-solid fa-ellipsis"></i>
@@ -307,10 +303,8 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div id="current-queue" class="current-queue">
-              <!-- Upcoming songs will be added here -->
-            </div>
+            </div> -->
+            <!-- Upcoming songs will be added here -->
           </div>
 
         </div>

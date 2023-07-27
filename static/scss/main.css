@@ -32,6 +32,42 @@ body {
   overflow-y: hidden;
 }
 
+.homepage_searchbar {
+  position: fixed;
+  top: 2%;
+  right: 0;
+  width: 29%;
+  height: 86px;
+  display: flex;
+  z-index: 15;
+  align-items: center;
+  justify-content: center;
+}
+.homepage_searchbar .search_icon_and_bar {
+  position: relative;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 44%;
+  width: 78%;
+}
+.homepage_searchbar .search_icon_and_bar i {
+  position: absolute;
+  left: 5%;
+  font-size: 18px;
+  color: grey;
+}
+.homepage_searchbar .search_icon_and_bar input {
+  position: absolute;
+  outline: none;
+  border-radius: 10px;
+  border: none;
+  height: 100%;
+  width: 100%;
+  padding-left: 50px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
 .homepage {
   position: fixed;
   width: 92.7vw;
@@ -122,47 +158,6 @@ body {
 .homepage .main_column .first_home_row .homepage_name h1 {
   font-size: 3.2rem;
   color: #c4c4c5;
-}
-.homepage .main_column .first_home_row .homepage_searchbar {
-  width: 30%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.homepage .main_column .first_home_row .homepage_searchbar .notification_icon {
-  display: flex;
-  width: 15%;
-}
-.homepage .main_column .first_home_row .homepage_searchbar .notification_icon i {
-  font-size: 20px;
-}
-.homepage .main_column .first_home_row .homepage_searchbar .notification_icon .spacer_x_small {
-  width: 70%;
-  height: 100%;
-}
-.homepage .main_column .first_home_row .homepage_searchbar .search_icon_and_bar {
-  position: relative;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  height: 44%;
-  width: 78%;
-}
-.homepage .main_column .first_home_row .homepage_searchbar .search_icon_and_bar i {
-  position: absolute;
-  left: 5%;
-  font-size: 18px;
-  color: grey;
-}
-.homepage .main_column .first_home_row .homepage_searchbar .search_icon_and_bar input {
-  position: absolute;
-  border-radius: 10px;
-  border: none;
-  height: 100%;
-  width: 100%;
-  padding-left: 50px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 @media only screen and (max-width: 768px) {
   .homepage .main_column .first_home_row .first_home_row {
@@ -323,7 +318,7 @@ body {
     height: 10%;
   }
   .homepage .main_column .second_home_row .column_songs_section .top_artist_heading_row .inner_heading_row h2 {
-    font-size: 2rem;
+    font-size: 1.4rem;
   }
   .homepage .main_column .second_home_row .column_songs_section .top_artist_heading_row p {
     font-size: 1.2rem;
@@ -597,7 +592,7 @@ body {
     height: 10%;
   }
   .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_heading_row .inner_heading_row h2 {
-    font-size: 2rem;
+    font-size: 1.4rem;
   }
   .homepage .main_column .third_home_row .quickPicks_column_section .quickPicks_heading_row p {
     font-size: 1.2rem;
@@ -800,7 +795,7 @@ body {
     height: 10%;
   }
   .homepage .main_column .third_home_row .mixed_column_section .mixed_heading .inner_heading_row h2 {
-    font-size: 2rem;
+    font-size: 1.4rem;
   }
   .homepage .main_column .third_home_row .mixed_column_section .mixed_heading p {
     font-size: 1.2rem;
@@ -1076,14 +1071,14 @@ body {
   font-weight: 500;
   font-size: 2.4rem;
 }
-.backpage .back_main_column .next_composition_block .composition_row {
+.backpage .back_main_column .next_composition_block #current-queue {
   display: flex;
   overflow-x: scroll;
   justify-content: start;
   width: 96.7%;
   height: 80%;
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box {
   position: relative;
   width: 18%;
   height: 100%;
@@ -1091,21 +1086,21 @@ body {
   border-radius: 15px;
   /* Responsive adjustments */
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box img {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box img {
   border-radius: 15px;
   -o-object-fit: cover;
      object-fit: cover;
   width: 225px;
   height: 100%;
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box .three_dot_x_icon {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box .three_dot_x_icon {
   position: absolute;
   top: 4%;
   right: 14%;
   font-size: 2rem;
   color: white;
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box {
   position: absolute;
   left: 4%;
   right: 4%;
@@ -1114,14 +1109,14 @@ body {
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.271);
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row {
   display: flex;
   width: 100%;
   height: 100%;
   justify-content: center;
   align-items: center;
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .song_name_artist_column {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1129,7 +1124,7 @@ body {
   height: 100%;
   padding-left: 2.5%;
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column h3 {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .song_name_artist_column h3 {
   padding-left: 5%;
   padding-bottom: 2%;
   font-family: "Mukta", sans-serif;
@@ -1138,209 +1133,78 @@ body {
   line-height: 1.4;
   color: white;
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column p {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .song_name_artist_column p {
   font-family: "Mukta", sans-serif;
   font-weight: 300;
   font-size: 0.95rem;
   line-height: 1.1;
   color: white;
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column .artist_name_row {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .song_name_artist_column .artist_name_row {
   display: flex;
   width: 100%;
   justify-content: space-evenly;
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .play_button {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .play_button {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 30%;
   height: 100%;
 }
-.backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .play_button img {
+.backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .play_button img {
   -o-object-fit: fill;
      object-fit: fill;
   width: 60%;
   height: 60%;
 }
 @media only screen and (max-width: 768px) {
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box {
     width: 100%;
     height: 40vh;
     margin-right: 0;
     margin-bottom: 1.5vh;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box img {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box img {
     width: 100%;
     height: 60%;
     border-radius: 15px 15px 0 0;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .three_dot_x_icon {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box .three_dot_x_icon {
     top: 2%;
     right: 2%;
     font-size: 1.6rem;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box {
     bottom: 0;
     height: 40%;
     border-radius: 0 0 15px 15px;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row {
     flex-direction: column;
     padding-top: 1.5%;
     padding-bottom: 1.5%;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .song_name_artist_column {
     width: 100%;
     padding-left: 5%;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column h3 {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .song_name_artist_column h3 {
     padding-left: 0;
     padding-bottom: 1%;
     font-size: 1.1rem;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column p {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .song_name_artist_column p {
     font-size: 0.9rem;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .song_name_artist_column .artist_name_row {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .song_name_artist_column .artist_name_row {
     justify-content: flex-start;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .play_button {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .play_button {
     width: 100%;
     padding-top: 1.5%;
   }
-  .backpage .back_main_column .next_composition_block .composition_row .first_song_box .inner_text_box .content_row .play_button img {
-    width: 40%;
-    height: 40%;
-  }
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box {
-  position: relative;
-  width: 18%;
-  height: 100%;
-  margin-right: 1.8%;
-  border-radius: 15px;
-  /* Responsive adjustments */
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box img {
-  border-radius: 15px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  width: 225px;
-  height: 100%;
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box .three_dot_x_icon {
-  position: absolute;
-  top: 4%;
-  right: 14%;
-  font-size: 2rem;
-  color: white;
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box {
-  position: absolute;
-  left: 4%;
-  right: 4%;
-  bottom: 7%;
-  height: 34%;
-  border-radius: 15px;
-  background-color: rgba(255, 255, 255, 0.271);
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 70%;
-  height: 100%;
-  padding-left: 2.5%;
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column h3 {
-  padding-left: 5%;
-  padding-bottom: 2%;
-  font-family: "Mukta", sans-serif;
-  font-weight: 300;
-  font-size: 1.1rem;
-  line-height: 1.4;
-  color: white;
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column p {
-  font-family: "Mukta", sans-serif;
-  font-weight: 300;
-  font-size: 0.95rem;
-  line-height: 1.1;
-  color: white;
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column .artist_name_row {
-  display: flex;
-  width: 100%;
-  justify-content: space-evenly;
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .play_button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30%;
-  height: 100%;
-}
-.backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .play_button img {
-  -o-object-fit: fill;
-     object-fit: fill;
-  width: 60%;
-  height: 60%;
-}
-@media only screen and (max-width: 768px) {
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box {
-    width: 100%;
-    height: 40vh;
-    margin-right: 0;
-    margin-bottom: 1.5vh;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box img {
-    width: 100%;
-    height: 60%;
-    border-radius: 15px 15px 0 0;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .three_dot_x_icon {
-    top: 2%;
-    right: 2%;
-    font-size: 1.6rem;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box {
-    bottom: 0;
-    height: 40%;
-    border-radius: 0 0 15px 15px;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row {
-    flex-direction: column;
-    padding-top: 1.5%;
-    padding-bottom: 1.5%;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column {
-    width: 100%;
-    padding-left: 5%;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column h3 {
-    padding-left: 0;
-    padding-bottom: 1%;
-    font-size: 1.1rem;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column p {
-    font-size: 0.9rem;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .song_name_artist_column .artist_name_row {
-    justify-content: flex-start;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .play_button {
-    width: 100%;
-    padding-top: 1.5%;
-  }
-  .backpage .back_main_column .next_composition_block .composition_row .second_song_box .inner_text_box .content_row .play_button img {
+  .backpage .back_main_column .next_composition_block #current-queue .first_song_box .inner_text_box .content_row .play_button img {
     width: 40%;
     height: 40%;
   }

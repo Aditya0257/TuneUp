@@ -133,52 +133,12 @@ body {
 }
 .searchpage .main_column .first_search_row .search_song_name {
   display: flex;
-  width: 20%;
+  width: 25%;
+  margin-top: 20px;
 }
 .searchpage .main_column .first_search_row .search_song_name h1 {
   font-size: 3.2rem;
   color: #c4c4c5;
-}
-.searchpage .main_column .first_search_row .searchpage_searchbar {
-  width: 30%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.searchpage .main_column .first_search_row .searchpage_searchbar .notification_icon {
-  display: flex;
-  width: 15%;
-}
-.searchpage .main_column .first_search_row .searchpage_searchbar .notification_icon i {
-  font-size: 20px;
-}
-.searchpage .main_column .first_search_row .searchpage_searchbar .notification_icon .spacer_x_small {
-  width: 70%;
-  height: 100%;
-}
-.searchpage .main_column .first_search_row .searchpage_searchbar .search_icon_and_bar {
-  position: relative;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  height: 44%;
-  width: 78%;
-}
-.searchpage .main_column .first_search_row .searchpage_searchbar .search_icon_and_bar i {
-  position: absolute;
-  left: 5%;
-  font-size: 18px;
-  color: grey;
-}
-.searchpage .main_column .first_search_row .searchpage_searchbar .search_icon_and_bar input {
-  position: absolute;
-  border-radius: 10px;
-  border: none;
-  height: 100%;
-  width: 100%;
-  padding-left: 50px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 .searchpage .main_column .second_search_row {
   position: absolute;

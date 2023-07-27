@@ -33,6 +33,53 @@ body {
     overflow-y: hidden;
 }
 
+.homepage_searchbar {
+    position: fixed;
+    top: 2%;
+    right: 0;
+    width: 29%;
+    height: 86px;
+    display: flex;
+    // background-color: pink;
+    z-index: 15;
+    align-items: center;
+    justify-content: center;
+
+    .search_icon_and_bar {
+        position: relative;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        height: 44%;
+        width: 78%;
+
+
+        i {
+            position: absolute;
+            left: 5%;
+            font-size: 18px;
+            color: grey;
+        }
+
+        input {
+            position: absolute;
+            // z-index: 2;
+            outline: none;
+            border-radius: 10px;
+            border: none;
+            height: 100%;
+            width: 100%;
+            padding-left: 50px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+
+        }
+    }
+
+
+}
+
+
 
 @mixin division_heading_style($padding-left: 15%) {
     display: flex;
@@ -66,7 +113,7 @@ body {
 
         .inner_heading_row {
             h2 {
-                font-size: 2rem;
+                font-size: 1.4rem;
             }
         }
 
@@ -771,64 +818,7 @@ body {
                 }
             }
 
-            .homepage_searchbar {
-                width: 30%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-                .notification_icon {
-                    display: flex;
-
-                    width: 15%;
-
-                    i {
-                        font-size: 20px;
-
-                    }
-
-                    .spacer_x_small {
-                        width: 70%;
-                        height: 100%;
-                    }
-                }
-
-
-
-                .search_icon_and_bar {
-                    position: relative;
-                    display: flex;
-                    justify-content: start;
-                    align-items: center;
-                    height: 44%;
-                    width: 78%;
-
-
-                    i {
-                        position: absolute;
-                        left: 5%;
-                        font-size: 18px;
-                        color: grey;
-                    }
-
-                    input {
-                        position: absolute;
-                        // z-index: 2;
-                        border-radius: 10px;
-                        border: none;
-                        height: 100%;
-                        width: 100%;
-                        padding-left: 50px;
-                        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-
-
-                    }
-                }
-
-
-            }
-
+            
             /* Responsive adjustments */
             @media only screen and (max-width: 768px) {
                 .first_home_row {
@@ -1372,7 +1362,7 @@ body {
                 }
             }
 
-            .composition_row {
+            #current-queue {
                 display: flex;
                 overflow-x: scroll;
                 justify-content: start;
@@ -1382,12 +1372,9 @@ body {
 
                 .first_song_box {
                     @include composition_song_box_style;
-
+                    
                 }
 
-                .second_song_box {
-                    @include composition_song_box_style;
-                }
             }
         }
 
