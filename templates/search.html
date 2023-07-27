@@ -29,7 +29,7 @@
                 <div class="search_song_name">
                   <h1 id="search-heading"></h1>
                 </div>
-                <div class="searchpage_searchbar">
+                <!-- <div class="searchpage_searchbar">
                   <div class="notification_icon">
                     <div class="spacer_x_small"></div>
                     <i class="fa-regular fa-bell"></i>
@@ -39,7 +39,7 @@
                     <input type="text" placeholder="Search" id="search-input" />
                     <i class="fa-solid fa-magnifying-glass" onclick="search()""></i>
                   </div>
-                </div>
+                </div> -->
             </div>
             
             <div class="second_search_row">
@@ -91,7 +91,7 @@
                             title="{{ song["title"] }}"
                             artist_name="{{ song["artists"][0]["name"] }}"
                             image_url="{{ song["thumbnails"][-1]["url"] }}" 
-                            onclick="updateLikedSongs('{{ videoId|escape }}')"></i>
+                            onclick="updateLikedSongs('{{ videoId|escape }}', event)"></i>
                             <i class="fa-solid fa-ellipsis"></i>
                           </div>
                         </div>

@@ -421,56 +421,57 @@ body {
             flex-direction: column;
             max-height: 96vh;
 
-            .musicpage_searchbar {
-                width: 90%;
-                min-height: 80px;
-                height: auto;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
+            // .musicpage_searchbar {
+            //     width: 90%;
+            //     min-height: 80px;
+            //     height: auto;
+            //     display: flex;
+            //     align-items: center;
+            //     justify-content: space-between;
 
-                .notification_icon {
-                    display: flex;
-                    width: 15%;
+            //     .notification_icon {
+            //         display: flex;
+            //         width: 15%;
 
-                    i {
-                        font-size: 20px;
-                    }
+            //         i {
+            //             font-size: 20px;
+            //         }
 
-                    .spacer_x_small {
-                        width: 70%;
-                        height: 100%;
-                    }
-                }
+            //         .spacer_x_small {
+            //             width: 70%;
+            //             height: 100%;
+            //         }
+            //     }
 
-                .search_icon_and_bar {
-                    position: relative;
-                    display: flex;
-                    justify-content: start;
-                    align-items: center;
-                    height: 44%;
-                    width: 78%;
+            //     .search_icon_and_bar {
+            //         position: relative;
+            //         display: flex;
+            //         justify-content: start;
+            //         align-items: center;
+            //         height: 44%;
+            //         width: 78%;
 
-                    i {
-                        position: absolute;
-                        left: 5%;
-                        font-size: 18px;
-                        color: grey;
-                    }
+            //         i {
+            //             position: absolute;
+            //             left: 5%;
+            //             font-size: 18px;
+            //             color: grey;
+            //         }
 
-                    input {
-                        position: absolute;
-                        border-radius: 10px;
-                        border: none;
-                        height: 100%;
-                        width: 100%;
-                        padding-left: 50px;
-                        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-                    }
-                }
-            }
+            //         input {
+            //             position: absolute;
+            //             border-radius: 10px;
+            //             border: none;
+            //             height: 100%;
+            //             width: 100%;
+            //             padding-left: 50px;
+            //             box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            //         }
+            //     }
+            // }
 
             .artists_container {
+                margin-top: 70px;
                 h2 {
                     font-family: 'Mukta', sans-serif;
                     font-weight: 500;

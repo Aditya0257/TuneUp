@@ -1,6 +1,6 @@
 // Function to set the initial state of heart icons based on liked songs in localStorage
 const setInitialLikeIcons = () => {
-  console.log("Setting initial like icons...");
+  // console.log("Setting initial like icons...");
 
   const heartIcons = document.querySelectorAll(".heart-icon");
   const likedSongs = JSON.parse(localStorage.getItem("likedSongs")) || [];
@@ -20,12 +20,12 @@ const setInitialLikeIcons = () => {
     }
   });
 
-  console.log("Initial like icons set.");
+  // console.log("Initial like icons set.");
 };
 
 // Call setInitialHeartIcons when the page is loaded
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Page loaded. Calling setInitialLikeIcons...");
+  // console.log("Page loaded. Calling setInitialLikeIcons...");
   setInitialLikeIcons();
 });
 

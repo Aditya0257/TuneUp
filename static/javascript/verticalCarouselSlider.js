@@ -8,7 +8,7 @@ const slides = document.querySelector(".slides");
     function goToSlide(slideNumber) {
       currentSlide = slideNumber;
       var carousel_slider = verticalCarouselSlider.getBoundingClientRect();
-      console.log(carousel_slider.height);
+      // console.log(carousel_slider.height);
       slides.style.transform = `translateY(-${
         carousel_slider.height * (currentSlide - 1)
       }px)`;

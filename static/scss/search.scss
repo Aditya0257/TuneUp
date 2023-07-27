@@ -406,7 +406,8 @@ body {
 
             .search_song_name {
                 display: flex;
-                width: 20%;
+                width: 25%;
+                margin-top: 20px;
 
                 h1 {
                     font-size: 3.2rem;
@@ -414,63 +415,63 @@ body {
                 }
             }
 
-            .searchpage_searchbar {
-                width: 30%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
+            // .searchpage_searchbar {
+            //     width: 30%;
+            //     height: 100%;
+            //     display: flex;
+            //     align-items: center;
+            //     justify-content: space-between;
 
-                .notification_icon {
-                    display: flex;
+            //     .notification_icon {
+            //         display: flex;
 
-                    width: 15%;
+            //         width: 15%;
 
-                    i {
-                        font-size: 20px;
+            //         i {
+            //             font-size: 20px;
 
-                    }
+            //         }
 
-                    .spacer_x_small {
-                        width: 70%;
-                        height: 100%;
-                    }
-                }
-
-
-
-                .search_icon_and_bar {
-                    position: relative;
-                    display: flex;
-                    justify-content: start;
-                    align-items: center;
-                    height: 44%;
-                    width: 78%;
+            //         .spacer_x_small {
+            //             width: 70%;
+            //             height: 100%;
+            //         }
+            //     }
 
 
-                    i {
-                        position: absolute;
-                        left: 5%;
-                        font-size: 18px;
-                        color: grey;
-                    }
 
-                    input {
-                        position: absolute;
-                        // z-index: 2;
-                        border-radius: 10px;
-                        border: none;
-                        height: 100%;
-                        width: 100%;
-                        padding-left: 50px;
-                        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            //     .search_icon_and_bar {
+            //         position: relative;
+            //         display: flex;
+            //         justify-content: start;
+            //         align-items: center;
+            //         height: 44%;
+            //         width: 78%;
 
 
-                    }
-                }
+            //         i {
+            //             position: absolute;
+            //             left: 5%;
+            //             font-size: 18px;
+            //             color: grey;
+            //         }
+
+            //         input {
+            //             position: absolute;
+            //             // z-index: 2;
+            //             border-radius: 10px;
+            //             border: none;
+            //             height: 100%;
+            //             width: 100%;
+            //             padding-left: 50px;
+            //             box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 
-            }
+            //         }
+            //     }
+
+
+            // }
 
         }
 

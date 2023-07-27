@@ -21,7 +21,13 @@
     ></script>
   </head>
   <body>
-    
+    <div class="homepage_searchbar">
+
+      <div class="search_icon_and_bar">
+        <input type="text" placeholder="Search" id="search-input" />
+        <i class="fa-solid fa-magnifying-glass" onclick="search()"></i>
+      </div>
+    </div>
       <div class="homepage" id="home_DraggableDiv">
         <div id="changable">
           <div class="test_div">
@@ -32,17 +38,7 @@
             <div class="homepage_name">
               <h1>Home</h1>
             </div>
-            <div class="homepage_searchbar">
-              <div class="notification_icon">
-                <div class="spacer_x_small"></div>
-                <i class="fa-regular fa-bell"></i>
-              </div>
-  
-              <div class="search_icon_and_bar">
-                <input type="text" placeholder="Search" id="search-input" />
-                <i class="fa-solid fa-magnifying-glass" onclick="search()"></i>
-              </div>
-            </div>
+            
           </div>
           <div class="second_home_row">
             <div class="vertical_slider_box">
@@ -233,8 +229,19 @@
                         artist_name="{{ song["artists"][0]["name"] }}"
                         image_url="{{ song["thumbnails"][-1]["url"] }}" 
                         onclick="updateLikedSongs('{{ videoId|escape }}')"></i>
-                      <i class="fa-solid fa-ellipsis"></i>
+                      <div class="dropdown">
+                        <i class="fa-solid fa-ellipsis"
+                          onclick="toggleDropdown(event)"></i>
+                          <!-- Add the event listener for the dropdown -->
+                          
+                        <!-- Dropdown content (options) -->
+                        <div class="dropdown-content">
+                          <a href="#" onclick="handleAddToQueue('{{ videoId|escape }}')">Add to Queue</a>
+                          <a href="#" onclick="playNextSong('{{ videoId|escape }}')">Play Next</a>
+                        </div>
+                      </div>
                     </div>
+             
                   </div>
                 </div>
                 {% endfor %}
@@ -273,8 +280,8 @@
           <div class="next_composition_heading">
             <h2>Next Composition</h2>
           </div>
-          <div class="composition_row">
-            <div class="first_song_box">
+          <div id="current-queue">
+            <!-- <div class="first_song_box">
               <img src="https://picsum.photos/id/265/400/600" alt="" />
               <div class="three_dot_x_icon">
                 <i class="fa-solid fa-ellipsis"></i>
@@ -292,59 +299,14 @@
                     </div>
                   </div>
                   <div class="play_button">
-                    <img src="../static/assets/images/play_button.png" alt="" />
+                    <i class="fa-solid fa-play"></i>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="second_song_box">
-              <img src="https://picsum.photos/id/281/400/600" alt="" />
-              <div class="three_dot_x_icon">
-                <i class="fa-solid fa-ellipsis"></i>
-              </div>
-              <div class="inner_text_box">
-                <div class="content_row">
-                  <div class="song_name_artist_column">
-                    <div><h3>Thought Contagion</h3></div>
-                    <div class="artist_name_row">
-                      <i
-                        style="color: white; font-size: 0.9rem"
-                        class="fa-solid fa-music"
-                      ></i>
-                      <p>Muse - Simulation Theory</p>
-                    </div>
-                  </div>
-                  <div class="play_button">
-                    <img src="../static/assets/images/play_button.png" alt="" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="first_song_box">
-              <img src="https://picsum.photos/id/265/400/600" alt="" />
-              <div class="three_dot_x_icon">
-                <i class="fa-solid fa-ellipsis"></i>
-              </div>
-              <div class="inner_text_box">
-                <div class="content_row">
-                  <div class="song_name_artist_column">
-                    <div><h3>The Dark Side</h3></div>
-                    <div class="artist_name_row">
-                      <i
-                        style="color: white; font-size: 0.9rem"
-                        class="fa-solid fa-music"
-                      ></i>
-                      <p>Muse - Simulation Theory</p>
-                    </div>
-                  </div>
-                  <div class="play_button">
-                    <img src="../assets/images/play_button.png" alt="" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            
+            </div> -->
+            <!-- Upcoming songs will be added here -->
           </div>
+
         </div>
         <div class="current_music_block">
           <audio id="song" class="audio-link" autoplay src="">
@@ -360,17 +322,20 @@
               <div id="song-repeat-on-loop">
                 <i class="fa-solid fa-repeat" onclick="handleSongOnLoop()"></i>
               </div>
+              <div id="like-current-song" >
+                <i class="fa-solid fa-heart" onclick="handleLikedSong(event)"></i>
+              </div>
               <div class="mid_play_pause_row">
                 <div>
-                  <i class="fa-solid fa-backward-step"></i>
+                  <i class="fa-solid fa-backward-step" onclick="playPreviousSong()"></i>
                 </div>
                 <div class="play"><i onclick="playPause(event)" class="fa-solid fa-play" id="playButton"></i></div>
                 <div>
-                  <i class="fa-solid fa-forward-step"></i>
+                  <i class="fa-solid fa-forward-step" onclick="playNextSong()"></i>
                 </div>
               </div>
-              <div>
-                <i class="fa-solid fa-shuffle"></i>
+              <div id="shuffle-songs-icon">
+                <i class="fa-solid fa-shuffle" onclick="handleShuffleSongs()"></i>
               </div>
             </div>
             <div class="song_progress_bar_box">
@@ -409,6 +374,7 @@
 
   <script src="../static/javascript/draggableDiv.js"></script>
   <script src="../static/javascript/musicPlayer.js"></script>
+  <script src="../static/javascript/fetchSongsWorker.js"></script>
   <script src="../static/javascript/changePage.js"></script>
   <script src="../static/javascript/verticalCarouselSlider.js"></script>
   <script src="../static/javascript/searchSong.js"></script>

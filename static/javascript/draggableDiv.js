@@ -24,7 +24,7 @@ const myDiv = document.getElementById("home_DraggableDiv");
       if (isDragging) {
         event.preventDefault();
         currentX = event.clientX - initialX;
-        console.log(currentX);
+        // console.log(currentX);
         // currentY = event.clientY - initialY;
         let slidingWidth = (currentX / screen.width) * 100;
 

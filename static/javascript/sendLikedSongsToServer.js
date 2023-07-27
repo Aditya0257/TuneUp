@@ -5,7 +5,8 @@ const sendLikedSongsToServer = async () => {
   try {
     console.log("Sending liked songs data to the server:", likedSongs);
     likedSongs.forEach((song, index) => {
-      console.log(`${index}:`, song);
+      // console.log("yo! i am from sendLikedSongsToServer.js function")
+      // console.log(`${index}:`, song);
     });
 
     const response = await fetch("/music", {
@@ -21,7 +22,7 @@ const sendLikedSongsToServer = async () => {
     }
 
     const data = await response.json();
-    console.log("Server response:", data);
+    // console.log("Server response:", data);
   } catch (error) {
     console.error("Error sending liked songs to server:", error);
   }
