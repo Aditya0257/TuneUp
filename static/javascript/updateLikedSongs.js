@@ -1,4 +1,74 @@
-const updateLikedSongs = async (videoId) => {
+let isLiked = false;
+
+const handleLikedSong = () => {
+  isLiked = !isLiked;
+  let current_liked_song = document.getElementById("like-current-song");
+  current_liked_song.classList.toggle("active", isLiked);
+  // Get the videoId from the clicked heart icon element
+  const videoId = current_liked_song.getAttribute("song-video-id");
+  updateLike_CurrentSong(videoId, event);
+};
+
+const updateLike_CurrentSong = async (videoId, event) => {
+  event.stopPropagation();
+  console.log(
+    "Updating like/unlike for current playing song of videoId:",
+    videoId
+  );
+  let musicPlayColumn = document.querySelector(".music_play_column");
+  let artist = musicPlayColumn.querySelector("#song-artist").textContent;
+  let title = musicPlayColumn.querySelector("#song-name").textContent;
+  let thumbnail = musicPlayColumn
+    .querySelector("#song-image")
+    .getAttribute("src");
+
+  // console.log("Artist:", artist);
+  // console.log("Title:", title);
+  // console.log("Thumbnail:", thumbnail);
+
+  let likedSongsLocalStorage =
+    JSON.parse(localStorage.getItem("likedSongs")) || [];
+
+  let isLikedLocalStorage = likedSongsLocalStorage.some(
+    (song) => song.videoId === videoId
+  );
+
+  try {
+    const response = await fetch(`/likeSong`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        videoId: videoId,
+        title: title,
+        artist: artist,
+        thumbnail: thumbnail,
+        isLiked: isLikedLocalStorage,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok.");
+    }
+
+    const data = await response.json();
+    // console.log(
+    //   "Server Response for liking a current playing song from music block: ",
+    //   data
+    // );
+
+    likedSongsLocalStorage = data.liked_songs;
+    localStorage.setItem("likedSongs", JSON.stringify(likedSongsLocalStorage));
+  } catch (error) {
+    console.error(
+      "Error while liking the current playing song in music block :",
+      error
+    );
+  }
+};
+
+const updateLikedSongs = async (videoId, event) => {
+  event.stopPropagation(); // To stop event propagation
   console.log("Updating liked songs for videoId:", videoId);
 
   // Fetch the required data from the clicked icon element
@@ -7,23 +77,23 @@ const updateLikedSongs = async (videoId) => {
   let artist = heartIcon.getAttribute("artist_name");
   let thumbnail = heartIcon.getAttribute("image_url");
 
-  console.log("Heart icon:", heartIcon);
-  console.log("Title:", title);
-  console.log("Artist:", artist);
-  console.log("Thumbnail:", thumbnail);
+  // console.log("Heart icon:", heartIcon);
+  // console.log("Title:", title);
+  // console.log("Artist:", artist);
+  // console.log("Thumbnail:", thumbnail);
 
   // Get the current liked songs from localStorage
   let likedSongsLocalStorage =
     JSON.parse(localStorage.getItem("likedSongs")) || [];
 
-  console.log("Current liked songs from localStorage:", likedSongsLocalStorage);
+  // console.log("Current liked songs from localStorage:", likedSongsLocalStorage);
 
   // Check if the song is already liked
   let isLikedLocalStorage = likedSongsLocalStorage.some(
     (song) => song.videoId === videoId
   );
 
-  console.log("Is the song already liked?", isLikedLocalStorage);
+  // console.log("Is the song already liked?", isLikedLocalStorage);
 
   try {
     // Send a POST request to the '/likeSong' route to update MongoDB
@@ -46,9 +116,8 @@ const updateLikedSongs = async (videoId) => {
     }
 
     const data = await response.json();
-    console.log("Server response:", data);
+    // console.log("Server response:", data);
 
-    // Update liked songs in localStorage based on the server's response
     if (data.isLiked) {
       heartIcon.classList.remove("fa-regular");
       heartIcon.classList.add("fas", "fa-heart");
@@ -61,7 +130,7 @@ const updateLikedSongs = async (videoId) => {
 
     // Now, update the likedSongsLocalStorage to reflect the changes
     likedSongsLocalStorage = data.liked_songs;
-    console.log("Updated liked songs in localStorage:", likedSongsLocalStorage);
+    // console.log("Updated liked songs in localStorage:", likedSongsLocalStorage);
 
     // Update localStorage with the modified liked songs list
     localStorage.setItem("likedSongs", JSON.stringify(likedSongsLocalStorage));

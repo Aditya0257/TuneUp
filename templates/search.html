@@ -91,7 +91,7 @@
                             title="{{ song["title"] }}"
                             artist_name="{{ song["artists"][0]["name"] }}"
                             image_url="{{ song["thumbnails"][-1]["url"] }}" 
-                            onclick="updateLikedSongs('{{ videoId|escape }}')"></i>
+                            onclick="updateLikedSongs('{{ videoId|escape }}', event)"></i>
                             <i class="fa-solid fa-ellipsis"></i>
                           </div>
                         </div>
