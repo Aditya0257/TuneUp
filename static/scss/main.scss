@@ -35,49 +35,73 @@ body {
 
 .homepage_searchbar {
     position: fixed;
-    top: 2%;
-    right: 0;
-    width: 29%;
-    height: 86px;
+    top: 5%;
+    right: 3.5%;
+    height: 46px;
     display: flex;
     // background-color: pink;
     z-index: 15;
     align-items: center;
-    justify-content: center;
 
     .search_icon_and_bar {
         position: relative;
         display: flex;
         justify-content: start;
         align-items: center;
-        height: 44%;
-        width: 78%;
+        height: 40px;
+        width: 100%;
 
-
-        i {
+        button {
             position: absolute;
-            left: 5%;
-            font-size: 18px;
-            color: grey;
+            left: 25px;
+            top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+
+            i {
+                font-size: 18px;
+                color: grey;
+            }
         }
 
         input {
-            position: absolute;
-            // z-index: 2;
+            flex: 1;
             outline: none;
+            margin-left: 10px;
             border-radius: 10px;
             border: none;
             height: 100%;
-            width: 100%;
+            width: 22vw;
             padding-left: 50px;
             box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
-
+            &::placeholder {
+                font-size: 16px;
+            }
         }
+
+
+
+
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .homepage_searchbar {
+        right: 10%;
+        height: 30px;
     }
 
-
+    input {
+        width: 15vw;
+    }
 }
+
+
 
 
 
@@ -818,7 +842,7 @@ body {
                 }
             }
 
-            
+
             /* Responsive adjustments */
             @media only screen and (max-width: 768px) {
                 .first_home_row {
@@ -1372,7 +1396,7 @@ body {
 
                 .first_song_box {
                     @include composition_song_box_style;
-                    
+
                 }
 
             }

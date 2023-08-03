@@ -1,15 +1,14 @@
 import os
-from flask import Flask, render_template, request, jsonify, session, json
+from flask import Flask, render_template, request, jsonify, session
 from pymongo import MongoClient
 from ytmusicapi import YTMusic
 import youtube_dl
 from pytube import YouTube
 from collections import deque
 import random
-import time
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', template_folder='templates')
 app.secret_key = os.environ.get('FLASK_SECRET_KEY')
 
 
@@ -17,6 +16,9 @@ mongo_client = MongoClient('mongodb://localhost:27017/')
 db = mongo_client['music']
 collection_played_songs = db.songs
 collection_liked_songs = db.liked_songs
+
+# Initialize the ytmusic object with the necessary headers
+ytmusic = YTMusic('/Users/adityasingh/Developer/projects/music_website/python/headers_auth.json')
 
 
 # # Function to check if a song's name is within the allowed length
@@ -367,6 +369,4 @@ def like_song():
 
 
 if __name__ == "__main__":
-    ytmusic = YTMusic(
-        '/Users/adityasingh/Developer/projects/music_website/python/headers_auth.json')
     app.run(port=5000, debug=True)

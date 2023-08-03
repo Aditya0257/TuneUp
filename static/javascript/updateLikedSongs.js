@@ -1,11 +1,42 @@
 let isLiked = false;
 
-const handleLikedSong = () => {
-  isLiked = !isLiked;
+const handleLikedSong = (event) => {
   let current_liked_song = document.getElementById("like-current-song");
-  current_liked_song.classList.toggle("active", isLiked);
-  // Get the videoId from the clicked heart icon element
   const videoId = current_liked_song.getAttribute("song-video-id");
+
+  // Get the liked songs data from localStorage
+  let likedSongsLocalStorage =
+    JSON.parse(localStorage.getItem("likedSongs")) || [];
+
+  // Check if the current song is already liked in the localStorage
+  let isCurrentSongLiked = likedSongsLocalStorage.some(
+    (song) => song.videoId === videoId
+  );
+
+  // Update the liked status in the localStorage based on the current status
+  if (!isLiked && !isCurrentSongLiked) {
+    // Add the current song to liked songs if it's not already liked
+    likedSongsLocalStorage.push({ videoId });
+    isLiked = true;
+  } else if (isLiked && isCurrentSongLiked) {
+    // Remove the current song from liked songs if it's already liked
+    likedSongsLocalStorage = likedSongsLocalStorage.filter(
+      (song) => song.videoId !== videoId
+    );
+    isLiked = false;
+  }
+
+  // Update the localStorage with the modified liked songs list
+  localStorage.setItem("likedSongs", JSON.stringify(likedSongsLocalStorage));
+
+  // Update the UI by adding or removing the "active" class
+  if (isLiked) {
+    current_liked_song.classList.add("active");
+  } else {
+    current_liked_song.classList.remove("active");
+  }
+
+  // Call the updateLike_CurrentSong function to update the liked status on the server
   updateLike_CurrentSong(videoId, event);
 };
 

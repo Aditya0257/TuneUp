@@ -1,4 +1,5 @@
-function search(){
+function search(event){
+    event.preventDefault(); 
     const searchInput=document.getElementById('search-input');
     let searchedText = searchInput.value;
     console.log(searchedText);
