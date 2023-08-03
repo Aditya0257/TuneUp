@@ -61,6 +61,7 @@ Open your web browser and navigate to http://localhost:5000. You should now be a
 
 Browse and play songs from YouTube Music.
 Search for songs, albums, artists, and community playlists.
+Play songs in auto generated queue and Add songs as per your conveyance in the queue.
 Navigate to the Library to view your liked songs and update them according to your preference.
 
 ## License
