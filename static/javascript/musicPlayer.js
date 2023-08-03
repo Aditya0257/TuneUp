@@ -8,6 +8,37 @@ let isLooping = false;
 // Initialize the Web Worker
 const fetchSongsWorker = new Worker("../static/javascript/fetchSongsWorker.js");
 
+
+//* <<< LIKE SONG RESET IN CURRENT MUSIC PLAYER BLOCK - STARTS >>>
+// Get the audio element
+const audioElement = document.getElementById("song");
+
+// Add an event listener to detect changes in the 'src' attribute
+audioElement.addEventListener("loadstart", handleNewSongLoaded);
+
+// Function to handle resetting the like symbol for a new song
+function handleNewSongLoaded() {
+  let current_liked_song = document.getElementById("like-current-song");
+  let videoId = current_liked_song.getAttribute("song-video-id");
+
+  // Get the liked songs data from localStorage
+  let likedSongsLocalStorage =
+    JSON.parse(localStorage.getItem("likedSongs")) || [];
+
+  // Check if the current song is liked
+  let isCurrentSongLiked = likedSongsLocalStorage.some(
+    (song) => song.videoId === videoId
+  );
+
+  // Set the "active" class based on whether the song is liked or not
+  if (isCurrentSongLiked) {
+    current_liked_song.classList.add("active");
+  } else {
+    current_liked_song.classList.remove("active");
+  }
+}
+//* <<< LIKE SONG RESET IN CURRENT MUSIC PLAYER BLOCK - ENDS >>>
+
 //TODO: <<< PLAYING SONG AND HANDLING ITS FEATURES >>>
 //* Homepage progress bar update -:
 function updateTime() {
@@ -16,7 +47,7 @@ function updateTime() {
   document.querySelector(".current-time").innerHTML =
     minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   progressBarValue.value = song.currentTime;
-  if(song.currentTime === song.duration ){
+  if (song.currentTime === song.duration) {
     playNextSong();
   }
 }
@@ -629,7 +660,7 @@ const createSongBox = (songData, index) => {
 //TODO: <<< Update the current queue list in the UI -> END>>>
 
 //* Add to Queue Option to add the particular song anywhere in the queue except at the first 3 indexes of current Queue.
-const handleAddToQueue = async(videoId) => {
+const handleAddToQueue = async (videoId) => {
   try {
     console.log("Selected specific song to add to queue :", videoId);
     const response = await fetch(`/playSong?videoId=${videoId}`, {
@@ -650,7 +681,7 @@ const handleAddToQueue = async(videoId) => {
   } catch (error) {
     console.error("Error in playNextSong:", error);
   }
-}
+};
 
 // Function to add a song to the end of the queue
 const addToQueue = (songData) => {
