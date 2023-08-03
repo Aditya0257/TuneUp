@@ -31,6 +31,17 @@ pip install -r requirements.txt
 # Obtain YTMusic API Key
 To use the YTMusic API, you will need to obtain an API key. Follow the YTMusic API documentation to generate an API key and save it as headers_auth.json in the python/ directory.
 
+It will look like this ->
+{
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0",
+    "Accept": "*/*",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Content-Type": "application/json",
+    "X-Goog-AuthUser": "0",
+    "x-origin": "https://music.youtube.com",
+    "Cookie" : "YOUR_YT_MUSIC_COOKIE"
+}
+
 # Set Up MongoDB
 TuneUp uses MongoDB to store song data. Make sure you have MongoDB installed and running on your machine.
 
