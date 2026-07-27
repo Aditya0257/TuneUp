@@ -6,12 +6,58 @@
  * new lives here so a diff against the old repo stays clean.
  */
 
-// Overridden at runtime by Settings -> Accent color (src/utils/theme.ts),
-// which sets this on the root element's inline style. Only the new UI
-// added on top of the original reads it -- the ported stylesheets keep
-// their own hardcoded colors untouched.
+// Overridden at runtime by Settings -> Theme (src/utils/theme.ts), which sets
+// these on the root element's inline style. Defaults here match the values
+// hardcoded in the original files, so nothing changes until a theme is set.
+// Deliberately scoped to the app's chrome (sidebar, player/queue panel,
+// modals) -- the white Home/Search/Library panels' colors are baked into
+// the ported stylesheets' own text rules and stay untouched.
 :root {
-  --tuneup-accent: #2c55ea;
+  --tuneup-accent: #2c55ea; // original hardcoded rgb(44, 85, 234)
+  --tuneup-chrome-bg: #393357; // original body background
+  --tuneup-chrome-panel: #3e3a60; // original .backpage background
+  --tuneup-chrome-surface: #131939; // original .music_play_column background
+  --tuneup-chrome-text: #ffffff;
+  --tuneup-chrome-text-dim: #c4c4c5; // original .fixed_side_navbar color
+}
+
+/* ------------------------------------------------------------------------
+   10. Theme engine: the sidebar frame, the queue/player panel, and this
+       rebuild's own modals all read the chrome tokens above instead of the
+       hardcoded colors baked into main.scss. Same selectors as the
+       original, added after it, so source order wins the cascade --
+       main.scss itself is never edited.
+   ------------------------------------------------------------------------ */
+body {
+  background-color: var(--tuneup-chrome-bg);
+}
+
+.fixed_side_navbar {
+  color: var(--tuneup-chrome-text-dim);
+}
+
+.backpage {
+  background-color: var(--tuneup-chrome-panel);
+}
+
+.music_play_column,
+.music_play_column .img_box img {
+  background-color: var(--tuneup-chrome-surface);
+}
+
+.next_composition_heading h2,
+.current_music_block h2,
+.current_music_block p,
+.play_pause_loop_row,
+.song_progress_bar_box p,
+#music_progress_bar {
+  color: var(--tuneup-chrome-text);
+}
+
+#song-repeat-on-loop.active,
+#like-current-song.active,
+#shuffle-songs-icon.active {
+  color: var(--tuneup-accent);
 }
 
 /* ------------------------------------------------------------------------
@@ -189,6 +235,30 @@
 }
 
 /* ------------------------------------------------------------------------
+   9. Songs/Community/Artists/Albums each had their own fixed-percentage
+      height, with inconsistent overflow rules (Songs/Community scrolled
+      internally, Artists/Albums just spilled past their box with no
+      scrollbar) -- confusing to use, and it clipped/overlapped whichever
+      row didn't fit. One scroll region for the whole results area instead,
+      with each column sized to its actual content.
+   ------------------------------------------------------------------------ */
+.second_search_row:not(.search_status_row) {
+  overflow-y: auto;
+  align-items: flex-start;
+}
+
+.songs_column,
+.community_column,
+.artist_search_column {
+  height: auto !important;
+  overflow-y: visible !important;
+}
+
+.album_search_column {
+  height: auto !important;
+}
+
+/* ------------------------------------------------------------------------
    4. Community playlists and Albums on the search page were plain <div>s --
       not clickable at all, unlike Songs and Artists. They're <a> tags now
       (open the real result on music.youtube.com), so undo the browser's
@@ -239,15 +309,16 @@
 
 /* ------------------------------------------------------------------------
    7. About/Settings panels -- the sidebar's user and gear icons opened
-      nothing at all before. New UI, so a fresh light-context look
-      matching the app's white page panels rather than the dev drawer's
-      dark developer-chrome (this is user-facing, not a debugging tool).
+      nothing at all before. New UI, styled with the same chrome tokens as
+      the sidebar/player (section 10 below) rather than a fixed light
+      look, so changing the theme in Settings visibly changes Settings
+      itself -- proof the feature actually works, not just a swatch demo.
    ------------------------------------------------------------------------ */
 .tuneup_modal_backdrop {
   position: fixed;
   inset: 0;
   z-index: 900;
-  background: rgba(20, 18, 30, 0.45);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -258,9 +329,10 @@
   width: min(480px, 100%);
   max-height: 80vh;
   overflow-y: auto;
-  background: #ffffff;
+  background: var(--tuneup-chrome-panel);
+  color: var(--tuneup-chrome-text);
   border-radius: 16px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
   font-family: 'Mukta', sans-serif;
 }
 
@@ -269,15 +341,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  border-bottom: 1px solid #eeeef0;
+  border-bottom: 1px solid rgba(128, 128, 140, 0.25);
   position: sticky;
   top: 0;
-  background: #ffffff;
+  background: var(--tuneup-chrome-panel);
 
   h2 {
     margin: 0;
     font-size: 1.8rem;
-    color: #26262b;
+    color: var(--tuneup-chrome-text);
   }
 }
 
@@ -285,13 +357,13 @@
   background: none;
   border: none;
   font-size: 1.6rem;
-  color: #8a8a92;
+  color: var(--tuneup-chrome-text-dim);
   cursor: pointer;
   padding: 4px;
   line-height: 1;
 
   &:hover {
-    color: #26262b;
+    color: var(--tuneup-chrome-text);
   }
 
   &:focus-visible {
@@ -302,7 +374,7 @@
 
 .tuneup_modal_body {
   padding: 22px 24px 26px;
-  color: #45454c;
+  color: var(--tuneup-chrome-text-dim);
   font-size: 1.4rem;
   line-height: 1.6;
 
@@ -321,17 +393,17 @@
   gap: 6px 16px;
   margin: 18px 0;
   padding: 16px 18px;
-  background: #f7f7f8;
+  background: var(--tuneup-chrome-surface);
   border-radius: 10px;
 
   dt {
     font-weight: 600;
-    color: #6b6b72;
+    color: var(--tuneup-chrome-text-dim);
   }
 
   dd {
     margin: 0;
-    color: #26262b;
+    color: var(--tuneup-chrome-text);
   }
 }
 
@@ -341,7 +413,7 @@
   h3 {
     margin: 0 0 6px;
     font-size: 1.5rem;
-    color: #26262b;
+    color: var(--tuneup-chrome-text);
   }
 
   &:last-child {
@@ -351,43 +423,79 @@
 
 .tuneup_settings_hint {
   font-size: 1.2rem;
-  color: #8a8a92;
+  color: var(--tuneup-chrome-text-dim);
   margin-bottom: 12px;
 }
 
 .tuneup_settings_row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .tuneup_settings_section button {
   font: inherit;
   font-size: 1.3rem;
-  background: #f0f0f2;
-  border: 1px solid #e0e0e3;
-  color: #26262b;
+  background: var(--tuneup-chrome-surface);
+  border: 1px solid rgba(128, 128, 140, 0.35);
+  color: var(--tuneup-chrome-text);
   border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
 
   &:hover {
-    background: #e6e6ea;
+    filter: brightness(1.2);
   }
 
   &:disabled {
     cursor: default;
     opacity: 0.65;
+
+    &:hover {
+      filter: none;
+    }
   }
+}
+
+.tuneup_color_field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 1.1rem;
+  color: var(--tuneup-chrome-text-dim);
 }
 
 .tuneup_settings_row input[type='color'] {
   width: 44px;
   height: 36px;
-  border: 1px solid #e0e0e3;
+  border: 1px solid rgba(128, 128, 140, 0.35);
   border-radius: 8px;
   padding: 0;
   cursor: pointer;
+  background: none;
+}
+
+.tuneup_theme_mode_row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.tuneup_mode_button {
+  font: inherit;
+  font-size: 1.3rem;
+  background: var(--tuneup-chrome-surface);
+  border: 1px solid rgba(128, 128, 140, 0.35);
+  color: var(--tuneup-chrome-text-dim);
+  border-radius: 999px;
+  padding: 6px 16px;
+  cursor: pointer;
+
+  &.active {
+    background: var(--tuneup-accent);
+    border-color: var(--tuneup-accent);
+    color: #ffffff;
+  }
 }
 
 /* ------------------------------------------------------------------------

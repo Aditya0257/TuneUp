@@ -31,7 +31,7 @@ export function SideNav() {
   return (
     <div className="fixed_side_navbar">
       <div className="logo_box">
-        <img src="/assets/images/tuneUp_logo.png" alt="TuneUp" />
+        <img src="/assets/images/tuneup-icon.svg" alt="TuneUp" />
       </div>
       <div className="navbar_sub_column">
         {NAV_ITEMS.map((item) => (

@@ -72,8 +72,6 @@ export function HomePage() {
                 variant="home"
                 name={song.artist}
                 thumbnail={song.thumbnail}
-                followers="250M Followers"
-                plays="111M Views"
                 onSelect={() => playTrack(song)}
               />
             ))}

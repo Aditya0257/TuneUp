@@ -182,10 +182,10 @@ export function SearchPage() {
                   variant="search"
                   name={artist.name}
                   thumbnail={artist.thumbnail}
-                  /* Real subscriber counts when the API returns them, else the
-                     original's hardcoded placeholder. */
-                  followers={artist.subscribers ? `${artist.subscribers} Followers` : '28k Followers'}
-                  plays="128M Plays"
+                  /* ytmusicapi doesn't expose play counts at all, and only
+                     sometimes returns a real subscriber count -- no fallback
+                     to a fake number when it doesn't. */
+                  followers={artist.subscribers ? `${artist.subscribers} Followers` : undefined}
                 />
               ))}
             </div>

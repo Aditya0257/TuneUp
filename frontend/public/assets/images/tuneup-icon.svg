@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="TuneUp">
+  <defs>
+    <linearGradient id="tuneup-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4a4380"/>
+      <stop offset="100%" stop-color="#2a2648"/>
+    </linearGradient>
+    <linearGradient id="tuneup-bars" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#2c55ea"/>
+      <stop offset="100%" stop-color="#6ea8ff"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="32" cy="32" r="31" fill="url(#tuneup-bg)"/>
+  <circle cx="32" cy="32" r="31" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+
+  <!-- Equalizer bars, off-center to leave room for the play mark -->
+  <g fill="url(#tuneup-bars)">
+    <rect x="15" y="27" width="6" height="18" rx="3"/>
+    <rect x="24" y="19" width="6" height="26" rx="3"/>
+    <rect x="33" y="23" width="6" height="22" rx="3"/>
+  </g>
+
+  <!-- Play triangle, the "Up" in TuneUp: motion pointing forward -->
+  <path d="M45 24 L45 40 L58 32 Z" fill="#ffffff"/>
+</svg>

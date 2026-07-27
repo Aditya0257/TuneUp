@@ -81,7 +81,18 @@ export function VerticalCarousel() {
                 <p>{slide.body}</p>
               </div>
               <div>
-                <img src={slide.image} alt="" loading="lazy" />
+                <img
+                  src={slide.image}
+                  alt=""
+                  loading="lazy"
+                  onError={(event) => {
+                    const img = event.currentTarget;
+                    if (!img.dataset.fallback) {
+                      img.dataset.fallback = 'true';
+                      img.src = '/assets/images/song_thumbnail_img.jpeg';
+                    }
+                  }}
+                />
               </div>
             </div>
           ))}

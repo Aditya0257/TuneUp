@@ -5,9 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from '@/App';
 import { LikedSongsProvider } from '@/liked/LikedSongsContext';
 import { PlayerProvider } from '@/player/PlayerContext';
-import { initAccent } from '@/utils/theme';
+import { initTheme } from '@/utils/theme';
 
-initAccent();
+initTheme();
 
 // The three original stylesheets, unmodified apart from the @font-face URL.
 // Each is scoped under its own page root (.homepage / .musicpage / .searchpage),
