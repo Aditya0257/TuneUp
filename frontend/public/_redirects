@@ -1,0 +1,3 @@
+# Netlify SPA fallback: serve index.html for any path react-router owns,
+# so a hard refresh on /music or /search does not 404.
+/*    /index.html   200

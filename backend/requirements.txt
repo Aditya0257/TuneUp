@@ -1,0 +1,21 @@
+# Runtime
+Flask==3.0.3
+Flask-Cors==4.0.1
+python-dotenv==1.0.1
+pymongo==4.8.0
+ytmusicapi==1.7.5
+gunicorn==22.0.0
+
+# Deliberately removed from the original requirements.txt:
+#
+#   youtube-dl==2021.12.17  unmaintained since 2021; stream extraction is broken
+#   pytube==12.1.2          unmaintained; same problem
+#   spotipy, Authlib        never imported by the app
+#   Beaker, redis, cachelib, Flask-Session
+#                           session storage no longer needed (the API is stateless)
+#   Js2Py, pyjsparser       transitive deps of youtube-dl
+#   colorthief, Pillow      never imported by the app
+#   youtube-search          superseded by ytmusicapi
+#
+# Audio playback moved to the official YouTube IFrame Player API on the client,
+# so no server-side extraction library is required at all.

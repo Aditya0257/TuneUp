@@ -1,2 +1,35 @@
+# Secrets -- never commit
 .env
-python/headers_auth.json
+.env.local
+.env.*.local
+headers_auth.json
+browser.json
+oauth.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+myenv/
+*.egg-info/
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vite/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# The original repo committed its 72 MB `myenv/` virtualenv, its `__pycache__/`
+# and a `cache/youtube-sigfuncs` directory. Those are all ignored above.

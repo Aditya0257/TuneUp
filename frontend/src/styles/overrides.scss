@@ -1,0 +1,109 @@
+/**
+ * Small additions on top of the original stylesheets.
+ *
+ * The three .scss files in this folder are the originals, unchanged except for
+ * the @font-face URL (now absolute, so Vite serves it from /public). Anything
+ * new lives here so a diff against the old repo stays clean.
+ */
+
+/* ------------------------------------------------------------------------
+   1. Two images referenced by the original templates were never committed:
+      assets/images/box_heart_icon.png and play_vibration_icon.png.
+      Both rendered as broken-image placeholders. They are Font Awesome icons
+      now, sized to match the `img { width: 12-14% }` rules they replace.
+   ------------------------------------------------------------------------ */
+.followers_row .stat_icon,
+.plays_row .stat_icon {
+  color: #c4c4c5;
+  font-size: 0.8rem;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------------
+   2. States the original had no styling for, because it never showed them:
+      loading, empty and error. Each request either succeeded or silently
+      did nothing.
+   ------------------------------------------------------------------------ */
+.status_message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px;
+  color: #c4c4c5;
+  font-family: 'Mukta', sans-serif;
+  font-size: 1.05rem;
+
+  &.status_error {
+    color: #ff8080;
+  }
+}
+
+.status_spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: tuneup_spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes tuneup_spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* A non-blocking banner for "this track can't be embedded, skipping". */
+.player_notice {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  max-width: 520px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background-color: rgba(20, 20, 24, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #f0f0f2;
+  font-family: 'Mukta', sans-serif;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* ------------------------------------------------------------------------
+   3. Interaction affordances. The originals were driven by inline onclick
+      handlers on elements with no cursor styling and no keyboard access.
+   ------------------------------------------------------------------------ */
+.artist_no_name_and_img,
+.clickable_row,
+.first_song_row,
+.heart_three_dot_row i,
+.navbar_sub_column i,
+.indicator,
+.play_button,
+.first_song_box {
+  cursor: pointer;
+}
+
+/* Visible focus ring for keyboard users, scoped so it cannot affect layout. */
+.artist_no_name_and_img:focus-visible,
+.heart_three_dot_row i:focus-visible,
+.navbar_sub_column i:focus-visible,
+.play_button:focus-visible,
+.first_song_box:focus-visible {
+  outline: 2px solid rgb(44, 85, 234);
+  outline-offset: 2px;
+}
+
+/* Active route in the sidebar -- the original had no way to tell where you were. */
+.navbar_sub_column i.nav_active {
+  color: rgb(44, 85, 234);
+}
+
+/* The queue panel is a scrolling list; the original relied on the page height. */
+#current-queue {
+  overflow-y: auto;
+}
