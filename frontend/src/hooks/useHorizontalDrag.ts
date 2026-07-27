@@ -28,10 +28,16 @@ export function useHorizontalDrag(ref: RefObject<HTMLElement>): void {
       const rect = element.getBoundingClientRect();
       if (event.clientX - rect.left >= GRAB_ZONE_PX) return;
 
+      // Without this, dragging across the page is indistinguishable from a
+      // text-selection drag to the browser, so every element the pointer
+      // crosses gets highlighted.
+      event.preventDefault();
+
       dragging = true;
       pointerId = event.pointerId;
       grabOffset = event.clientX - element.offsetLeft;
       element.style.transition = 'left 0.15s';
+      document.body.style.userSelect = 'none';
     };
 
     const onPointerMove = (event: PointerEvent) => {
@@ -48,6 +54,7 @@ export function useHorizontalDrag(ref: RefObject<HTMLElement>): void {
       dragging = false;
       pointerId = null;
       element.style.transition = 'left 0.4s';
+      document.body.style.userSelect = '';
     };
 
     element.addEventListener('pointerdown', onPointerDown);
@@ -60,6 +67,7 @@ export function useHorizontalDrag(ref: RefObject<HTMLElement>): void {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('pointercancel', onPointerUp);
+      document.body.style.userSelect = '';
     };
   }, [ref]);
 }
