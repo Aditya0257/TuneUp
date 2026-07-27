@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Backpage } from '@/components/Backpage';
 import { SearchBar } from '@/components/SearchBar';
 import { SideNav } from '@/components/SideNav';
+import { DevDrawer } from '@/dev/DevDrawer';
 import { useHorizontalDrag } from '@/hooks/useHorizontalDrag';
 import { HomePage } from '@/pages/HomePage';
 import { LibraryPage } from '@/pages/LibraryPage';
@@ -45,6 +46,7 @@ export function App() {
 
       <Backpage />
       <SideNav />
+      <DevDrawer />
     </>
   );
 }

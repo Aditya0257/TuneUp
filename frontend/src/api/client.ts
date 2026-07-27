@@ -5,6 +5,7 @@
  * changePage.js, searchSong.js, fetchSongsWorker.js, musicPlayer.js and
  * updateLikedSongs.js -- each of which did its own error handling (or none).
  */
+import { logApiCall } from '@/dev/devLog';
 import type { HomeFeed, LikedSong, SearchResults, Song } from '@/types';
 
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
@@ -20,9 +21,39 @@ export class ApiError extends Error {
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const method = init?.method ?? 'GET';
+  const url = `${BASE_URL}${path}`;
+  const startedAt = Date.now();
+  const started = performance.now();
+  const requestBody = typeof init?.body === 'string' ? safeJsonParse(init.body) : null;
+
+  const record = (fields: {
+    status: number | 'error';
+    ok: boolean;
+    requestId?: string | null;
+    cache?: 'HIT' | 'MISS' | null;
+    responseBody?: unknown;
+    error?: string | null;
+  }) => {
+    logApiCall({
+      method,
+      path,
+      url,
+      durationMs: Math.round(performance.now() - started),
+      startedAt,
+      requestId: fields.requestId ?? null,
+      cache: fields.cache ?? null,
+      requestBody,
+      responseBody: fields.responseBody ?? null,
+      error: fields.error ?? null,
+      status: fields.status,
+      ok: fields.ok,
+    });
+  };
+
   let response: Response;
   try {
-    response = await fetch(`${BASE_URL}${path}`, {
+    response = await fetch(url, {
       ...init,
       headers: {
         'Content-Type': 'application/json',
@@ -31,13 +62,16 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     });
   } catch (cause) {
     // Network-level failure: server down, DNS, CORS preflight rejected.
-    throw new ApiError(
-      `Could not reach the TuneUp API. Is the Flask server running? (${String(cause)})`,
-      0,
-    );
+    const message = `Could not reach the TuneUp API. Is the Flask server running? (${String(cause)})`;
+    record({ status: 'error', ok: false, error: message });
+    throw new ApiError(message, 0);
   }
 
+  const requestId = response.headers.get('X-Request-Id');
+  const cache = response.headers.get('X-Cache') as 'HIT' | 'MISS' | null;
+
   if (response.status === 204) {
+    record({ status: 204, ok: true, requestId, cache, responseBody: null });
     return undefined as T;
   }
 
@@ -49,9 +83,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       payload && typeof payload === 'object' && 'detail' in payload
         ? String((payload as { detail: unknown }).detail)
         : response.statusText;
+    record({ status: response.status, ok: false, requestId, cache, responseBody: payload, error: detail });
     throw new ApiError(detail, response.status);
   }
 
+  record({ status: response.status, ok: true, requestId, cache, responseBody: payload });
   return payload as T;
 }
 

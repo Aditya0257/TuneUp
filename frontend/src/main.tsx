@@ -14,6 +14,9 @@ import '@/styles/main.scss';
 import '@/styles/music.scss';
 import '@/styles/search.scss';
 import '@/styles/overrides.scss';
+// The dev drawer is new tooling, not a port of anything in the original app,
+// so it gets its own stylesheet rather than living in overrides.scss.
+import '@/styles/devDrawer.scss';
 
 const container = document.getElementById('root');
 if (!container) {

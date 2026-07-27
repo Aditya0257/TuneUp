@@ -22,14 +22,16 @@ invert the action. Like and unlike are now separate, idempotent verbs.
 from __future__ import annotations
 
 import logging
+import time
+import uuid
 
-from flask import Flask, jsonify, request
+from flask import Flask, g, jsonify, request
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
 
 from config import Config
 from db import create_store
-from ytmusic_service import YTMusicService
+from ytmusic_service import YTMusicService, last_cache_hit
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s %(levelname)-8s %(name)s: %(message)s"
@@ -40,10 +42,40 @@ app = Flask(__name__)
 app.config.from_object(Config)
 app.secret_key = Config.SECRET_KEY
 
-CORS(app, origins=Config.CORS_ORIGINS, supports_credentials=True)
+CORS(
+    app,
+    origins=Config.CORS_ORIGINS,
+    supports_credentials=True,
+    expose_headers=["X-Request-Id", "X-Response-Time-Ms", "X-Cache"],
+)
 
 store = create_store()
 ytmusic = YTMusicService()
+
+
+# --------------------------------------------------------------------------
+# Request tracing -- read by the frontend's dev drawer (see frontend/src/dev).
+# Plain diagnostics, never anything secret: a per-request id, timing, and
+# whether a cacheable route was served from the TTL cache or fetched fresh.
+# --------------------------------------------------------------------------
+
+@app.before_request
+def _start_request_trace():
+    g.request_id = uuid.uuid4().hex[:12]
+    g.start_time = time.monotonic()
+    last_cache_hit.set(None)
+
+
+@app.after_request
+def _finish_request_trace(response):
+    response.headers["X-Request-Id"] = g.get("request_id", "")
+    start_time = g.get("start_time")
+    if start_time is not None:
+        response.headers["X-Response-Time-Ms"] = str(round((time.monotonic() - start_time) * 1000, 1))
+    hit = last_cache_hit.get()
+    if hit is not None:
+        response.headers["X-Cache"] = "HIT" if hit else "MISS"
+    return response
 
 
 # --------------------------------------------------------------------------

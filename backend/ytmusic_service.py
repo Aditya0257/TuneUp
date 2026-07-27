@@ -15,6 +15,7 @@ Two things changed versus the original app.py:
 """
 from __future__ import annotations
 
+import contextvars
 import json
 import logging
 import random
@@ -29,6 +30,13 @@ from config import Config
 log = logging.getLogger(__name__)
 
 Json = dict[str, Any]
+
+# Set by TTLCache.get_or_set for the duration of the current request, so
+# app.py can report a hit/miss without threading it through every service
+# method signature (which would ripple into the 24 existing tests).
+last_cache_hit: contextvars.ContextVar[bool | None] = contextvars.ContextVar(
+    "last_cache_hit", default=None
+)
 
 # Carried over verbatim from the original app.py.
 SEARCH_QUERIES = [
@@ -60,11 +68,13 @@ class TTLCache:
         with self._lock:
             hit = self._data.get(key)
             if hit and hit[0] > now:
+                last_cache_hit.set(True)
                 return hit[1]
         # Produce outside the lock: these calls take seconds.
         value = producer()
         with self._lock:
             self._data[key] = (now + ttl, value)
+        last_cache_hit.set(False)
         return value
 
     def clear(self) -> None:
