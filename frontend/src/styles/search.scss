@@ -88,6 +88,7 @@ body {
                 font-weight: 500;
                 font-size: 1.5rem;
                 color: #c4c4c5;
+                white-space: nowrap;
             }
         }
 
@@ -118,8 +119,18 @@ body {
             align-items: start;
             // background-color: yellow;
 
+            /* `align-items: start` shrink-wraps flex children to their content
+               width, so without an explicit width here the title's container
+               grows with the text instead of clipping it -- which is why a
+               hardcoded 150px was used originally, cutting long titles off
+               far earlier than the actual column width allowed. */
+            > div:first-child {
+                width: 100%;
+                min-width: 0;
+            }
+
             .song-title {
-                width: 150px; 
+                max-width: 100%;
                 /* Add ellipsis to the song title if it exceeds the container width */
                 white-space: nowrap;
                 overflow: hidden;
@@ -141,6 +152,7 @@ body {
                 align-items: center;
                 justify-content: start;
                 width: 75%;
+                min-width: 0;
                 // background-color: pink;
                 color: #c4c4c5;
                 font-size: 0.8rem;
@@ -152,6 +164,9 @@ body {
                     font-weight: 400;
                     color: #c4c4c5;
                     font-size: 1rem;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             }
 

@@ -107,3 +107,35 @@
 #current-queue {
   overflow-y: auto;
 }
+
+/* ------------------------------------------------------------------------
+   4. Community playlists and Albums on the search page were plain <div>s --
+      not clickable at all, unlike Songs and Artists. They're <a> tags now
+      (open the real result on music.youtube.com), so undo the browser's
+      default link styling and restore the original card cursor/hover feel.
+   ------------------------------------------------------------------------ */
+.community_playlist,
+.album {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(44, 85, 234);
+    outline-offset: 2px;
+  }
+
+  &[aria-disabled='true'] {
+    cursor: default;
+    opacity: 0.6;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}

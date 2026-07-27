@@ -2,7 +2,7 @@ import { HeartIcon } from '@/components/HeartIcon';
 import { TrackDropdown } from '@/components/TrackDropdown';
 import { usePlayer } from '@/player/PlayerContext';
 import type { Song } from '@/types';
-import { thumbnailOrFallback, trackNumber } from '@/utils/format';
+import { handleThumbnailError, thumbnailOrFallback, trackNumber } from '@/utils/format';
 
 interface SongRowProps {
   song: Song;
@@ -42,7 +42,12 @@ export function SongRow({ song, index, withDropdown = true }: SongRowProps) {
           <h2>{trackNumber(index)}</h2>
         </div>
         <div className="image_box">
-          <img src={thumbnailOrFallback(song.thumbnail)} alt="" loading="lazy" />
+          <img
+            src={thumbnailOrFallback(song.thumbnail)}
+            alt=""
+            loading="lazy"
+            onError={(event) => handleThumbnailError(event, song.videoId)}
+          />
         </div>
         <div className="song_text_column">
           <div>

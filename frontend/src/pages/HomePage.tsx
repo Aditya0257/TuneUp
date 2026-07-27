@@ -5,7 +5,7 @@ import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage'
 import { VerticalCarousel } from '@/components/VerticalCarousel';
 import { useAsync } from '@/hooks/useAsync';
 import { usePlayer } from '@/player/PlayerContext';
-import { thumbnailOrFallback } from '@/utils/format';
+import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
 
 /**
  * Port of templates/index.html (the `#changable` subtree).
@@ -128,7 +128,12 @@ export function HomePage() {
               {newReleases.map((album) => (
                 <div className="first_grid_block" key={`${album.browseId ?? album.title}`}>
                   <div className="image_box">
-                    <img src={thumbnailOrFallback(album.thumbnail)} alt="" loading="lazy" />
+                    <img
+                      src={thumbnailOrFallback(album.thumbnail)}
+                      alt=""
+                      loading="lazy"
+                      onError={handleThumbnailError}
+                    />
                   </div>
                   <div className="text_column">
                     <h2>{album.title}</h2>

@@ -1,4 +1,4 @@
-import { thumbnailOrFallback } from '@/utils/format';
+import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
 
 interface ArtistRowProps {
   name: string;
@@ -49,7 +49,12 @@ export function ArtistRow({
         }
       >
         <div className="image_box">
-          <img src={thumbnailOrFallback(thumbnail)} alt="" loading="lazy" />
+          <img
+            src={thumbnailOrFallback(thumbnail)}
+            alt=""
+            loading="lazy"
+            onError={handleThumbnailError}
+          />
         </div>
         <div className="artist_text_column">
           <div>

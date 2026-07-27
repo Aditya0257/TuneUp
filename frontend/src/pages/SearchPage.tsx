@@ -5,7 +5,7 @@ import { ArtistRow } from '@/components/ArtistRow';
 import { SongRow } from '@/components/SongRow';
 import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage';
 import { useAsync } from '@/hooks/useAsync';
-import { thumbnailOrFallback } from '@/utils/format';
+import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
 
 /**
  * Port of templates/search.html.
@@ -93,21 +93,32 @@ export function SearchPage() {
             <SectionHeading title="Community" className="first_community_search_heading_row" />
             <div className="community_column">
               <div className="playlists_container">
-                {playlists.map((playlist) => (
-                  <div
-                    className="community_playlist"
-                    key={playlist.playlistId ?? playlist.browseId ?? playlist.title}
-                  >
-                    <div className="community_playlist_cover">
-                      <img
-                        src={thumbnailOrFallback(playlist.thumbnail)}
-                        alt=""
-                        loading="lazy"
-                      />
-                    </div>
-                    <p>{playlist.title}</p>
-                  </div>
-                ))}
+                {playlists.map((playlist) => {
+                  const id = playlist.playlistId ?? playlist.browseId;
+                  return (
+                    <a
+                      className="community_playlist"
+                      key={id ?? playlist.title}
+                      href={id ? `https://music.youtube.com/playlist?list=${id}` : undefined}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-disabled={!id || undefined}
+                      onClick={(event) => {
+                        if (!id) event.preventDefault();
+                      }}
+                    >
+                      <div className="community_playlist_cover">
+                        <img
+                          src={thumbnailOrFallback(playlist.thumbnail)}
+                          alt=""
+                          loading="lazy"
+                          onError={handleThumbnailError}
+                        />
+                      </div>
+                      <p>{playlist.title}</p>
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -135,12 +146,27 @@ export function SearchPage() {
             <div className="album_search_column">
               <div className="flex_container">
                 {albums.map((album) => (
-                  <div className="album" key={album.browseId ?? album.title}>
+                  <a
+                    className="album"
+                    key={album.browseId ?? album.title}
+                    href={album.browseId ? `https://music.youtube.com/browse/${album.browseId}` : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-disabled={!album.browseId || undefined}
+                    onClick={(event) => {
+                      if (!album.browseId) event.preventDefault();
+                    }}
+                  >
                     <div className="album_cover">
-                      <img src={thumbnailOrFallback(album.thumbnail)} alt="" loading="lazy" />
+                      <img
+                        src={thumbnailOrFallback(album.thumbnail)}
+                        alt=""
+                        loading="lazy"
+                        onError={handleThumbnailError}
+                      />
                     </div>
                     <p>{album.title}</p>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
