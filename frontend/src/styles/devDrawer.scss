@@ -26,7 +26,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
   border-radius: 999px;
   padding: 8px 16px;
   font-family: $devdrawer-mono;
-  font-size: 0.92rem;
+  font-size: 13px;
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 
@@ -71,14 +71,14 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
 
   h2 {
     margin: 0 0 4px;
-    font-size: 1.15rem;
+    font-size: 16px;
   }
 }
 
 .devdrawer_subtitle {
   margin: 0;
   color: $devdrawer-dim;
-  font-size: 0.85rem;
+  font-size: 13px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -92,7 +92,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
 
   button {
     font-family: inherit;
-    font-size: 0.85rem;
+    font-size: 13px;
     background: $devdrawer-surface;
     border: 1px solid $devdrawer-border;
     color: $devdrawer-text;
@@ -110,7 +110,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.85rem;
+  font-size: 13px;
   color: $devdrawer-dim;
   white-space: nowrap;
 }
@@ -124,7 +124,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.88rem;
+  font-size: 13px;
   color: $devdrawer-dim;
   margin-bottom: 6px;
 }
@@ -155,7 +155,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
 
 .devdrawer_meter_sub {
   margin-top: 5px;
-  font-size: 0.8rem;
+  font-size: 12px;
   color: $devdrawer-dim;
 }
 
@@ -164,7 +164,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
 
   summary {
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 13px;
     color: $devdrawer-dim;
   }
 }
@@ -173,7 +173,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.88rem;
+  font-size: 13px;
   padding: 6px 0;
   border-bottom: 1px dashed $devdrawer-border;
 
@@ -194,7 +194,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
 .devdrawer_empty {
   padding: 24px 16px;
   color: $devdrawer-dim;
-  font-size: 0.92rem;
+  font-size: 13px;
   text-align: center;
 }
 
@@ -216,7 +216,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
   border: none;
   color: inherit;
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 13px;
   cursor: pointer;
   text-align: left;
 
@@ -258,7 +258,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
 
 .devdrawer_call_cache {
   flex-shrink: 0;
-  font-size: 0.74rem;
+  font-size: 11px;
   color: $devdrawer-dim;
   border: 1px solid $devdrawer-border;
   border-radius: 4px;
@@ -274,7 +274,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
 
 .devdrawer_call_detail {
   padding: 4px 16px 16px 66px;
-  font-size: 0.85rem;
+  font-size: 13px;
 }
 
 .devdrawer_meaning {
@@ -293,7 +293,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
 .devdrawer_flow {
   margin-top: 4px;
   color: #6ea8ff;
-  font-size: 0.8rem;
+  font-size: 12px;
 }
 
 .devdrawer_reqid {
@@ -317,7 +317,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
 .devdrawer_json_label {
   color: $devdrawer-dim;
   margin-bottom: 4px;
-  font-size: 0.8rem;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -374,7 +374,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
   border-radius: 50%;
   border: 1px solid $devdrawer-dim;
   color: $devdrawer-dim;
-  font-size: 0.72rem;
+  font-size: 11px;
   cursor: help;
 
   .devtip_bubble {
@@ -389,7 +389,7 @@ $devdrawer-mono: ui-monospace, 'SF Mono', Consolas, monospace;
     color: $devdrawer-text;
     padding: 8px 10px;
     border-radius: 6px;
-    font-size: 0.8rem;
+    font-size: 12px;
     line-height: 1.4;
     z-index: 1000;
     text-transform: none;
