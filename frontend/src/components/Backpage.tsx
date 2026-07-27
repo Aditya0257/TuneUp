@@ -144,10 +144,10 @@ function NowPlaying() {
           />
         </div>
         <div>
-          <h2 id="song-name">{currentTrack ? truncate(currentTrack.title) : '`Song Name`'}</h2>
+          <h2 id="song-name">{currentTrack ? truncate(currentTrack.title) : 'No song playing'}</h2>
         </div>
         <div>
-          <p id="song-artist">{currentTrack?.artist ?? '`Artist`'}</p>
+          <p id="song-artist">{currentTrack?.artist ?? 'Play a track to get started'}</p>
         </div>
 
         <div className="play_pause_loop_row">
@@ -274,7 +274,7 @@ function NowPlaying() {
             aria-label="Seek"
             disabled={!currentTrack}
           />
-          <p className="ending-time">{duration ? formatTime(duration) : 't:tt'}</p>
+          <p className="ending-time">{duration ? formatTime(duration) : '0:00'}</p>
         </div>
       </div>
       <div className="lyrics_column" />
