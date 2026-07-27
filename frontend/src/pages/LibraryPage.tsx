@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import { api } from '@/api/client';
 import { SeeAllToggle } from '@/components/SeeAllToggle';
 import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage';
@@ -44,6 +47,16 @@ function topArtist(likedSongs: { artist: string }[]): string | null {
 export function LibraryPage() {
   const { likedSongs, loading, error } = useLikedSongs();
   const { playTrack } = usePlayer();
+  const { hash } = useLocation();
+
+  // react-router doesn't scroll to a hash target on client-side navigation
+  // the way a full page load would -- the sidebar's Favorites/Playlists
+  // shortcuts rely on this to actually land on the right section.
+  useEffect(() => {
+    if (!hash) return;
+    const target = document.getElementById(hash.slice(1));
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [hash]);
 
   const likedSongsList = useExpandable(likedSongs, 8);
 
@@ -79,7 +92,7 @@ export function LibraryPage() {
             <h1>Library</h1>
           </div>
 
-          <div className="second_music_row">
+          <div className="second_music_row" id="liked-songs">
             <div className="image_column">
               <div className="image_title">
                 <h2>Liked Songs</h2>
@@ -172,7 +185,7 @@ export function LibraryPage() {
             </div>
           </div>
 
-          <div className="third_music_row">
+          <div className="third_music_row" id="playlists">
             <div className="heading_playlist">
               <h2>Playlists</h2>
             </div>

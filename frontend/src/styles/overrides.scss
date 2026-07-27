@@ -6,6 +6,14 @@
  * new lives here so a diff against the old repo stays clean.
  */
 
+// Overridden at runtime by Settings -> Accent color (src/utils/theme.ts),
+// which sets this on the root element's inline style. Only the new UI
+// added on top of the original reads it -- the ported stylesheets keep
+// their own hardcoded colors untouched.
+:root {
+  --tuneup-accent: #2c55ea;
+}
+
 /* ------------------------------------------------------------------------
    1. Two images referenced by the original templates were never committed:
       assets/images/box_heart_icon.png and play_vibration_icon.png.
@@ -152,13 +160,13 @@
 .navbar_sub_column i:focus-visible,
 .play_button:focus-visible,
 .first_song_box:focus-visible {
-  outline: 2px solid rgb(44, 85, 234);
+  outline: 2px solid var(--tuneup-accent);
   outline-offset: 2px;
 }
 
 /* Active route in the sidebar -- the original had no way to tell where you were. */
 .navbar_sub_column i.nav_active {
-  color: rgb(44, 85, 234);
+  color: var(--tuneup-accent);
 }
 
 /* The queue panel is a scrolling list; the original relied on the page height. */
@@ -199,7 +207,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid rgb(44, 85, 234);
+    outline: 2px solid var(--tuneup-accent);
     outline-offset: 2px;
   }
 
@@ -227,4 +235,250 @@
   color: inherit;
   cursor: pointer;
   text-align: inherit;
+}
+
+/* ------------------------------------------------------------------------
+   7. About/Settings panels -- the sidebar's user and gear icons opened
+      nothing at all before. New UI, so a fresh light-context look
+      matching the app's white page panels rather than the dev drawer's
+      dark developer-chrome (this is user-facing, not a debugging tool).
+   ------------------------------------------------------------------------ */
+.tuneup_modal_backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(20, 18, 30, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.tuneup_modal {
+  width: min(480px, 100%);
+  max-height: 80vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  font-family: 'Mukta', sans-serif;
+}
+
+.tuneup_modal_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #eeeef0;
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+
+  h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #26262b;
+  }
+}
+
+.tuneup_modal_close {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #8a8a92;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+
+  &:hover {
+    color: #26262b;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--tuneup-accent);
+    outline-offset: 2px;
+  }
+}
+
+.tuneup_modal_body {
+  padding: 22px 24px 26px;
+  color: #45454c;
+  font-size: 1.4rem;
+  line-height: 1.6;
+
+  p {
+    margin: 0 0 14px;
+  }
+
+  a {
+    color: var(--tuneup-accent);
+  }
+}
+
+.tuneup_about_stack {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  margin: 18px 0;
+  padding: 16px 18px;
+  background: #f7f7f8;
+  border-radius: 10px;
+
+  dt {
+    font-weight: 600;
+    color: #6b6b72;
+  }
+
+  dd {
+    margin: 0;
+    color: #26262b;
+  }
+}
+
+.tuneup_settings_section {
+  margin-bottom: 22px;
+
+  h3 {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    color: #26262b;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.tuneup_settings_hint {
+  font-size: 1.2rem;
+  color: #8a8a92;
+  margin-bottom: 12px;
+}
+
+.tuneup_settings_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tuneup_settings_section button {
+  font: inherit;
+  font-size: 1.3rem;
+  background: #f0f0f2;
+  border: 1px solid #e0e0e3;
+  color: #26262b;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+
+  &:hover {
+    background: #e6e6ea;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.65;
+  }
+}
+
+.tuneup_settings_row input[type='color'] {
+  width: 44px;
+  height: 36px;
+  border: 1px solid #e0e0e3;
+  border-radius: 8px;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------------
+   8. Recently Played -- a wholly new page (the folder-closed icon opened
+      nothing before). Not built on the ported .homepage/.searchpage/
+      .musicpage scaffolding since none of it applies to a page that never
+      existed in the original templates.
+   ------------------------------------------------------------------------ */
+// Same fixed-panel sizing .homepage/.searchpage/.musicpage all use, so it
+// sits in exactly the same slot next to the sidebar.
+.historypage {
+  position: fixed;
+  width: 92.7vw;
+  height: 97.5vh;
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
+  margin-right: 0.5%;
+  margin-left: 6.4%;
+  background: #ffffff;
+  border-radius: 25px;
+  padding: 32px 40px;
+  overflow-y: auto;
+  font-family: 'Mukta', sans-serif;
+
+  h1 {
+    font-size: 3.2rem;
+    color: #26262b;
+    margin-bottom: 20px;
+  }
+}
+
+.historypage_list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.historypage_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+
+  &:hover {
+    background: #f7f7f8;
+  }
+}
+
+.historypage_row_main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--tuneup-accent);
+    outline-offset: 2px;
+  }
+
+  img {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+}
+
+.historypage_row_text {
+  min-width: 0;
+}
+
+.historypage_row_title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #26262b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.historypage_row_artist {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #8a8a92;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

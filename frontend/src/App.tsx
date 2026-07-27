@@ -6,6 +6,7 @@ import { SearchBar } from '@/components/SearchBar';
 import { SideNav } from '@/components/SideNav';
 import { DevDrawer } from '@/dev/DevDrawer';
 import { useHorizontalDrag } from '@/hooks/useHorizontalDrag';
+import { HistoryPage } from '@/pages/HistoryPage';
 import { HomePage } from '@/pages/HomePage';
 import { LibraryPage } from '@/pages/LibraryPage';
 import { SearchPage } from '@/pages/SearchPage';
@@ -40,6 +41,7 @@ export function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/music" element={<LibraryPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/history" element={<HistoryPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

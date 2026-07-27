@@ -152,4 +152,9 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(song),
     }),
+
+  getHistory: async (limit = 50): Promise<LikedSong[]> => {
+    const { songs } = await request<{ songs: LikedSong[] }>(`/api/history?limit=${limit}`);
+    return songs;
+  },
 };

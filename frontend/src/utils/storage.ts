@@ -29,3 +29,11 @@ export function readArray<T>(key: string): T[] {
   const value = readJson<T[]>(key, []);
   return Array.isArray(value) ? value : [];
 }
+
+export function removeJson(key: string): void {
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // Storage disabled -- nothing to clear anyway.
+  }
+}
