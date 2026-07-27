@@ -4,7 +4,7 @@ import { EmptyMessage, Loading } from '@/components/StatusMessage';
 import { useLikedSongs } from '@/liked/LikedSongsContext';
 import { usePlayer } from '@/player/PlayerContext';
 import type { Song } from '@/types';
-import { formatTime, handleThumbnailError, thumbnailOrFallback, truncate } from '@/utils/format';
+import { formatTime, handleArtworkError, preferredArtworkSrc, truncate } from '@/utils/format';
 
 /**
  * The `.backpage` -- the queue and the player, revealed by dragging the main
@@ -42,10 +42,10 @@ function QueueCard({ song, onPlay }: { song: Song; onPlay: () => void }) {
       }}
     >
       <img
-        src={thumbnailOrFallback(song.thumbnail)}
+        src={preferredArtworkSrc(song.videoId, song.thumbnail)}
         alt=""
         loading="lazy"
-        onError={(event) => handleThumbnailError(event, song.videoId)}
+        onError={(event) => handleArtworkError(event, song.thumbnail)}
       />
       <div className="three_dot_x_icon">
         <i className="fa-solid fa-ellipsis" aria-hidden="true" />
@@ -138,9 +138,9 @@ function NowPlaying() {
         <div className="img_box">
           <img
             id="song-image"
-            src={thumbnailOrFallback(currentTrack?.thumbnail)}
+            src={preferredArtworkSrc(currentTrack?.videoId, currentTrack?.thumbnail)}
             alt={currentTrack ? `${currentTrack.title} artwork` : 'No song playing'}
-            onError={(event) => handleThumbnailError(event, currentTrack?.videoId)}
+            onError={(event) => handleArtworkError(event, currentTrack?.thumbnail)}
           />
         </div>
         <div>

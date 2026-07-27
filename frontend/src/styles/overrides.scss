@@ -25,17 +25,70 @@
       loading, empty and error. Each request either succeeded or silently
       did nothing.
    ------------------------------------------------------------------------ */
-.status_message {
+// These render on the app's white page background (Home/Library/Search
+// main columns), so the palette is light-context, matching the existing
+// muted #c4c4c5 the original templates already used for secondary text.
+.status_card {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 18px 24px;
-  color: #c4c4c5;
+  justify-content: center;
+  gap: 8px;
+  max-width: 420px;
+  margin: 32px auto;
+  padding: 32px 28px;
+  text-align: center;
+  border-radius: 14px;
+  background: #f7f7f8;
+  border: 1px solid #e7e7e9;
+  color: #6b6b72;
   font-family: 'Mukta', sans-serif;
-  font-size: 1.05rem;
+  animation: tuneup_status_fade_in 0.2s ease;
 
   &.status_error {
-    color: #ff8080;
+    color: #c23b3b;
+    border-color: #ffd6d6;
+    background: #fff5f5;
+  }
+}
+
+.status_icon_large {
+  font-size: 1.8rem;
+  opacity: 0.75;
+  margin-bottom: 4px;
+}
+
+.status_message_text {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #444449;
+}
+
+.status_error .status_message_text {
+  color: #c23b3b;
+}
+
+.status_message_hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #9a9aa0;
+}
+
+@keyframes tuneup_status_fade_in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status_card {
+    animation: none;
   }
 }
 
@@ -109,13 +162,28 @@
 }
 
 /* ------------------------------------------------------------------------
+   6. .second_search_row is absolutely positioned in the original CSS
+      (search.scss), independent of any preceding sibling content. A status
+      message (empty query / loading / error / no results) rendered next to
+      it in normal flow just overlapped it instead of being pushed below.
+      SearchPage now swaps the row's *content* for the status message
+      instead of layering them, and this centers that single child within
+      the row's box.
+   ------------------------------------------------------------------------ */
+.search_status_row {
+  align-items: center;
+  justify-content: center;
+}
+
+/* ------------------------------------------------------------------------
    4. Community playlists and Albums on the search page were plain <div>s --
       not clickable at all, unlike Songs and Artists. They're <a> tags now
       (open the real result on music.youtube.com), so undo the browser's
       default link styling and restore the original card cursor/hover feel.
    ------------------------------------------------------------------------ */
 .community_playlist,
-.album {
+.album,
+.playlist_block {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -138,4 +206,20 @@
       transform: none;
     }
   }
+}
+
+/* ------------------------------------------------------------------------
+   5. "See all" was static text in every section heading -- nothing to
+      click, nothing behind it. It's a real <button> now (SeeAllToggle),
+      reset to look identical to the original's plain <p><u>See all</u>.
+   ------------------------------------------------------------------------ */
+.see_all_button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: inherit;
 }

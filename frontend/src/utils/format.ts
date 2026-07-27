@@ -56,3 +56,46 @@ export function handleThumbnailError(
     img.src = FALLBACK_THUMBNAIL;
   }
 }
+
+/**
+ * For the big art -- the now-playing artwork and the queue cards -- a
+ * ytmusicapi thumbnail (often ~120-226px, sized for a list row) gets
+ * stretched to fill a box several times that size and turns visibly soft.
+ * Every track has a real YouTube videoId, so ask YouTube's own thumbnail
+ * endpoint for `hqdefault` (480x360, present for virtually every upload)
+ * instead of the small ytmusicapi crop.
+ *
+ * Deliberately not `maxresdefault`: YouTube serves that at a fixed low-res
+ * placeholder (still HTTP 200, so onError never fires) for any video that
+ * never had a high-res thumbnail generated, which would silently look worse
+ * than what this is trying to fix.
+ */
+export function preferredArtworkSrc(
+  videoId: string | null | undefined,
+  thumbnail: string | null | undefined,
+): string {
+  if (videoId) {
+    return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+  }
+  return thumbnailOrFallback(thumbnail);
+}
+
+/** Pairs with preferredArtworkSrc: falls back to the ytmusicapi thumbnail, then the bundled placeholder. */
+export function handleArtworkError(
+  event: SyntheticEvent<HTMLImageElement>,
+  thumbnail: string | null | undefined,
+): void {
+  const img = event.currentTarget;
+  const stage = img.dataset.artFallback;
+
+  if (!stage && thumbnail) {
+    img.dataset.artFallback = 'ytmusic';
+    img.src = thumbnail;
+    return;
+  }
+
+  if (img.dataset.artFallback !== 'final') {
+    img.dataset.artFallback = 'final';
+    img.src = FALLBACK_THUMBNAIL;
+  }
+}

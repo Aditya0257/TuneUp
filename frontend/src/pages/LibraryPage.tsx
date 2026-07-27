@@ -1,7 +1,11 @@
+import { api } from '@/api/client';
+import { SeeAllToggle } from '@/components/SeeAllToggle';
 import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage';
+import { useAsync } from '@/hooks/useAsync';
+import { useExpandable } from '@/hooks/useExpandable';
 import { useLikedSongs } from '@/liked/LikedSongsContext';
 import { usePlayer } from '@/player/PlayerContext';
-import { thumbnailOrFallback, trackNumber } from '@/utils/format';
+import { handleThumbnailError, thumbnailOrFallback, trackNumber } from '@/utils/format';
 
 /**
  * Port of templates/music.html.
@@ -12,31 +16,54 @@ import { thumbnailOrFallback, trackNumber } from '@/utils/format';
  * database rewrite just to display a list the browser already had. The liked
  * songs come straight from context now.
  *
- * The Playlists and Saved Artists blocks were hardcoded placeholder data in the
- * original template. Kept as-is so the layout matches.
+ * Playlists and Saved Artists were hardcoded placeholder data (fake names,
+ * stock photos) in the original template. Both are now derived from real
+ * data instead: Saved Artists comes straight from your liked songs, and
+ * Playlists is a real YouTube Music search seeded by your most-liked artist
+ * (falls back to a generic query if you haven't liked anything yet).
  */
-const PLACEHOLDER_PLAYLISTS = [
-  { title: 'Relaxing Melodies', creator: 'John Doe', image: 'https://picsum.photos/id/1015/300/180' },
-  { title: 'Chill Vibes', creator: 'Jane Smith', image: 'https://picsum.photos/id/1016/300/180' },
-  { title: 'Dizzy Morning', creator: 'Weekend', image: 'https://picsum.photos/id/1019/300/180' },
-];
-
-const PLACEHOLDER_ARTISTS = [
-  { name: 'John Smith', genre: 'Pop', famousFor: 'Beautiful Day', image: 'https://images.pexels.com/photos/1916824/pexels-photo-1916824.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Jane Doe', genre: 'Rock', famousFor: "Sweet Child o' Mine", image: 'https://images.pexels.com/photos/2479312/pexels-photo-2479312.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Mike Johnson', genre: 'Hip Hop', famousFor: 'Lose Yourself', image: 'https://images.pexels.com/photos/920992/pexels-photo-920992.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Emily Williams', genre: 'R&B', famousFor: 'Love on Top', image: 'https://images.pexels.com/photos/920992/pexels-photo-920992.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'David Lee', genre: 'Country', famousFor: 'Tennessee Whiskey', image: 'https://images.pexels.com/photos/920992/pexels-photo-920992.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Sarah Brown', genre: 'Jazz', famousFor: 'Fly Me to the Moon', image: 'https://images.pexels.com/photos/920992/pexels-photo-920992.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Alex Turner', genre: 'Indie Rock', famousFor: 'Do I Wanna Know?', image: 'https://images.pexels.com/photos/920992/pexels-photo-920992.jpeg?auto=compress&cs=tinysrgb&w=800' },
-];
-
 const LIKED_SONGS_COVER =
   'https://images.unsplash.com/photo-1504680177321-2e6a879aac86?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80';
+
+function topArtist(likedSongs: { artist: string }[]): string | null {
+  const counts = new Map<string, number>();
+  for (const song of likedSongs) {
+    counts.set(song.artist, (counts.get(song.artist) ?? 0) + 1);
+  }
+  let best: string | null = null;
+  let bestCount = 0;
+  for (const [artist, count] of counts) {
+    if (count > bestCount) {
+      best = artist;
+      bestCount = count;
+    }
+  }
+  return best;
+}
 
 export function LibraryPage() {
   const { likedSongs, loading, error } = useLikedSongs();
   const { playTrack } = usePlayer();
+
+  const likedSongsList = useExpandable(likedSongs, 8);
+
+  const savedArtists = Array.from(
+    likedSongs.reduce((map, song) => {
+      const existing = map.get(song.artist);
+      if (existing) {
+        existing.likedCount += 1;
+      } else {
+        map.set(song.artist, { name: song.artist, thumbnail: song.thumbnail, exampleTrack: song.title, likedCount: 1 });
+      }
+      return map;
+    }, new Map<string, { name: string; thumbnail: string | null; exampleTrack: string; likedCount: number }>()),
+    ([, artist]) => artist,
+  );
+  const savedArtistsList = useExpandable(savedArtists, 6);
+
+  const playlistQuery = topArtist(likedSongs) ?? 'Popular Music';
+  const { data: playlistData } = useAsync(() => api.search(playlistQuery, 6), [playlistQuery], true);
+  const playlists = playlistData?.playlists ?? [];
 
   return (
     <div className="musicpage">
@@ -64,9 +91,11 @@ export function LibraryPage() {
 
             <div className="songs_column">
               <div className="see_more_row">
-                <p>
-                  <u>See all</u>
-                </p>
+                <SeeAllToggle
+                  isExpandable={likedSongsList.isExpandable}
+                  expanded={likedSongsList.expanded}
+                  onToggle={likedSongsList.toggle}
+                />
               </div>
 
               <div className="liked_song_container">
@@ -76,7 +105,7 @@ export function LibraryPage() {
                   <EmptyMessage message="No liked songs yet. Tap the heart on any track." />
                 )}
 
-                {likedSongs.map((song, index) => (
+                {likedSongsList.visible.map((song, index) => (
                   <div className="song_container" key={song.videoId}>
                     <div className="first_song_row">
                       <div className="clickable_row">
@@ -114,6 +143,7 @@ export function LibraryPage() {
                               src={thumbnailOrFallback(song.thumbnail)}
                               alt="Song Thumbnail"
                               loading="lazy"
+                              onError={(event) => handleThumbnailError(event, song.videoId)}
                             />
                           </div>
                           <div className="spacer_x_small" />
@@ -147,17 +177,38 @@ export function LibraryPage() {
               <h2>Playlists</h2>
             </div>
             <div className="playlist_grid_blocks">
-              {PLACEHOLDER_PLAYLISTS.map((playlist) => (
-                <div className="playlist_block" key={playlist.title}>
-                  <div className="playlist_image">
-                    <img src={playlist.image} alt={playlist.title} loading="lazy" />
-                  </div>
-                  <div className="playlist_details">
-                    <h3>{playlist.title}</h3>
-                    <p>Created by: {playlist.creator}</p>
-                  </div>
-                </div>
-              ))}
+              {playlists.length === 0 && (
+                <EmptyMessage message="No playlists to show yet -- like a few songs to seed recommendations." />
+              )}
+              {playlists.map((playlist) => {
+                const id = playlist.playlistId ?? playlist.browseId;
+                return (
+                  <a
+                    className="playlist_block"
+                    key={id ?? playlist.title}
+                    href={id ? `https://music.youtube.com/playlist?list=${id}` : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-disabled={!id || undefined}
+                    onClick={(event) => {
+                      if (!id) event.preventDefault();
+                    }}
+                  >
+                    <div className="playlist_image">
+                      <img
+                        src={thumbnailOrFallback(playlist.thumbnail)}
+                        alt={playlist.title}
+                        loading="lazy"
+                        onError={handleThumbnailError}
+                      />
+                    </div>
+                    <div className="playlist_details">
+                      <h3>{playlist.title}</h3>
+                      {playlist.author && <p>By: {playlist.author}</p>}
+                    </div>
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -167,18 +218,31 @@ export function LibraryPage() {
             <h2>Saved Artists</h2>
             <div className="elevated_card">
               <div className="artist_list">
-                {PLACEHOLDER_ARTISTS.map((artist) => (
+                {savedArtists.length === 0 && (
+                  <EmptyMessage message="No artists yet -- artists you like show up here." />
+                )}
+                {savedArtistsList.visible.map((artist) => (
                   <div className="artist_item" key={artist.name}>
                     <div className="artist_image">
-                      <img src={artist.image} alt={artist.name} loading="lazy" />
+                      <img
+                        src={thumbnailOrFallback(artist.thumbnail)}
+                        alt={artist.name}
+                        loading="lazy"
+                        onError={handleThumbnailError}
+                      />
                     </div>
                     <div className="artist_details">
                       <h3>{artist.name}</h3>
-                      <p>Genre: {artist.genre}</p>
-                      <p>Famous for: {artist.famousFor}</p>
+                      <p>{artist.likedCount} liked song{artist.likedCount === 1 ? '' : 's'}</p>
+                      <p>e.g. {artist.exampleTrack}</p>
                     </div>
                   </div>
                 ))}
+                <SeeAllToggle
+                  isExpandable={savedArtistsList.isExpandable}
+                  expanded={savedArtistsList.expanded}
+                  onToggle={savedArtistsList.toggle}
+                />
               </div>
             </div>
           </div>

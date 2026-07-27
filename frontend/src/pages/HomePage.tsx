@@ -1,9 +1,11 @@
 import { api } from '@/api/client';
 import { ArtistRow } from '@/components/ArtistRow';
+import { SeeAllToggle } from '@/components/SeeAllToggle';
 import { SongRow } from '@/components/SongRow';
 import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage';
 import { VerticalCarousel } from '@/components/VerticalCarousel';
 import { useAsync } from '@/hooks/useAsync';
+import { useExpandable } from '@/hooks/useExpandable';
 import { usePlayer } from '@/player/PlayerContext';
 import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
 
@@ -23,6 +25,9 @@ export function HomePage() {
   const recommended = data?.recommendedMusic ?? [];
   const genres = data?.genres ?? [];
   const moods = data?.moods ?? [];
+
+  const recommendedList = useExpandable(recommended, 3);
+  const quickPicksList = useExpandable(quickPicks, 5);
 
   return (
     <div id="changable">
@@ -46,11 +51,11 @@ export function HomePage() {
                   <h2>Recommended Artist</h2>
                 </div>
               </div>
-              <div>
-                <p>
-                  <u>See all</u>
-                </p>
-              </div>
+              <SeeAllToggle
+                isExpandable={recommendedList.isExpandable}
+                expanded={recommendedList.expanded}
+                onToggle={recommendedList.toggle}
+              />
             </div>
             <div className="spacer_y_small" />
 
@@ -61,7 +66,7 @@ export function HomePage() {
               entry is really a track. The original rendered them as artist
               cards but left them inert; clicking one plays it now.
             */}
-            {recommended.slice(0, 3).map((song) => (
+            {recommendedList.visible.map((song) => (
               <ArtistRow
                 key={song.videoId}
                 variant="home"
@@ -100,11 +105,11 @@ export function HomePage() {
                   <h2>Quick Picks</h2>
                 </div>
               </div>
-              <div>
-                <p>
-                  <u>See all</u>
-                </p>
-              </div>
+              <SeeAllToggle
+                isExpandable={quickPicksList.isExpandable}
+                expanded={quickPicksList.expanded}
+                onToggle={quickPicksList.toggle}
+              />
             </div>
             <div className="quickPicks_songs_column">
               {loading && <Loading label="Loading Quick Picks…" />}
@@ -112,7 +117,7 @@ export function HomePage() {
               {!loading && !error && quickPicks.length === 0 && (
                 <EmptyMessage message="No picks right now. Try a search instead." />
               )}
-              {quickPicks.map((song, index) => (
+              {quickPicksList.visible.map((song, index) => (
                 <SongRow key={song.videoId} song={song} index={index + 1} />
               ))}
             </div>
