@@ -42,7 +42,7 @@ export function HomePage() {
         </div>
 
         <div className="second_home_row">
-          <VerticalCarousel />
+          <VerticalCarousel songs={quickPicks} onSelect={playTrack} />
 
           <div className="column_songs_section">
             <div className="top_artist_heading_row">

@@ -308,6 +308,138 @@ body {
 }
 
 /* ------------------------------------------------------------------------
+   11. The Home page carousel was four hardcoded "Upcoming Concert!" slides
+       pointing at external stock-photo URLs on four different hosts, with
+       the original CSS itself setting the slide <img> to width: 240% --
+       the image loaded fine, it was just scaled so far outside the visible
+       frame that none of it ever appeared, leaving only a gradient over
+       nothing. Replaced with a real "Featured" carousel (VerticalCarousel)
+       built from actual Quick Picks data. .vertical_slider_box (sizing/
+       position) is kept from main.scss; everything inside it is new.
+   ------------------------------------------------------------------------ */
+.vertical_slider_box {
+  overflow: hidden;
+}
+
+.tuneup_feature_track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 35px;
+  overflow: hidden;
+}
+
+.tuneup_feature_slide {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+  font: inherit;
+  text-align: left;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--tuneup-accent);
+    outline-offset: -3px;
+  }
+}
+
+.tuneup_feature_scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.15) 55%, transparent 80%);
+}
+
+.tuneup_feature_text {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 6%;
+  color: #ffffff;
+  font-family: 'Mukta', sans-serif;
+
+  h2 {
+    margin: 6px 0 4px;
+    font-size: 2rem;
+    font-weight: 600;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+.tuneup_feature_label {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tuneup-accent);
+  font-weight: 700;
+}
+
+.tuneup_feature_play {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #16151d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.tuneup_feature_indicators {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+}
+
+.tuneup_feature_indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+
+  &.active {
+    background: var(--tuneup-accent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+}
+
+/* ------------------------------------------------------------------------
    7. About/Settings panels -- the sidebar's user and gear icons opened
       nothing at all before. New UI, styled with the same chrome tokens as
       the sidebar/player (section 10 below) rather than a fixed light

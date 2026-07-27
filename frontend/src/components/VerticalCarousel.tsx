@@ -1,63 +1,48 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import type { Song } from '@/types';
+import { handleArtworkError, preferredArtworkSrc, truncate } from '@/utils/format';
+
+const SLIDE_INTERVAL_MS = 4000;
+
 /**
- * Port of verticalCarouselSlider.js.
+ * Was a port of verticalCarouselSlider.js: four hardcoded "Upcoming Concert!"
+ * slides pointing at external stock-photo URLs on four different hosts, none
+ * of them under this app's control. Beyond the unreliable hosts, the
+ * original CSS itself sets the slide `<img>` to `width: 240%` -- the image
+ * loads fine, it's just scaled so far outside the visible frame that none of
+ * it ever appears, leaving only the gradient overlay on top of nothing.
  *
- * Original issues fixed here: the slide count was hardcoded to 4 in the
- * auto-advance branch while the indicators were derived from the DOM (so the
- * two could disagree), the `setInterval` was never cleared, and the transform
- * was recomputed from `getBoundingClientRect()` on every tick instead of using
- * percentages, so a mid-animation resize desynced the track.
+ * Replaced with a real featured carousel: your actual Quick Picks, clickable
+ * to play immediately. New markup/classnames rather than patching the
+ * broken `.slide`/`.slider_text` rules -- the outer `.vertical_slider_box`
+ * wrapper is kept so main.scss's sizing/position for this slot still applies.
  */
-const SLIDE_INTERVAL_MS = 2000;
-
-const SLIDES = [
-  {
-    heading: 'Upcoming Concert!',
-    body:
-      'Get ready to groove to the beats of your favorite artists at our upcoming music concert! 🎶 ' +
-      'From soulful melodies to foot-tapping rhythms, this concert promises to be a musical extravaganza.',
-    image: 'https://i1.sndcdn.com/artworks-000196826838-9zhk1f-t500x500.jpg',
-  },
-  {
-    heading: 'Upcoming Concert!',
-    body:
-      'Get ready to groove to the beats of your favorite artists at our upcoming music concert! 🎶 ' +
-      'From soulful melodies to foot-tapping rhythms, this concert promises to be a musical extravaganza.',
-    image: 'https://i.scdn.co/image/ab67616d0000b27315145482a542a9adb282250b',
-  },
-  {
-    heading: 'Upcoming Concert!',
-    body:
-      'Get ready to groove to the beats of your favorite artists at our upcoming music concert! 🎶 ' +
-      'From soulful melodies to foot-tapping rhythms, this concert promises to be a musical extravaganza.',
-    image: 'https://wallpapercave.com/wp/wp8422295.jpg',
-  },
-  {
-    heading: 'Upcoming Concert!',
-    body:
-      'Get ready to groove to the beats of your favorite artists at our upcoming music concert! 🎶 ' +
-      'From soulful melodies to foot-tapping rhythms, this concert promises to be a musical extravaganza.',
-    image: 'https://upload.wikimedia.org/wikipedia/en/d/da/Alan_Walker_-_Faded.png',
-  },
-];
-
-export function VerticalCarousel() {
+export function VerticalCarousel({
+  songs,
+  onSelect,
+}: {
+  songs: Song[];
+  onSelect: (song: Song) => void;
+}) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef<number | null>(null);
+  const slides = songs.slice(0, 5);
 
   const advance = useCallback(() => {
-    setActive((current) => (current + 1) % SLIDES.length);
-  }, []);
+    setActive((current) => (slides.length ? (current + 1) % slides.length : 0));
+  }, [slides.length]);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || slides.length < 2) return;
     timerRef.current = window.setInterval(advance, SLIDE_INTERVAL_MS);
     return () => {
       if (timerRef.current !== null) window.clearInterval(timerRef.current);
     };
-  }, [advance, paused]);
+  }, [advance, paused, slides.length]);
+
+  if (slides.length === 0) return null;
 
   return (
     <div
@@ -65,43 +50,41 @@ export function VerticalCarousel() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="carousel_gradient_container" />
-      <div className="slider">
-        <div
-          className="slides"
-          style={{
-            transform: `translateY(-${active * 100}%)`,
-            transition: 'transform 0.6s ease',
-          }}
-        >
-          {SLIDES.map((slide, index) => (
-            <div className="slide" key={slide.image} aria-hidden={index !== active}>
-              <div className="slider_text">
-                <h2>{slide.heading}</h2>
-                <p>{slide.body}</p>
-              </div>
-              <div>
-                <img
-                  src={slide.image}
-                  alt=""
-                  loading="lazy"
-                  onError={(event) => {
-                    const img = event.currentTarget;
-                    if (!img.dataset.fallback) {
-                      img.dataset.fallback = 'true';
-                      img.src = '/assets/images/song_thumbnail_img.jpeg';
-                    }
-                  }}
-                />
-              </div>
+      <div className="tuneup_feature_track">
+        {slides.map((song, index) => (
+          <button
+            type="button"
+            key={song.videoId}
+            className="tuneup_feature_slide"
+            aria-hidden={index !== active}
+            tabIndex={index === active ? 0 : -1}
+            aria-label={`Play ${song.title} by ${song.artist}`}
+            onClick={() => onSelect(song)}
+            style={{ opacity: index === active ? 1 : 0, pointerEvents: index === active ? 'auto' : 'none' }}
+          >
+            <img
+              src={preferredArtworkSrc(song.videoId, song.thumbnail)}
+              alt=""
+              loading="lazy"
+              onError={(event) => handleArtworkError(event, song.thumbnail)}
+            />
+            <div className="tuneup_feature_scrim" />
+            <div className="tuneup_feature_text">
+              <span className="tuneup_feature_label">Featured</span>
+              <h2>{truncate(song.title, 40)}</h2>
+              <p>{song.artist}</p>
             </div>
-          ))}
-        </div>
-        <div className="indicators">
-          {SLIDES.map((slide, index) => (
+            <i className="fa-solid fa-play tuneup_feature_play" aria-hidden="true" />
+          </button>
+        ))}
+      </div>
+
+      {slides.length > 1 && (
+        <div className="tuneup_feature_indicators">
+          {slides.map((song, index) => (
             <span
-              key={slide.image}
-              className={`indicator${index === active ? ' active' : ''}`}
+              key={song.videoId}
+              className={`tuneup_feature_indicator${index === active ? ' active' : ''}`}
               role="button"
               tabIndex={0}
               aria-label={`Go to slide ${index + 1}`}
@@ -115,7 +98,7 @@ export function VerticalCarousel() {
             />
           ))}
         </div>
-      </div>
+      )}
     </div>
   );
 }
