@@ -1110,50 +1110,52 @@ body {
 /* ------------------------------------------------------------------------
    26. Every route renders inside the same #home_DraggableDiv/.homepage
        shell (App.tsx), which the drag handle needs as a single, constant
-       reference frame regardless of page. Non-Home routes additionally
-       mount their own page div (.searchpage/.musicpage/.historypage/
-       .playlistspage) *inside* that shell -- two nested position:fixed
-       boxes, both with top/left left at their default `auto`. An `auto`
-       inset falls back to the CSS "static position" -- roughly, where the
-       box would've landed at position:static -- and for a box nested
-       inside an already-offset fixed ancestor, that fallback lands
-       relative to the ancestor's own (already-margined) box, not the
-       viewport. The inner page's own margin then applied on top of that,
-       doubling the inset on every non-Home route: most visible as a
-       sliver of the chrome background left uncovered along the right
-       edge and corners. Home never showed it because its content has no
-       second nested page div to double up with.
+       reference frame regardless of page -- dragging works by writing
+       `element.style.left` directly onto that shell (useHorizontalDrag),
+       relying on its `left` staying free for JS to drive.
 
-       Forcing top/left to 0 makes every one of these boxes measure
-       purely from the true viewport corner, one margin deep, matching
-       how Home always looked.
+       Non-Home routes additionally mount their own page div
+       (.searchpage/.musicpage/.historypage/.playlistspage) *inside* that
+       shell -- two nested position:fixed boxes, both left at `auto` for
+       top/left. An `auto` inset falls back to the CSS "static position"
+       -- roughly, where the box would've landed at position:static --
+       and for a box nested inside an already-offset fixed ancestor, that
+       fallback lands relative to the ancestor's own (already-margined)
+       box, not the viewport. The inner page's own margin then applied on
+       top of that, doubling the inset on every non-Home route: most
+       visible as a sliver of the chrome background left uncovered along
+       the right edge and corners. Home never showed it because its
+       content has no second nested page div to double up with.
+
+       An earlier attempt fixed this with `top/left: 0 !important` on all
+       five classes -- including the draggable shell itself, which broke
+       dragging everywhere: a stylesheet `!important` always wins over a
+       plain inline style, so it pinned the shell's `left` to 0 no matter
+       what the drag handler wrote to it. The inner pages' own auto
+       fallback is also *how* they visually track the shell while it's
+       being dragged (their static position is recalculated against the
+       shell's current, moving box on every layout pass) -- forcing their
+       left to 0 too would have frozen them in place mid-drag as well.
+
+       Zeroing only the inner pages' own MARGIN (not their top/left)
+       cancels the double-application without disturbing either the
+       shell's draggable `left` or the auto-fallback tracking that makes
+       the inner page move together with it.
    ------------------------------------------------------------------------ */
-.homepage,
 .searchpage,
 .musicpage,
 .historypage,
 .playlistspage {
-  top: 0 !important;
-  left: 0 !important;
+  margin: 0 !important;
 }
 
-/* Belt-and-suspenders on top of the position fix: whenever the shared
-   shell has a real page panel nested inside it (i.e. every route but
-   Home), make the shell itself fully invisible. Two boxes that happen to
-   compute the same position can never show a seam quite as reliably as
-   one of them not being drawn at all. */
+/* Whenever the shared shell has a real page panel nested inside it (i.e.
+   every route but Home), make the shell itself fully invisible -- the
+   inner page (now sitting exactly where the shell would've drawn its own
+   frame, margin zeroed above) is the only visible rounded/colored box. */
 #home_DraggableDiv:has(.searchpage, .musicpage, .historypage, .playlistspage) {
   background: transparent !important;
   border-radius: 0 !important;
-}
-
-/* Home's top-right corner, squared off at the user's request -- it sits
-   right against the search bar there, and the curve read as an odd gap
-   in that one spot rather than a deliberate design choice. Scoped to
-   Home specifically (not any other page's own top-right corner) via the
-   same :has() check, inverted. */
-#home_DraggableDiv:not(:has(.searchpage, .musicpage, .historypage, .playlistspage)) {
-  border-top-right-radius: 0 !important;
 }
 
 /* Page background is themeable (Settings -> Theme -> Page background), so
