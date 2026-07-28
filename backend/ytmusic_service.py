@@ -366,6 +366,40 @@ class YTMusicService:
             # Deliberately absent: a stream URL. Playback is client-side.
         }
 
+    # -- lyrics ------------------------------------------------------------
+    def get_lyrics(self, video_id: str) -> Json:
+        """The queue/player panel's .lyrics_column was an empty placeholder
+        (background-color: lightgreen, never built out) in the original.
+        Not every track has lyrics on YouTube Music -- absence is a normal
+        200, not an error.
+        """
+        return self._cache.get_or_set(
+            f"lyrics:{video_id}", Config.SONG_CACHE_TTL, lambda: self._fetch_lyrics(video_id)
+        )
+
+    def _fetch_lyrics(self, video_id: str) -> Json:
+        try:
+            watch = self._client.get_watch_playlist(videoId=video_id, limit=1) or {}
+        except Exception as exc:
+            log.warning("get_watch_playlist(%r) failed: %s", video_id, exc)
+            return {"available": False, "lyrics": None, "source": None}
+
+        browse_id = watch.get("lyrics")
+        if not browse_id:
+            return {"available": False, "lyrics": None, "source": None}
+
+        try:
+            result = self._client.get_lyrics(browse_id) or {}
+        except Exception as exc:
+            log.warning("get_lyrics(%r) failed: %s", browse_id, exc)
+            return {"available": False, "lyrics": None, "source": None}
+
+        lyrics = result.get("lyrics")
+        if not lyrics:
+            return {"available": False, "lyrics": None, "source": None}
+
+        return {"available": True, "lyrics": lyrics, "source": result.get("source")}
+
     # -- random queue ----------------------------------------------------
     def get_random_songs(self, count: int = 10) -> list[Json]:
         """Replaces the old fetch_1000_video_ids + per-song scrape loop.

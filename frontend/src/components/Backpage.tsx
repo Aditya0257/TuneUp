@@ -1,6 +1,8 @@
 import type { ChangeEvent } from 'react';
 
+import { api } from '@/api/client';
 import { EmptyMessage, Loading } from '@/components/StatusMessage';
+import { useAsync } from '@/hooks/useAsync';
 import { useLikedSongs } from '@/liked/LikedSongsContext';
 import { usePlayer } from '@/player/PlayerContext';
 import type { Song } from '@/types';
@@ -277,9 +279,39 @@ function NowPlaying() {
           <p className="ending-time">{duration ? formatTime(duration) : '0:00'}</p>
         </div>
       </div>
-      <div className="lyrics_column" />
+      <LyricsPanel currentTrack={currentTrack} />
 
       {error && <div className="player_notice">{error}</div>}
+    </div>
+  );
+}
+
+/**
+ * `.lyrics_column` was an empty div in the original -- just a hardcoded
+ * `background-color: lightgreen` placeholder, never built out. Real lyrics
+ * via ytmusicapi's get_watch_playlist -> get_lyrics chain. Not every track
+ * has them on YouTube Music; that's a normal empty state, not an error.
+ */
+function LyricsPanel({ currentTrack }: { currentTrack: Song | null }) {
+  const { data, loading } = useAsync(
+    () => (currentTrack ? api.getLyrics(currentTrack.videoId) : Promise.resolve(null)),
+    [currentTrack?.videoId],
+    Boolean(currentTrack),
+  );
+
+  return (
+    <div className="lyrics_column">
+      {!currentTrack && <EmptyMessage message="Play a track to see its lyrics here, if it has any." />}
+      {currentTrack && loading && <Loading label="Looking up lyrics…" />}
+      {currentTrack && !loading && data && !data.available && (
+        <EmptyMessage message="No lyrics found for this track." />
+      )}
+      {currentTrack && !loading && data?.available && (
+        <>
+          <p className="lyrics_text">{data.lyrics}</p>
+          {data.source && <p className="lyrics_source">{data.source}</p>}
+        </>
+      )}
     </div>
   );
 }

@@ -63,6 +63,12 @@ export interface SearchResults {
 /** A liked song only ever needs the fields we display in the Library. */
 export type LikedSong = Pick<Song, 'videoId' | 'title' | 'artist' | 'thumbnail'>;
 
+export interface Lyrics {
+  available: boolean;
+  lyrics: string | null;
+  source: string | null;
+}
+
 export interface AsyncState<T> {
   data: T | null;
   loading: boolean;

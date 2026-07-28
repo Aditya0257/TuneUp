@@ -1,6 +1,7 @@
 import { api } from '@/api/client';
 import { HeartIcon } from '@/components/HeartIcon';
-import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage';
+import { Skeleton } from '@/components/Skeleton';
+import { EmptyMessage, ErrorMessage } from '@/components/StatusMessage';
 import { useAsync } from '@/hooks/useAsync';
 import { usePlayer } from '@/player/PlayerContext';
 import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
@@ -23,10 +24,27 @@ export function HistoryPage() {
 
   return (
     <div className="historypage">
+      {/* Same drag-handle affordance every other page has for revealing the
+          queue/player panel -- missed on this page and Playlists at first. */}
+      <div className="test_div">
+        <div className="vl" />
+      </div>
       <h1>Recently Played</h1>
       <div className="historypage_list">
-        {loading && songs.length === 0 && <Loading label="Loading your play history…" />}
-        {error && songs.length === 0 && <ErrorMessage message={error} />}
+        {error && songs.length === 0 && (
+          <ErrorMessage message={error} hint="Check that the Flask backend is running and reachable." />
+        )}
+        {loading && songs.length === 0 && !error
+          ? [0, 1, 2, 3, 4].map((i) => (
+              <div className="tuneup_skeleton_row" key={i}>
+                <Skeleton width="48px" height="48px" radius="8px" />
+                <div className="tuneup_skeleton_text_col">
+                  <Skeleton width="55%" height="16px" />
+                  <Skeleton width="35%" height="12px" />
+                </div>
+              </div>
+            ))
+          : null}
         {!loading && !error && songs.length === 0 && (
           <EmptyMessage message="Nothing played yet. Your history fills in as you listen." />
         )}

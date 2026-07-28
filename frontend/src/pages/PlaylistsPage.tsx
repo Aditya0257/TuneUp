@@ -1,5 +1,6 @@
 import { api } from '@/api/client';
-import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage';
+import { Skeleton } from '@/components/Skeleton';
+import { EmptyMessage, ErrorMessage } from '@/components/StatusMessage';
 import { useAsync } from '@/hooks/useAsync';
 import { useLikedSongs } from '@/liked/LikedSongsContext';
 import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
@@ -36,6 +37,11 @@ export function PlaylistsPage() {
 
   return (
     <div className="playlistspage">
+      {/* Same drag-handle affordance every other page has -- missed on this
+          page and History at first. */}
+      <div className="test_div">
+        <div className="vl" />
+      </div>
       <h1>Playlists</h1>
       <p className="playlistspage_subtitle">
         {topArtist(likedSongs)
@@ -43,7 +49,6 @@ export function PlaylistsPage() {
           : 'Like a few songs to get playlists tailored to your taste.'}
       </p>
 
-      {loading && <Loading label="Loading playlists…" />}
       {error && (
         <ErrorMessage message={error} hint="Check that the Flask backend is running and reachable." />
       )}
@@ -52,6 +57,18 @@ export function PlaylistsPage() {
       )}
 
       <div className="playlistspage_grid">
+        {loading &&
+          !error &&
+          [0, 1, 2, 3, 4, 5].map((i) => (
+            <div className="playlistspage_card" key={i}>
+              <Skeleton height="180px" radius="0" />
+              <div style={{ padding: '10px 12px 12px' }}>
+                <Skeleton width="80%" height="14px" />
+                <div style={{ height: 6 }} />
+                <Skeleton width="50%" height="11px" />
+              </div>
+            </div>
+          ))}
         {playlists.map((playlist) => {
           const id = playlist.playlistId ?? playlist.browseId;
           return (

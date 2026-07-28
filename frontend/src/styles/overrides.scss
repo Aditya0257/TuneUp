@@ -765,17 +765,22 @@ body {
    ------------------------------------------------------------------------ */
 .playlistspage {
   position: fixed;
-  width: 92.7vw;
+  width: 91.5vw;
   height: 97.5vh;
   margin-top: 0.5%;
   margin-bottom: 0.5%;
-  margin-right: 0.5%;
+  margin-right: 1.7%;
   margin-left: 6.4%;
   background: #ffffff;
   border-radius: 25px;
   padding: 32px 40px;
   overflow-x: hidden;
   overflow-y: auto;
+  // Reserves the scrollbar's width in layout up front (rather than
+  // shrinking the content box only once a scrollbar appears), which is
+  // what let the grid below claim a hair more width than was actually
+  // visible and clip its last column.
+  scrollbar-gutter: stable;
   box-sizing: border-box;
   font-family: 'Mukta', sans-serif;
 
@@ -794,9 +799,10 @@ body {
 
 .playlistspage_grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(165px, 100%), 1fr));
+  gap: 18px;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
 }
 
@@ -895,4 +901,97 @@ body {
   flex-direction: column;
   gap: 6px;
   flex: 1;
+}
+
+/* ------------------------------------------------------------------------
+   14. .lyrics_column was a hardcoded `background-color: lightgreen` in the
+       original -- an empty placeholder div, never built out (only ever
+       visible once dragging revealed enough of the backpage to see it,
+       which the original's narrow drag cap made unlikely). Real lyrics now.
+   ------------------------------------------------------------------------ */
+.lyrics_column {
+  background: var(--tuneup-chrome-surface);
+  border-radius: 16px;
+  padding: 20px 22px;
+  overflow-y: auto;
+  color: var(--tuneup-chrome-text);
+  font-family: 'Mukta', sans-serif;
+
+  .status_card {
+    background: transparent;
+    border: none;
+    margin: auto;
+    color: var(--tuneup-chrome-text-dim);
+  }
+
+  .status_message_text {
+    color: var(--tuneup-chrome-text-dim);
+  }
+}
+
+.lyrics_text {
+  margin: 0 0 16px;
+  white-space: pre-line;
+  line-height: 1.7;
+  font-size: 1.4rem;
+  color: var(--tuneup-chrome-text);
+}
+
+.lyrics_source {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--tuneup-chrome-text-dim);
+  font-style: italic;
+}
+
+/* ------------------------------------------------------------------------
+   15. .test_div/.vl (the drag-handle sliver visible at the left edge of
+       every page) only has rules scoped under .homepage/.searchpage/
+       .musicpage in the ported stylesheets. historypage and playlistspage
+       are new pages outside that scope, so the same markup rendered there
+       had no styling at all -- same fix as everything else here: match
+       the original rule, added for the new pages' own root classes.
+   ------------------------------------------------------------------------ */
+.historypage .test_div,
+.playlistspage .test_div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  bottom: 0;
+  z-index: 10;
+
+  .vl {
+    border-left: 4px solid grey;
+    height: 100px;
+    border-radius: 15px;
+    position: absolute;
+    top: 39%;
+    left: 25%;
+    margin-left: -3px;
+  }
+}
+
+/* ------------------------------------------------------------------------
+   16. The About/Settings sidebar triggers were `<i role="button">` --
+       harmless, but a real <button> is strictly more correct (native
+       Enter/Space activation, proper focus semantics) and rules out any
+       edge case with synthetic roles on a non-interactive tag. Reset to
+       look identical to the plain icon it replaces.
+   ------------------------------------------------------------------------ */
+.navbar_icon_button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+
+  i {
+    pointer-events: none;
+  }
 }

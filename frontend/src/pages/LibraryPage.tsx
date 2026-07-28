@@ -3,7 +3,8 @@ import { useLocation } from 'react-router-dom';
 
 import { api } from '@/api/client';
 import { SeeAllToggle } from '@/components/SeeAllToggle';
-import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage';
+import { Skeleton } from '@/components/Skeleton';
+import { EmptyMessage, ErrorMessage } from '@/components/StatusMessage';
 import { useAsync } from '@/hooks/useAsync';
 import { useExpandable } from '@/hooks/useExpandable';
 import { useLikedSongs } from '@/liked/LikedSongsContext';
@@ -112,7 +113,17 @@ export function LibraryPage() {
               </div>
 
               <div className="liked_song_container">
-                {loading && likedSongs.length === 0 && <Loading label="Loading your library…" />}
+                {loading &&
+                  likedSongs.length === 0 &&
+                  [0, 1, 2, 3].map((i) => (
+                    <div className="tuneup_skeleton_row" key={i}>
+                      <Skeleton width="44px" height="44px" radius="8px" />
+                      <div className="tuneup_skeleton_text_col">
+                        <Skeleton width="60%" height="15px" />
+                        <Skeleton width="35%" height="11px" />
+                      </div>
+                    </div>
+                  ))}
                 {error && likedSongs.length === 0 && <ErrorMessage message={error} />}
                 {!loading && likedSongs.length === 0 && (
                   <EmptyMessage message="No liked songs yet. Tap the heart on any track." />

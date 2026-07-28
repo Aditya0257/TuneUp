@@ -64,16 +64,14 @@ export function SideNav() {
             if (event.key === 'Enter' || event.key === ' ') navigate('/playlists');
           }}
         />
-        <i
-          className="fa-regular fa-user"
-          role="button"
-          tabIndex={0}
+        <button
+          type="button"
+          className="navbar_icon_button"
           aria-label="About"
           onClick={() => setOpenPanel('about')}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') setOpenPanel('about');
-          }}
-        />
+        >
+          <i className="fa-regular fa-user" aria-hidden="true" />
+        </button>
         <hr />
         <i
           className={`fa-regular fa-star${pathname === '/music' ? ' nav_active' : ''}`}
@@ -98,16 +96,14 @@ export function SideNav() {
         />
       </div>
       <div>
-        <i
-          className="fa-solid fa-gear"
-          role="button"
-          tabIndex={0}
+        <button
+          type="button"
+          className="navbar_icon_button"
           aria-label="Settings"
           onClick={() => setOpenPanel('settings')}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') setOpenPanel('settings');
-          }}
-        />
+        >
+          <i className="fa-solid fa-gear" aria-hidden="true" />
+        </button>
       </div>
 
       {openPanel === 'about' && <AboutPanel onClose={() => setOpenPanel(null)} />}

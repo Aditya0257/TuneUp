@@ -3,11 +3,24 @@ import { useSearchParams } from 'react-router-dom';
 import { api } from '@/api/client';
 import { ArtistRow } from '@/components/ArtistRow';
 import { SeeAllToggle } from '@/components/SeeAllToggle';
+import { Skeleton } from '@/components/Skeleton';
 import { SongRow } from '@/components/SongRow';
-import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage';
+import { EmptyMessage, ErrorMessage } from '@/components/StatusMessage';
 import { useAsync } from '@/hooks/useAsync';
 import { useExpandable } from '@/hooks/useExpandable';
 import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
+
+function SkeletonRow() {
+  return (
+    <div className="tuneup_skeleton_row">
+      <Skeleton width="40px" height="40px" radius="8px" />
+      <div className="tuneup_skeleton_text_col">
+        <Skeleton width="65%" height="14px" />
+        <Skeleton width="40%" height="11px" />
+      </div>
+    </div>
+  );
+}
 
 /**
  * Port of templates/search.html.
@@ -73,9 +86,12 @@ export function SearchPage() {
 
   // .second_search_row is absolutely positioned in the original CSS, so a
   // status message rendered as an extra sibling doesn't push it down --
-  // it just overlaps. When there's nothing to show columns for, the status
-  // message replaces the row's content instead of floating in front of it.
-  const statusOnly = query.length === 0 || loading || Boolean(error) || hasNoResults;
+  // it just overlaps. When there's nothing to show columns for at all (no
+  // query yet, an error, or truly zero results), the status message
+  // replaces the row's content instead of floating in front of it.
+  // Loading gets its own branch below: skeleton placeholders shaped like
+  // the real four columns, rather than collapsing to one status message.
+  const statusOnly = query.length === 0 || Boolean(error) || hasNoResults;
 
   return (
     <div className="searchpage">
@@ -94,7 +110,6 @@ export function SearchPage() {
           {query.length === 0 && (
             <EmptyMessage message="Type something in the search bar to get started." />
           )}
-          {loading && <Loading label={`Searching for “${query}”…`} />}
           {error && (
             <ErrorMessage message={error} hint="Check that the Flask backend is running and reachable." />
           )}
@@ -105,7 +120,37 @@ export function SearchPage() {
             />
           )}
 
-          {!statusOnly && (
+          {loading && (
+            <>
+              <div className="first_song_community_search_column">
+                <div className="first_song_search_heading_row">
+                  <div className="inner_heading_row">
+                    <h2>Songs</h2>
+                  </div>
+                </div>
+                <div className="songs_column">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <SkeletonRow key={i} />
+                  ))}
+                </div>
+              </div>
+              <div className="space_x_medium" />
+              <div className="second_artist_album_search_column">
+                <div className="second_artist_search_heading_row">
+                  <div className="inner_heading_row">
+                    <h2>Artists</h2>
+                  </div>
+                </div>
+                <div className="artist_search_column">
+                  {[0, 1, 2].map((i) => (
+                    <SkeletonRow key={i} />
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
+          {!statusOnly && !loading && (
           <>
           <div className="first_song_community_search_column">
             <SectionHeading

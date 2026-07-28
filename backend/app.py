@@ -141,6 +141,11 @@ def song(video_id: str):
     return jsonify(result)
 
 
+@app.get("/api/songs/<video_id>/lyrics")
+def lyrics(video_id: str):
+    return jsonify(ytmusic.get_lyrics(video_id))
+
+
 @app.get("/api/queue/random")
 def random_queue():
     """A batch of tracks to auto-populate the play queue."""

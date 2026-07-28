@@ -6,7 +6,7 @@
  * updateLikedSongs.js -- each of which did its own error handling (or none).
  */
 import { logApiCall } from '@/dev/devLog';
-import type { HomeFeed, LikedSong, SearchResults, Song } from '@/types';
+import type { HomeFeed, LikedSong, Lyrics, SearchResults, Song } from '@/types';
 
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
 
@@ -152,6 +152,8 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(song),
     }),
+
+  getLyrics: (videoId: string) => request<Lyrics>(`/api/songs/${encodeURIComponent(videoId)}/lyrics`),
 
   getHistory: async (limit = 50): Promise<LikedSong[]> => {
     const { songs } = await request<{ songs: LikedSong[] }>(`/api/history?limit=${limit}`);
