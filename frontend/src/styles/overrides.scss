@@ -49,6 +49,12 @@ body {
 
 .backpage {
   background-color: var(--tuneup-chrome-panel) !important;
+  /* .backpage sits flush against the true right edge (right: 0) but keeps
+     its original rounded top-right corner there -- a rounded corner on a
+     box that touches the viewport edge always shows whatever's behind it
+     (the body's darker chrome color) bleeding through the curve. Squaring
+     just that one corner closes the gap. */
+  border-top-right-radius: 0 !important;
 }
 
 .music_play_column,
