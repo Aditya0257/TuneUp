@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 export interface FloatingMenuCoords {
   top: number;
@@ -26,16 +26,47 @@ export interface FloatingMenuCoords {
  * for the same class of clipping/stacking problem.
  */
 export function useFloatingMenu<T extends HTMLElement = HTMLElement>() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpenState] = useState(false);
   const [coords, setCoords] = useState<FloatingMenuCoords | null>(null);
   const triggerRef = useRef<T>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  // Guards the flip-above-the-trigger adjustment below to run at most once
+  // per open -- without it, the effect that measures the rendered menu
+  // and the state update it makes would keep re-triggering each other.
+  const flippedRef = useRef(false);
+
+  const setOpen = useCallback((value: boolean | ((prev: boolean) => boolean)) => {
+    flippedRef.current = false;
+    setOpenState(value);
+  }, []);
 
   useLayoutEffect(() => {
-    if (!open || !triggerRef.current) return;
+    if (!open || !triggerRef.current) {
+      setCoords(null);
+      return;
+    }
     const rect = triggerRef.current.getBoundingClientRect();
     setCoords({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
   }, [open]);
+
+  // Always opening downward ran the menu past the bottom of the browser
+  // window for any row near the bottom of the page -- there's no way to
+  // know the menu's real height before it's rendered once, so this
+  // measures the actual rendered menu and, if it overflows, flips it to
+  // open upward from the trigger instead.
+  useLayoutEffect(() => {
+    if (!open || !coords || flippedRef.current) return;
+    const menuRect = menuRef.current?.getBoundingClientRect();
+    const triggerRect = triggerRef.current?.getBoundingClientRect();
+    if (!menuRect || !triggerRect) return;
+    if (menuRect.bottom > window.innerHeight) {
+      flippedRef.current = true;
+      setCoords({
+        top: Math.max(8, triggerRect.top - menuRect.height - 4),
+        right: window.innerWidth - triggerRect.right,
+      });
+    }
+  }, [open, coords]);
 
   useEffect(() => {
     if (!open) return;
@@ -64,7 +95,7 @@ export function useFloatingMenu<T extends HTMLElement = HTMLElement>() {
       window.removeEventListener('scroll', onScrollOrResize, true);
       window.removeEventListener('resize', onScrollOrResize);
     };
-  }, [open]);
+  }, [open, setOpen]);
 
   return { open, setOpen, coords, triggerRef, menuRef };
 }
