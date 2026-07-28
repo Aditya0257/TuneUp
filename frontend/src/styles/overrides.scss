@@ -1564,14 +1564,29 @@ body {
   width: 100% !important;
 }
 
+.searchpage .playlists_container {
+  /* space-between (base CSS) distributes leftover space evenly across a
+     row's gaps -- fine with a full row, but with only one or two results
+     it pins them far apart instead of grouping them together at the
+     start like a real grid. */
+  justify-content: flex-start !important;
+  gap: 16px;
+}
+
 .searchpage .playlists_container .community_playlist {
   /* Was a fixed 47.5% -- always exactly 2 per row regardless of how much
-     width is actually available. Full page width now, so let cards wrap
-     naturally at a sensible size instead of forcing just 2 columns of an
-     otherwise much wider row. */
-  width: auto !important;
-  flex: 1 1 220px !important;
-  max-width: 280px !important;
+     width is actually available. Full page width now, so cards should
+     wrap at a fixed, sensible size instead of forcing just 2 columns of
+     an otherwise much wider row -- flex-grow:1 was the wrong tool for
+     that: with only one or two results, a growing item just consumes
+     all the row's free space (a single result rendered nearly full page
+     width, a real regression this replaces). flex-grow:0 with a fixed
+     basis means every card is always exactly this size, whether there's
+     one result or twenty, and they simply wrap onto more rows as needed.
+   */
+  width: 240px !important;
+  flex: 0 0 240px !important;
+  max-width: none !important;
 }
 
 .searchpage .songs_column,
