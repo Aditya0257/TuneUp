@@ -155,9 +155,19 @@ def normalise_playlist(item: Json) -> Json | None:
     title = item.get("title")
     if not title:
         return None
+    # Community-playlist search results don't carry a "playlistId" field at
+    # all -- only "browseId", prefixed "VL" (e.g. "VLPLxxxx"). Using that
+    # prefixed value straight in a music.youtube.com/playlist?list= URL
+    # isn't a playlist id YouTube recognises, so the link silently landed
+    # on the site's home page instead of the actual playlist. Stripping the
+    # "VL" prefix recovers the real playlist id ("PLxxxx").
+    browse_id = item.get("browseId")
+    playlist_id = item.get("playlistId") or (
+        browse_id[2:] if browse_id and browse_id.startswith("VL") else browse_id
+    )
     return {
-        "browseId": item.get("browseId"),
-        "playlistId": item.get("playlistId"),
+        "browseId": browse_id,
+        "playlistId": playlist_id,
         "title": title,
         "author": _artist_name(item),
         "itemCount": item.get("itemCount"),

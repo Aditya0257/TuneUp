@@ -179,8 +179,15 @@ export function LibraryPage() {
                         </div>
                         <div className="space_x_medium" />
                         <div className="three_dot_x_icon">
+                          {/* Plays has no real source -- ytmusicapi doesn't
+                              expose a play count at all, so "N/A" here is
+                              honest, not a placeholder that was never wired
+                              up. Duration WAS available (it's on the Song
+                              object at like-time) but got dropped by
+                              LikedSong only keeping videoId/title/artist/
+                              thumbnail -- now carried through. */}
                           <p>Plays: N/A</p>
-                          <p>Duration: N/A</p>
+                          <p>Duration: {song.duration ?? 'N/A'}</p>
                           <i className="fa-solid fa-ellipsis" aria-hidden="true" />
                         </div>
                       </div>

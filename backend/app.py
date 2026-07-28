@@ -169,6 +169,7 @@ def _clean_song_payload(data: dict) -> dict | None:
         "title": (data.get("title") or "Unknown title").strip(),
         "artist": (data.get("artist") or "Unknown artist").strip(),
         "thumbnail": data.get("thumbnail"),
+        "duration": data.get("duration"),
     }
 
 

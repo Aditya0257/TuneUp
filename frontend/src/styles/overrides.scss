@@ -1510,3 +1510,53 @@ body {
 :root.tuneup-drawer-open .homepage_searchbar:not(:has(input:focus)) {
   pointer-events: none;
 }
+
+/* ------------------------------------------------------------------------
+   29. Search results had FOUR independent scroll containers stacked inside
+       one page: .songs_column and .community_column each scrolled
+       vertically within their own fixed-percentage height (55%/68%), and
+       .album_search_column .flex_container scrolled *horizontally* in a
+       nowrap row -- while .artist_search_column had no scroll of its own
+       at all and could just overflow past its neighbors. Four different
+       scroll behaviors on one page is what read as "everything scrolls in
+       a different direction."
+
+       One scroll region instead: the whole .second_search_row scrolls
+       vertically, every section inside sizes to its actual content
+       (height: auto, no more fixed 55%/68%/850px caps), and Albums wraps
+       into a grid like Community instead of scrolling sideways. A single,
+       predictable "the page scrolls down, that's it" replaces four
+       different scroll containers that each needed to be discovered by
+       trial and error.
+   ------------------------------------------------------------------------ */
+.searchpage .second_search_row {
+  overflow-y: auto !important;
+  align-items: flex-start !important;
+}
+
+.searchpage .first_song_community_search_column,
+.searchpage .second_artist_album_search_column {
+  height: auto !important;
+}
+
+.searchpage .songs_column,
+.searchpage .community_column,
+.searchpage .artist_search_column,
+.searchpage .album_search_column {
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.searchpage .playlists_container {
+  height: auto !important;
+}
+
+.searchpage .album_search_column .flex_container {
+  flex-wrap: wrap !important;
+  overflow-x: visible !important;
+  scroll-snap-type: none !important;
+}
+
+.searchpage .album_search_column .album {
+  margin-bottom: 20px !important;
+}

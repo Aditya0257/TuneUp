@@ -2,12 +2,10 @@ import { useSearchParams } from 'react-router-dom';
 
 import { api } from '@/api/client';
 import { ArtistRow } from '@/components/ArtistRow';
-import { SeeAllToggle } from '@/components/SeeAllToggle';
 import { Skeleton } from '@/components/Skeleton';
 import { SongRow } from '@/components/SongRow';
 import { EmptyMessage, ErrorMessage } from '@/components/StatusMessage';
 import { useAsync } from '@/hooks/useAsync';
-import { useExpandable } from '@/hooks/useExpandable';
 import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
 
 /**
@@ -91,19 +89,11 @@ function AlbumSkeletonCard() {
  * a Flask branch that printed an error dict and returned `None`, which Flask
  * turned into a 500.
  */
-function SectionHeading({
-  title,
-  className,
-  isExpandable,
-  expanded,
-  onToggle,
-}: {
-  title: string;
-  className: string;
-  isExpandable: boolean;
-  expanded: boolean;
-  onToggle: () => void;
-}) {
+/* No "See all" toggle here (unlike Home's shelves) -- search results are
+   already the thing you asked for, and the whole page is one continuous
+   scroll now (see overrides.scss #29), so gating them behind a click added
+   a step between "searched" and "can see everything" for no real benefit. */
+function SectionHeading({ title, className }: { title: string; className: string }) {
   return (
     <div className={className}>
       <div className="inner_heading_row">
@@ -111,7 +101,6 @@ function SectionHeading({
           <h2>{title}</h2>
         </div>
       </div>
-      <SeeAllToggle isExpandable={isExpandable} expanded={expanded} onToggle={onToggle} />
     </div>
   );
 }
@@ -130,11 +119,6 @@ export function SearchPage() {
   const albums = data?.albums ?? [];
   const artists = data?.artists ?? [];
   const playlists = data?.playlists ?? [];
-
-  const songsList = useExpandable(songs, 5);
-  const playlistsList = useExpandable(playlists, 4);
-  const artistsList = useExpandable(artists, 5);
-  const albumsList = useExpandable(albums, 5);
 
   const hasNoResults =
     !loading &&
@@ -243,15 +227,9 @@ export function SearchPage() {
           {!statusOnly && !loading && (
           <>
           <div className="first_song_community_search_column">
-            <SectionHeading
-              title="Songs"
-              className="first_song_search_heading_row"
-              isExpandable={songsList.isExpandable}
-              expanded={songsList.expanded}
-              onToggle={songsList.toggle}
-            />
+            <SectionHeading title="Songs" className="first_song_search_heading_row" />
             <div className="songs_column">
-              {songsList.visible.map((song, index) => (
+              {songs.map((song, index) => (
                 <SongRow
                   key={song.videoId}
                   song={song}
@@ -261,16 +239,10 @@ export function SearchPage() {
               ))}
             </div>
 
-            <SectionHeading
-              title="Community"
-              className="first_community_search_heading_row"
-              isExpandable={playlistsList.isExpandable}
-              expanded={playlistsList.expanded}
-              onToggle={playlistsList.toggle}
-            />
+            <SectionHeading title="Community" className="first_community_search_heading_row" />
             <div className="community_column">
               <div className="playlists_container">
-                {playlistsList.visible.map((playlist) => {
+                {playlists.map((playlist) => {
                   const id = playlist.playlistId ?? playlist.browseId;
                   return (
                     <a
@@ -303,15 +275,9 @@ export function SearchPage() {
           <div className="space_x_medium" />
 
           <div className="second_artist_album_search_column">
-            <SectionHeading
-              title="Artists"
-              className="second_artist_search_heading_row"
-              isExpandable={artistsList.isExpandable}
-              expanded={artistsList.expanded}
-              onToggle={artistsList.toggle}
-            />
+            <SectionHeading title="Artists" className="second_artist_search_heading_row" />
             <div className="artist_search_column">
-              {artistsList.visible.map((artist) => (
+              {artists.map((artist) => (
                 <ArtistRow
                   key={artist.browseId ?? artist.name}
                   variant="search"
@@ -325,16 +291,10 @@ export function SearchPage() {
               ))}
             </div>
 
-            <SectionHeading
-              title="Albums"
-              className="second_album_search_heading_row"
-              isExpandable={albumsList.isExpandable}
-              expanded={albumsList.expanded}
-              onToggle={albumsList.toggle}
-            />
+            <SectionHeading title="Albums" className="second_album_search_heading_row" />
             <div className="album_search_column">
               <div className="flex_container">
-                {albumsList.visible.map((album) => (
+                {albums.map((album) => (
                   <a
                     className="album"
                     key={album.browseId ?? album.title}

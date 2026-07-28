@@ -49,6 +49,7 @@ function toLikedSong(song: Song | LikedSong): LikedSong {
     title: song.title,
     artist: song.artist,
     thumbnail: song.thumbnail ?? null,
+    duration: song.duration ?? null,
   };
 }
 
