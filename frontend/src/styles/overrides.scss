@@ -1710,21 +1710,51 @@ body {
   }
 }
 
+/* .dropdown/.dropdown-content's positioning in main.scss is nested under
+   one specific, long ancestor chain (Quick Picks' exact row structure) --
+   not a bare ".dropdown .dropdown-content" rule. TrackDropdown/
+   ArtistExternalMenu are shared components now reused in row structures
+   that chain doesn't match (Library's liked-songs row, Home's
+   Recommended Artist row), so `position: absolute` never applied there:
+   the menu rendered as a normal in-flow block instead of a floating
+   overlay, pushing the rest of the row's content down and sideways.
+   Un-scoped so it works the same everywhere the component is used. */
+.dropdown {
+  position: relative !important;
+  display: inline-block !important;
+}
+
 .dropdown-content {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  left: auto !important;
+  z-index: 50 !important;
   min-width: 210px !important;
   max-height: 320px !important;
   overflow-y: auto !important;
+  /* Follows the page theme instead of a fixed white/black -- this menu
+     appears on every page's content, not on the always-dark chrome. */
+  background: var(--tuneup-page-bg) !important;
+  border: 1px solid rgba(128, 128, 140, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18) !important;
 
   a {
     display: flex !important;
     align-items: center;
     gap: 8px;
+    color: var(--tuneup-page-text) !important;
+    background: none !important;
+
+    &:hover {
+      background: rgba(128, 128, 140, 0.14) !important;
+    }
   }
 }
 
 .dropdown-divider {
   height: 1px;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(128, 128, 140, 0.25);
   margin: 4px 0;
 }
 
@@ -1732,7 +1762,7 @@ body {
   padding: 8px 16px 4px;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #8a8a92;
+  color: var(--tuneup-page-text-dim);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -1740,7 +1770,7 @@ body {
 .dropdown-empty-hint {
   padding: 2px 16px 8px;
   font-size: 1.2rem;
-  color: #8a8a92;
+  color: var(--tuneup-page-text-dim);
 }
 
 /* ------------------------------------------------------------------------
