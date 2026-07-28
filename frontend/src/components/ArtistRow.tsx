@@ -101,7 +101,16 @@ export function ArtistRow({
   song,
   browseId,
 }: ArtistRowProps) {
-  const interactive = Boolean(onSelect);
+  // Search rows had no onSelect at all -- the card itself did nothing
+  // except reveal the "..." menu's own external link, which most people
+  // will never think to open just to find out the name is clickable at
+  // all. Since this app is meant to be actually used (hosted, not just a
+  // local demo), everything that visually looks like a card should do
+  // *something* -- falls back to the same "open on YouTube Music" the
+  // menu offers, so clicking the row itself is no longer a dead end.
+  const effectiveOnSelect =
+    onSelect ?? (browseId ? () => window.open(`https://music.youtube.com/channel/${browseId}`, '_blank', 'noopener,noreferrer') : undefined);
+  const interactive = Boolean(effectiveOnSelect);
   const hasStats = Boolean(followers || plays);
 
   return (
@@ -110,14 +119,14 @@ export function ArtistRow({
         className="artist_name_and_img"
         role={interactive ? 'button' : undefined}
         tabIndex={interactive ? 0 : undefined}
-        aria-label={interactive ? `Play ${name}` : undefined}
-        onClick={onSelect}
+        aria-label={interactive ? (onSelect ? `Play ${name}` : `Open ${name} on YouTube Music`) : undefined}
+        onClick={effectiveOnSelect}
         onKeyDown={
           interactive
             ? (event) => {
                 if (event.key === 'Enter' || event.key === ' ') {
                   event.preventDefault();
-                  onSelect?.();
+                  effectiveOnSelect?.();
                 }
               }
             : undefined

@@ -2120,3 +2120,11 @@ body {
   }
 }
 
+/* Search's artist cards had no cursor affordance at all -- neither
+   variant's markup ever set one, since the original design assumed
+   these rows were inert. Now that both are genuinely clickable
+   (ArtistRow.tsx), a pointer cursor makes that obvious before the click. */
+.artist_name_and_img[role='button'] {
+  cursor: pointer;
+}
+
