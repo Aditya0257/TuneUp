@@ -783,23 +783,24 @@ body {
        as .historypage.
    ------------------------------------------------------------------------ */
 .playlistspage {
+  // Same exact sizing as .homepage/.searchpage/.musicpage -- shrinking this
+  // to work around the grid overflow bug made this panel a different size
+  // than every other page, which the independently-fixed-positioned search
+  // bar isn't calibrated for: its corner no longer lined up with the
+  // panel's rounded corner, showing as a visible seam. The flex-wrap fix
+  // below doesn't need extra room to avoid overflowing, so this reverts.
   position: fixed;
-  width: 91.5vw;
+  width: 92.7vw;
   height: 97.5vh;
   margin-top: 0.5%;
   margin-bottom: 0.5%;
-  margin-right: 1.7%;
+  margin-right: 0.5%;
   margin-left: 6.4%;
   background: #ffffff;
   border-radius: 25px;
   padding: 32px 40px;
   overflow-x: hidden;
   overflow-y: auto;
-  // Reserves the scrollbar's width in layout up front (rather than
-  // shrinking the content box only once a scrollbar appears), which is
-  // what let the grid below claim a hair more width than was actually
-  // visible and clip its last column.
-  scrollbar-gutter: stable;
   box-sizing: border-box;
   font-family: 'Mukta', sans-serif;
 
