@@ -81,7 +81,7 @@ export function LibraryPage() {
 
   return (
     <div className="musicpage">
-      <div className="test_div">
+      <div className="test_div" title="Drag to reveal the queue and player">
         <div className="vl" />
       </div>
 

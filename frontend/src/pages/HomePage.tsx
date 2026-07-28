@@ -36,7 +36,7 @@ export function HomePage() {
 
   return (
     <div id="changable">
-      <div className="test_div">
+      <div className="test_div" title="Drag to reveal the queue and player">
         <div className="vl" />
       </div>
       <div className="main_column">

@@ -127,7 +127,7 @@ export function SearchPage() {
 
   return (
     <div className="searchpage">
-      <div className="test_div">
+      <div className="test_div" title="Drag to reveal the queue and player">
         <div className="vl" />
       </div>
       <div className="main_column">

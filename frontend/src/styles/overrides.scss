@@ -1027,3 +1027,52 @@ body {
     pointer-events: none;
   }
 }
+
+/* ------------------------------------------------------------------------
+   17. Chrome polish, at the user's explicit request to go beyond "keep the
+       original layout" for these two specific things:
+
+       a) The drag handle was a plain 4px grey line with no affordance --
+          nothing said "drag me" about it. Now a rounded grip that reacts
+          to hover, with a native tooltip via the title attribute in JSX.
+
+       b) The thin margin framing every page (0.5-2% on three sides) read
+          as an unpolished gap rather than a deliberate frame. Tightened
+          uniformly and the corners away from the sidebar are now square,
+          for a cleaner edge-to-edge dock against the browser window
+          instead of a card floating on all four sides.
+
+       !important throughout: .homepage sets its own margin/border-radius
+       (equal-or-lower specificity fight), and .searchpage/.musicpage
+       don't set margin at all currently, which is a fight of a different
+       kind -- if left unforced, a future original-file change could
+       silently reintroduce the old margin with no competing rule to catch
+       it. Forcing all five here keeps them uniform on purpose.
+   ------------------------------------------------------------------------ */
+.homepage,
+.searchpage,
+.musicpage,
+.historypage,
+.playlistspage {
+  margin: 0.3% 0.3% 0.3% 6.2% !important;
+  border-radius: 20px !important;
+}
+
+.test_div .vl {
+  width: 5px !important;
+  height: 56px !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: rgba(120, 120, 130, 0.35) !important;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.test_div:hover .vl,
+.test_div:focus-within .vl {
+  background: var(--tuneup-accent) !important;
+  transform: scaleX(1.4);
+}
+
+.test_div {
+  cursor: grab;
+}
