@@ -1214,3 +1214,61 @@ body {
 .homepage_searchbar {
   right: 4.5% !important;
 }
+
+/* ------------------------------------------------------------------------
+   21. New Releases image sizing was driven entirely by viewport HEIGHT
+       (24.1vh square), completely independent of its actual grid column
+       WIDTH (.mixed_grid_data is grid-template-columns: 1fr 1fr). Narrow
+       the browser window without changing its height and the fixed-size
+       square stops fitting its shrinking column, spilling into the
+       neighboring card. Sized to the column's own width instead, so it
+       can never be wider than the space actually given to it.
+   ------------------------------------------------------------------------ */
+.mixed_grid_data .image_box {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1 !important;
+}
+
+.mixed_grid_data {
+  overflow-x: hidden;
+}
+
+/* ------------------------------------------------------------------------
+   22. Library's Playlists grid (3 columns, up to 6 cards = 2 rows) was
+       taller than its allotted space at ordinary desktop window sizes,
+       not just narrow ones -- with `overflow: hidden`, the second row
+       just silently clipped instead of overlapping anything, which reads
+       as broken/missing content rather than an obvious bug. Scrollable
+       instead of clipped, and the card image sized to its column's width
+       (aspect-ratio) instead of a fixed 170px that distorted as columns
+       narrowed.
+   ------------------------------------------------------------------------ */
+.playlist_grid_blocks {
+  overflow: hidden !important;
+  overflow-y: auto !important;
+}
+
+.playlist_image {
+  height: auto !important;
+  aspect-ratio: 16 / 9 !important;
+}
+
+/* ------------------------------------------------------------------------
+   23. Saved Artists avatar: flexbox shrank its WIDTH as the column
+       narrowed (default flex-shrink: 1) but its height stayed a fixed
+       100px, so the circular avatar visibly ovals/squishes under ~1100px
+       browser width instead of staying circular. Locking flex-shrink to 0
+       keeps both dimensions moving together; long names get an ellipsis
+       instead of wrapping awkwardly against the squeezed avatar.
+   ------------------------------------------------------------------------ */
+.artist_image {
+  flex-shrink: 0 !important;
+}
+
+.artist_details h3,
+.artist_details p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
