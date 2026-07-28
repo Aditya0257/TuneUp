@@ -19,6 +19,9 @@
   --tuneup-chrome-surface: #131939; // original .music_play_column background
   --tuneup-chrome-text: #ffffff;
   --tuneup-chrome-text-dim: #c4c4c5; // original .fixed_side_navbar color
+  --tuneup-page-bg: #ffffff; // original page panel background
+  --tuneup-page-text: #26262b;
+  --tuneup-page-text-dim: #6b6b72;
 }
 
 /* ------------------------------------------------------------------------
@@ -292,6 +295,22 @@ body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  // Fades the bottom edge of the list into transparent -- the standard
+  // "there's more, scroll for it" cue (same idea as Spotify/Apple Music
+  // use), so a scrollable list doesn't just look like a hard content cutoff.
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to bottom, black calc(100% - 24px), transparent 100%);
+}
+
+/* Recommended Artist column got a bit more room so its default 4 rows fit
+   without needing to scroll at all in the common case -- New Releases/
+   Quick Picks below give up the same amount of height in exchange. */
+.second_home_row {
+  height: 36% !important;
+}
+
+.third_home_row {
+  top: 50% !important;
 }
 
 /* Genre/mood pills were plain static tags in the original -- no click
@@ -613,7 +632,11 @@ body {
 
 .tuneup_settings_row {
   display: flex;
-  align-items: center;
+  // flex-end, not center: the color fields are a label + swatch stack, so
+  // centering the row put the Reset button noticeably higher than the
+  // swatches themselves. Aligning to the bottom lines the button up with
+  // the swatches instead of the label text above them.
+  align-items: flex-end;
   gap: 16px;
 }
 
@@ -1056,6 +1079,38 @@ body {
 .playlistspage {
   margin: 0.3% 0.3% 0.3% 6.2% !important;
   border-radius: 20px !important;
+  background-color: var(--tuneup-page-bg) !important;
+}
+
+/* Page background is themeable (Settings -> Theme -> Page background), so
+   the main heading/paragraph text recolors for contrast against whatever's
+   picked -- white text would vanish on a white page, same as dark text
+   would on a dark one. Scoped to headings/paragraphs rather than a blanket
+   `*` selector: the search "See all" links, category pills, and status
+   cards already carry their own deliberate colors (some via their own CSS
+   vars), and flattening everything to one color would lose that hierarchy
+   instead of just fixing contrast. */
+.homepage h1,
+.homepage h2,
+.homepage h3,
+.homepage p,
+.searchpage h1,
+.searchpage h2,
+.searchpage h3,
+.searchpage p,
+.musicpage h1,
+.musicpage h2,
+.musicpage h3,
+.musicpage p,
+.historypage h1,
+.historypage h2,
+.historypage h3,
+.historypage p,
+.playlistspage h1,
+.playlistspage h2,
+.playlistspage h3,
+.playlistspage p {
+  color: var(--tuneup-page-text) !important;
 }
 
 .test_div .vl {

@@ -4,14 +4,16 @@ import { readJson, writeJson } from '@/utils/storage';
  * The app's real theming system: pick a primary and a secondary color plus
  * a light/dark mode, and every other chrome color (backgrounds, panels,
  * surfaces, text) is derived from those three inputs -- not five
- * independent raw swatches. Scoped deliberately to the app's *chrome*: the
+ * independent raw swatches. Scoped mostly to the app's *chrome*: the
  * sidebar frame, the queue/player panel, and the modals this rebuild added.
  *
- * The white content panels (Home/Search/Library) keep their original
- * hardcoded colors untouched -- their text colors are baked into the
- * ported stylesheets, so inverting the background there without also
- * rewriting every text color in those files would just make text
- * illegible. Out of scope by design, not an oversight.
+ * pageBg is the one thing that reaches past chrome into the white content
+ * panels (Home/Search/Library/History/Playlists) -- a single background
+ * color for all of them, with the main heading/paragraph text recolored
+ * for contrast against whatever's picked (dark text on a light page,
+ * white text on a dark one). It does NOT try to recolor every hardcoded
+ * accent in the ported stylesheets (link colors, category pills, etc.) --
+ * that would mean rewriting those files, not overriding them.
  */
 
 export type ThemeMode = 'light' | 'dark';
@@ -20,6 +22,7 @@ export interface ThemeSettings {
   primary: string;
   secondary: string;
   mode: ThemeMode;
+  pageBg: string;
 }
 
 const THEME_STORAGE_KEY = 'tuneupTheme';
@@ -28,6 +31,7 @@ export const DEFAULT_THEME: ThemeSettings = {
   primary: '#393357', // the original body/chrome purple
   secondary: '#2c55ea', // the original's one hardcoded accent (rgb(44, 85, 234))
   mode: 'dark', // the original was only ever designed dark-chrome
+  pageBg: '#ffffff', // the original's page panels were always white
 };
 
 // -- minimal hex <-> HSL, no dependency -------------------------------------
@@ -110,7 +114,32 @@ export function computeChromeTokens({ primary, secondary, mode }: ThemeSettings)
   };
 }
 
-function applyTokens(tokens: ChromeTokens): void {
+/** WCAG-style relative luminance, to decide whether a background reads as light or dark. */
+function relativeLuminance(hex: string): number {
+  const normalized = hex.replace('#', '');
+  const channels = [0, 2, 4].map((i) => {
+    const c = parseInt(normalized.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+export interface PageTokens {
+  bg: string;
+  text: string;
+  textDim: string;
+}
+
+export function computePageTokens(pageBg: string): PageTokens {
+  const isLight = relativeLuminance(pageBg) > 0.5;
+  return {
+    bg: pageBg,
+    text: isLight ? '#26262b' : '#ffffff',
+    textDim: isLight ? '#6b6b72' : '#c4c4c5',
+  };
+}
+
+function applyTokens(tokens: ChromeTokens, page: PageTokens): void {
   const root = document.documentElement.style;
   root.setProperty('--tuneup-chrome-bg', tokens.bg);
   root.setProperty('--tuneup-chrome-panel', tokens.panel);
@@ -118,6 +147,9 @@ function applyTokens(tokens: ChromeTokens): void {
   root.setProperty('--tuneup-chrome-text', tokens.text);
   root.setProperty('--tuneup-chrome-text-dim', tokens.textDim);
   root.setProperty('--tuneup-accent', tokens.accent);
+  root.setProperty('--tuneup-page-bg', page.bg);
+  root.setProperty('--tuneup-page-text', page.text);
+  root.setProperty('--tuneup-page-text-dim', page.textDim);
 }
 
 export function getStoredTheme(): ThemeSettings {
@@ -125,7 +157,7 @@ export function getStoredTheme(): ThemeSettings {
 }
 
 export function applyTheme(theme: ThemeSettings): void {
-  applyTokens(computeChromeTokens(theme));
+  applyTokens(computeChromeTokens(theme), computePageTokens(theme.pageBg));
 }
 
 export function setStoredTheme(theme: ThemeSettings): void {

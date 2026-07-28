@@ -31,7 +31,6 @@ export function HomePage() {
   const genres = data?.genres ?? [];
   const moods = data?.moods ?? [];
 
-  const recommendedList = useExpandable(recommended, 3);
   const quickPicksList = useExpandable(quickPicks, 5);
 
   return (
@@ -67,7 +66,7 @@ export function HomePage() {
                   {/* Reuses the real .first_artist_row markup (not a
                       generic skeleton box) so the shimmer sits in exactly
                       the same spot the real row's image/text will. */}
-                  {[0, 1, 2].map((i) => (
+                  {[0, 1, 2, 3].map((i) => (
                     <div className="first_artist_row" key={i}>
                       <div className="artist_name_and_img">
                         <div className="image_box">
@@ -166,14 +165,17 @@ export function HomePage() {
                       <h2>Recommended Artist</h2>
                     </div>
                   </div>
-                  <SeeAllToggle
-                    isExpandable={recommendedList.isExpandable}
-                    expanded={recommendedList.expanded}
-                    onToggle={recommendedList.toggle}
-                  />
                 </div>
                 <div className="spacer_y_small" />
 
+                {/*
+                  No "See all"/"Show less" toggle here on purpose -- for a
+                  short list like this, a click-to-expand adds friction a
+                  plain scrollable list doesn't need. Shows 4 without
+                  scrolling (the column's sized for exactly that); a fade
+                  at the bottom hints there's more to scroll to when the
+                  list runs longer than that.
+                */}
                 <div className="recommended_artist_list">
                   {recommended.length === 0 && (
                     <EmptyMessage message="No recommendations right now. Try a search instead." />
@@ -183,7 +185,7 @@ export function HomePage() {
                     entry is really a track. The original rendered them as artist
                     cards but left them inert; clicking one plays it now.
                   */}
-                  {recommendedList.visible.map((song) => (
+                  {recommended.map((song) => (
                     <ArtistRow
                       key={song.videoId}
                       variant="home"

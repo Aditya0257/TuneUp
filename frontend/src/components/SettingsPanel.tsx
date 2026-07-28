@@ -88,6 +88,26 @@ export function SettingsPanel({ onClose }: { onClose: () => void }) {
       </section>
 
       <section className="tuneup_settings_section">
+        <h3>Page background</h3>
+        <p className="tuneup_settings_hint">
+          The white background behind Home, Search, Library, History and Playlists -- shared
+          across all of them. Text on these pages switches to white automatically on a dark
+          background, and back to dark text on a light one, so it stays readable either way.
+        </p>
+        <div className="tuneup_settings_row">
+          <label className="tuneup_color_field">
+            <span>Page background</span>
+            <input
+              type="color"
+              value={theme.pageBg}
+              onChange={(event) => update({ pageBg: event.target.value })}
+              aria-label="Page background color"
+            />
+          </label>
+        </div>
+      </section>
+
+      <section className="tuneup_settings_section">
         <h3>Local data</h3>
         <p className="tuneup_settings_hint">
           Your queue and a locally-cached copy of your liked songs live in this browser&rsquo;s
