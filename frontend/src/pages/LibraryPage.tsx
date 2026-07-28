@@ -307,7 +307,7 @@ export function LibraryPage() {
                     <div className="artist_details">
                       <h3>{artist.name}</h3>
                       <p>{artist.likedCount} liked song{artist.likedCount === 1 ? '' : 's'}</p>
-                      <p>e.g. {artist.exampleTrack}</p>
+                      <p className="artist_example_track">e.g. {artist.exampleTrack}</p>
                     </div>
                   </div>
                 ))}

@@ -1362,11 +1362,46 @@ body {
   flex-shrink: 0 !important;
 }
 
-.artist_details h3,
-.artist_details p {
+/* .artist_details is a flex child (.artist_item is display:flex) with no
+   explicit width -- flex items default to min-width:auto, which lets them
+   grow to fit their content instead of shrinking, so text-overflow:
+   ellipsis below never actually got a chance to fire. That's what let the
+   "e.g. <track>" line push past the card and scroll off horizontally
+   instead of wrapping or truncating. */
+.artist_details {
+  min-width: 0;
+}
+
+.artist_details h3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* The artist name truncates (a cut-off name is still identifiable, and
+   wrapping it looked awkward squeezed next to the avatar) but the example
+   track title wraps instead -- a full song title, however long, staying
+   on the page beats either cutting it off or letting it scroll sideways. */
+.artist_example_track {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* ------------------------------------------------------------------------
+   24b. .covering_container is a backdrop specific to the Library page --
+        it sits directly behind "Library"/"Liked Songs"/"Playlists" (Home,
+        Search, History and Playlists have no equivalent extra layer, they
+        just use the themed page background directly). It was hardcoded to
+        #F5F5F5 regardless of the page theme, while the headings sitting
+        on top of it get their color from the *actual* themed background
+        via the rule below. Pick a dark page theme and the headings turn
+        white (correct for a dark background) but the backdrop actually
+        behind them stayed a hardcoded near-white -- white-on-near-white,
+        invisible. Only Library showed this because only Library has this
+        extra hardcoded layer to fall out of sync with the theme.
+   ------------------------------------------------------------------------ */
+.covering_container {
+  background-color: var(--tuneup-page-bg) !important;
 }
 
 /* ------------------------------------------------------------------------
