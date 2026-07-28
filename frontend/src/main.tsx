@@ -7,7 +7,15 @@ import { LikedSongsProvider } from '@/liked/LikedSongsContext';
 import { PlayerProvider } from '@/player/PlayerContext';
 import { initTheme } from '@/utils/theme';
 
-initTheme();
+try {
+  // A theme bug here runs before React ever mounts -- an uncaught error
+  // blanks the entire app with no error overlay, no fallback UI, nothing.
+  // That happened for real once already (a stored theme predating a new
+  // field). Whatever goes wrong with a saved theme, the app has to boot.
+  initTheme();
+} catch (error) {
+  console.error('Failed to apply saved theme, continuing with defaults:', error);
+}
 
 // The three original stylesheets, unmodified apart from the @font-face URL.
 // Each is scoped under its own page root (.homepage / .musicpage / .searchpage),

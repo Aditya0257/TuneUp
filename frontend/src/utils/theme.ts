@@ -153,7 +153,13 @@ function applyTokens(tokens: ChromeTokens, page: PageTokens): void {
 }
 
 export function getStoredTheme(): ThemeSettings {
-  return readJson<ThemeSettings>(THEME_STORAGE_KEY, DEFAULT_THEME);
+  // Merged with defaults, not trusted outright: anyone who saved a theme
+  // before `pageBg` (or any future field) existed has a stored object
+  // missing it. Reading that key back as `undefined` and handing it to
+  // computePageTokens() crashed before React ever mounted -- a blank page
+  // with no error overlay, since the crash happened at module-eval time
+  // in main.tsx, before the render even starts.
+  return { ...DEFAULT_THEME, ...readJson<Partial<ThemeSettings>>(THEME_STORAGE_KEY, {}) };
 }
 
 export function applyTheme(theme: ThemeSettings): void {
