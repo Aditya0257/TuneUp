@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import { TrackDropdown } from '@/components/TrackDropdown';
+import { useFloatingMenu } from '@/hooks/useFloatingMenu';
 import type { Song } from '@/types';
 import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
 
@@ -27,28 +28,12 @@ interface ArtistRowProps {
  * warrant its own file, but kept separate from TrackDropdown since the
  * two have nothing in common beyond "an ellipsis that opens something". */
 function ArtistExternalMenu({ name, browseId }: { name: string; browseId: string }) {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onDocumentPointerDown = (event: PointerEvent) => {
-      if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
-    };
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false);
-    };
-    document.addEventListener('pointerdown', onDocumentPointerDown);
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('pointerdown', onDocumentPointerDown);
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [open]);
+  const { open, setOpen, coords, triggerRef, menuRef } = useFloatingMenu<HTMLElement>();
 
   return (
-    <div className="dropdown" ref={containerRef}>
+    <div className="dropdown">
       <i
+        ref={triggerRef}
         className="fa-solid fa-ellipsis"
         role="button"
         tabIndex={0}
@@ -67,20 +52,30 @@ function ArtistExternalMenu({ name, browseId }: { name: string; browseId: string
           }
         }}
       />
-      <div className="dropdown-content" style={{ display: open ? 'block' : 'none' }} role="menu">
-        <a
-          href={`https://music.youtube.com/channel/${browseId}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          role="menuitem"
-          onClick={(event) => {
-            event.stopPropagation();
-            setOpen(false);
-          }}
-        >
-          View on YouTube Music
-        </a>
-      </div>
+      {open &&
+        coords &&
+        createPortal(
+          <div
+            className="dropdown-content"
+            ref={menuRef}
+            style={{ top: coords.top, right: coords.right, display: 'block' }}
+            role="menu"
+          >
+            <a
+              href={`https://music.youtube.com/channel/${browseId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              role="menuitem"
+              onClick={(event) => {
+                event.stopPropagation();
+                setOpen(false);
+              }}
+            >
+              View on YouTube Music
+            </a>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

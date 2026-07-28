@@ -1718,18 +1718,29 @@ body {
    Recommended Artist row), so `position: absolute` never applied there:
    the menu rendered as a normal in-flow block instead of a floating
    overlay, pushing the rest of the row's content down and sideways.
-   Un-scoped so it works the same everywhere the component is used. */
+
+   Being an absolutely-positioned child of the trigger was itself the
+   wrong approach anyway: every one of these rows lives inside a
+   scrollable list, and a scrolling ancestor's overflow clips ANY
+   descendant that extends past its edge, position:absolute or not --
+   showing anywhere from all of the menu to none of it depending on
+   where the row happened to sit in its own scroll container. Both
+   components now render the menu through a portal into document.body
+   (useFloatingMenu), positioned in fixed viewport coordinates computed
+   from the trigger icon's own on-screen position -- escaping every
+   ancestor's overflow entirely, not just the one narrow chain the
+   original CSS assumed. `top`/`right` come from that hook as inline
+   styles now, not from CSS, so they're deliberately left un-!important'd
+   below (an !important here would silently override the real computed
+   position with a stale fixed value again). */
 .dropdown {
   position: relative !important;
   display: inline-block !important;
 }
 
 .dropdown-content {
-  position: absolute !important;
-  top: 100% !important;
-  right: 0 !important;
-  left: auto !important;
-  z-index: 50 !important;
+  position: fixed !important;
+  z-index: 500 !important;
   min-width: 220px !important;
   max-height: 320px !important;
   overflow-y: auto !important;
