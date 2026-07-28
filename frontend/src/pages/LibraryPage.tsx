@@ -1,11 +1,9 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { api } from '@/api/client';
 import { SeeAllToggle } from '@/components/SeeAllToggle';
 import { Skeleton } from '@/components/Skeleton';
 import { EmptyMessage, ErrorMessage } from '@/components/StatusMessage';
-import { useAsync } from '@/hooks/useAsync';
 import { useExpandable } from '@/hooks/useExpandable';
 import { useLikedSongs } from '@/liked/LikedSongsContext';
 import { usePlayer } from '@/player/PlayerContext';
@@ -20,30 +18,15 @@ import { handleThumbnailError, thumbnailOrFallback, trackNumber } from '@/utils/
  * database rewrite just to display a list the browser already had. The liked
  * songs come straight from context now.
  *
- * Playlists and Saved Artists were hardcoded placeholder data (fake names,
- * stock photos) in the original template. Both are now derived from real
- * data instead: Saved Artists comes straight from your liked songs, and
- * Playlists is a real YouTube Music search seeded by your most-liked artist
- * (falls back to a generic query if you haven't liked anything yet).
+ * Saved Artists was hardcoded placeholder data (fake names, stock photos) in
+ * the original template -- now derived straight from your liked songs. This
+ * page used to also have its own Playlists grid (a real YouTube Music
+ * search seeded by your most-liked artist), but that's redundant with the
+ * dedicated Playlists page now, so it's gone from here -- Liked Songs is the
+ * only thing left, with the room that freed up.
  */
 const LIKED_SONGS_COVER =
   'https://images.unsplash.com/photo-1504680177321-2e6a879aac86?ixlib=rb-4.0.3&auto=format&fit=crop&w=1740&q=80';
-
-function topArtist(likedSongs: { artist: string }[]): string | null {
-  const counts = new Map<string, number>();
-  for (const song of likedSongs) {
-    counts.set(song.artist, (counts.get(song.artist) ?? 0) + 1);
-  }
-  let best: string | null = null;
-  let bestCount = 0;
-  for (const [artist, count] of counts) {
-    if (count > bestCount) {
-      best = artist;
-      bestCount = count;
-    }
-  }
-  return best;
-}
 
 export function LibraryPage() {
   const { likedSongs, loading, error } = useLikedSongs();
@@ -74,14 +57,6 @@ export function LibraryPage() {
     ([, artist]) => artist,
   );
   const savedArtistsList = useExpandable(savedArtists, 6);
-
-  const playlistQuery = topArtist(likedSongs) ?? 'Popular Music';
-  const { data: playlistData, loading: playlistsLoading } = useAsync(
-    () => api.search(playlistQuery, 6),
-    [playlistQuery],
-    true,
-  );
-  const playlists = playlistData?.playlists ?? [];
 
   return (
     <div className="musicpage">
@@ -213,63 +188,6 @@ export function LibraryPage() {
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-
-          <div className="third_music_row" id="playlists">
-            <div className="heading_playlist">
-              <h2>Playlists</h2>
-            </div>
-            <div className="playlist_grid_blocks">
-              {/* This used to show "No playlists yet" the instant the page
-                  mounted, before the search request had even come back --
-                  a real empty state and a still-loading state look
-                  identical without this, so every visit flashed a false
-                  negative for a moment. */}
-              {playlistsLoading && playlists.length === 0 &&
-                [0, 1, 2].map((i) => (
-                  <div className="playlist_block" key={i} aria-hidden="true">
-                    <div className="playlist_image">
-                      <Skeleton width="100%" height="100%" radius="0" />
-                    </div>
-                    <div className="playlist_details">
-                      <Skeleton width="70%" height="14px" style={{ marginTop: 8 }} />
-                      <Skeleton width="45%" height="11px" style={{ marginTop: 6 }} />
-                    </div>
-                  </div>
-                ))}
-              {!playlistsLoading && playlists.length === 0 && (
-                <EmptyMessage message="No playlists to show yet -- like a few songs to seed recommendations." />
-              )}
-              {playlists.map((playlist) => {
-                const id = playlist.playlistId ?? playlist.browseId;
-                return (
-                  <a
-                    className="playlist_block"
-                    key={id ?? playlist.title}
-                    href={id ? `https://music.youtube.com/playlist?list=${id}` : undefined}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-disabled={!id || undefined}
-                    onClick={(event) => {
-                      if (!id) event.preventDefault();
-                    }}
-                  >
-                    <div className="playlist_image">
-                      <img
-                        src={thumbnailOrFallback(playlist.thumbnail)}
-                        alt={playlist.title}
-                        loading="lazy"
-                        onError={handleThumbnailError}
-                      />
-                    </div>
-                    <div className="playlist_details">
-                      <h3>{playlist.title}</h3>
-                      {playlist.author && <p>By: {playlist.author}</p>}
-                    </div>
-                  </a>
-                );
-              })}
             </div>
           </div>
         </div>

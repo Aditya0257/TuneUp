@@ -342,8 +342,7 @@ body {
       default link styling and restore the original card cursor/hover feel.
    ------------------------------------------------------------------------ */
 .community_playlist,
-.album,
-.playlist_block {
+.album {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -1331,23 +1330,23 @@ body {
 }
 
 /* ------------------------------------------------------------------------
-   22. Library's Playlists grid (3 columns, up to 6 cards = 2 rows) was
-       taller than its allotted space at ordinary desktop window sizes,
-       not just narrow ones -- with `overflow: hidden`, the second row
-       just silently clipped instead of overlapping anything, which reads
-       as broken/missing content rather than an obvious bug. Scrollable
-       instead of clipped, and the card image sized to its column's width
-       (aspect-ratio) instead of a fixed 170px that distorted as columns
-       narrowed.
+   22. Library's own Playlists grid is gone (removed entirely -- redundant
+       with the dedicated Playlists page), along with the .playlist_grid_
+       blocks/.playlist_image rules that only ever applied to it.
    ------------------------------------------------------------------------ */
-.playlist_grid_blocks {
-  overflow: hidden !important;
-  overflow-y: auto !important;
+.music_first_column {
+  /* Was 47% (top: 12%), leaving the ~38% below to the now-removed
+     Playlists grid. Liked Songs now gets that room instead. */
+  .second_music_row {
+    height: 86% !important;
+  }
 }
 
-.playlist_image {
-  height: auto !important;
-  aspect-ratio: 16 / 9 !important;
+.liked_song_container {
+  /* Was capped at a fixed 40vh regardless of how much vertical room the
+     column actually had -- the point of removing the Playlists section
+     was to give this list more room, so the cap has to grow with it. */
+  max-height: 65vh !important;
 }
 
 /* ------------------------------------------------------------------------
@@ -1409,29 +1408,15 @@ body {
        {color: var(--tuneup-page-text) !important}`) is correct for text
        sitting directly on the themed page background -- but several cards
        inside these pages keep their OWN fixed, non-themed background
-       (Library's Playlists/Saved Artists cards, Search's Community cards,
-       the dedicated Playlists page's cards), and that blanket rule swept
-       their text up too. Pick a dark page theme and that text turned
-       white against a card that's still light -- invisible. These restore
-       each one's ORIGINAL fixed color so it keeps matching its own
-       fixed card background, regardless of the page theme.
+       (Search's Community cards, the dedicated Playlists page's cards),
+       and that blanket rule swept their text up too. Pick a dark page
+       theme and that text turned white against a card that's still
+       light -- invisible. These restore each one's ORIGINAL fixed color
+       so it keeps matching its own fixed card background, regardless of
+       the page theme. (Saved Artists used to be one of these too, but its
+       card now follows the page theme instead of staying fixed -- see
+       the .elevated_card/.artist_item rule further down.)
    ------------------------------------------------------------------------ */
-.musicpage .playlist_details h3 {
-  color: #333 !important;
-}
-
-.musicpage .playlist_details p {
-  color: #666 !important;
-}
-
-.musicpage .artist_details h3 {
-  color: #333 !important;
-}
-
-.musicpage .artist_details p {
-  color: #666 !important;
-}
-
 .searchpage .community_playlist p {
   color: #333333 !important;
 }
@@ -1474,4 +1459,54 @@ body {
 #current-queue .status_spinner {
   border-color: rgba(255, 255, 255, 0.2) !important;
   border-top-color: var(--tuneup-accent) !important;
+}
+
+/* ------------------------------------------------------------------------
+   27. Saved Artists' card (.elevated_card) and each row inside it
+       (.artist_item) were hardcoded to #F5F5F5/#f0f0f0 -- fixed light
+       gray regardless of the page theme, same as the Playlists/Community
+       cards elsewhere. Those stay fixed on purpose (small cards with
+       their own thumbnails, meant to look the same regardless of theme),
+       but Saved Artists is a full-height panel occupying its own column,
+       and a light card sitting in an otherwise dark-themed page reads as
+       a mistake rather than a deliberate design choice. This one follows
+       the page theme instead: the card matches the page background, and
+       each row gets a subtle border (rather than a hardcoded fill) so
+       rows still read as distinct at any theme, light or dark.
+   ------------------------------------------------------------------------ */
+.elevated_card {
+  background: var(--tuneup-page-bg) !important;
+}
+
+.artist_item {
+  background: transparent !important;
+  border: 1px solid rgba(128, 128, 128, 0.25) !important;
+}
+
+/* ------------------------------------------------------------------------
+   28. The search bar (.homepage_searchbar) is fixed to the viewport,
+       independent of the draggable front page -- so dragging the front
+       page open to reveal the queue/player left the search bar floating
+       in the same spot, now overlapping whatever of the revealed content
+       sits underneath it (queue cards, "Saved Artists", etc). Fading it
+       out as the drawer opens (driven by --tuneup-drawer-reveal, written
+       by useHorizontalDrag on every drag move) reads as it sliding away
+       with the page it belongs to, rather than sitting on top of content
+       it was never designed to overlap. Not interactive once mostly
+       faded, so it can't be clicked through to by accident either.
+   ------------------------------------------------------------------------ */
+.homepage_searchbar {
+  opacity: calc(1 - var(--tuneup-drawer-reveal, 0));
+  transition: opacity 0.05s linear;
+}
+
+.homepage_searchbar:has(input:focus) {
+  opacity: 1;
+}
+
+/* Once the drawer's open more than it's closed, the search bar is mostly
+   faded and sitting over revealed queue content -- stop it from
+   intercepting clicks meant for what's now underneath it. */
+:root.tuneup-drawer-open .homepage_searchbar:not(:has(input:focus)) {
+  pointer-events: none;
 }

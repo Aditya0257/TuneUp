@@ -49,7 +49,18 @@ export function useHorizontalDrag(ref: RefObject<HTMLElement>): void {
 
       const nextLeft = event.clientX - grabOffset;
       const maxLeft = (window.innerWidth * MAX_OFFSET_PERCENT) / 100;
-      element.style.left = `${Math.min(Math.max(nextLeft, 0), maxLeft)}px`;
+      const clamped = Math.min(Math.max(nextLeft, 0), maxLeft);
+      element.style.left = `${clamped}px`;
+      // The fixed-position search bar doesn't live inside this draggable
+      // panel, so dragging it open left the search bar floating in place,
+      // overlapping whatever of the queue/player got revealed underneath
+      // it. Fading it out as the panel slides away (see .homepage_searchbar
+      // in overrides.scss) reads as it sliding off with the page it
+      // belongs to, instead of just sitting on top of newly revealed
+      // content.
+      const revealFraction = maxLeft > 0 ? clamped / maxLeft : 0;
+      document.documentElement.style.setProperty('--tuneup-drawer-reveal', String(revealFraction));
+      document.documentElement.classList.toggle('tuneup-drawer-open', revealFraction > 0.3);
     };
 
     const onPointerUp = (event: PointerEvent) => {
