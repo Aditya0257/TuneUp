@@ -323,7 +323,17 @@ export function HomePage() {
                     <EmptyMessage message="No new releases right now." />
                   )}
                   {newReleases.map((album) => (
-                    <div className="first_grid_block" key={`${album.browseId ?? album.title}`}>
+                    <a
+                      className="first_grid_block"
+                      key={`${album.browseId ?? album.title}`}
+                      href={album.browseId ? `https://music.youtube.com/browse/${album.browseId}` : undefined}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-disabled={!album.browseId || undefined}
+                      onClick={(event) => {
+                        if (!album.browseId) event.preventDefault();
+                      }}
+                    >
                       <div className="image_box">
                         <img
                           src={thumbnailOrFallback(album.thumbnail)}
@@ -336,7 +346,7 @@ export function HomePage() {
                         <h2>{album.title}</h2>
                         <p>{album.artist}</p>
                       </div>
-                    </div>
+                    </a>
                   ))}
                 </div>
               </div>

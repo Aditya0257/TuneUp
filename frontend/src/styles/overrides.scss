@@ -342,7 +342,8 @@ body {
       default link styling and restore the original card cursor/hover feel.
    ------------------------------------------------------------------------ */
 .community_playlist,
-.album {
+.album,
+.first_grid_block {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -928,7 +929,18 @@ body {
    ------------------------------------------------------------------------ */
 .tuneup_skeleton {
   display: inline-block;
-  background: linear-gradient(90deg, #ececee 25%, #f6f6f7 37%, #ececee 63%);
+  /* Tied to the page theme (utils/theme.ts computes these two tones from
+     the page background) instead of a hardcoded light gray -- a fixed
+     light shimmer was barely visible against a light page but a glaring
+     near-white slab against a dark one, the opposite of a subtle loading
+     cue. Falls back to the original light-gray values before the theme
+     system has run once. */
+  background: linear-gradient(
+    90deg,
+    var(--tuneup-page-skeleton-base, #ececee) 25%,
+    var(--tuneup-page-skeleton-highlight, #f6f6f7) 37%,
+    var(--tuneup-page-skeleton-base, #ececee) 63%
+  );
   background-size: 400% 100%;
   animation: tuneup_shimmer 1.4s ease infinite;
 }
@@ -945,7 +957,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .tuneup_skeleton {
     animation: none;
-    background: #ececee;
+    background: var(--tuneup-page-skeleton-base, #ececee);
   }
 }
 

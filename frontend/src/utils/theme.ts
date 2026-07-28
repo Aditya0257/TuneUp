@@ -128,6 +128,8 @@ export interface PageTokens {
   bg: string;
   text: string;
   textDim: string;
+  skeletonBase: string;
+  skeletonHighlight: string;
 }
 
 /** WCAG contrast ratio between two colors, each already-computed relative luminance. */
@@ -135,6 +137,22 @@ function contrastRatio(lumA: number, lumB: number): number {
   const lighter = Math.max(lumA, lumB);
   const darker = Math.min(lumA, lumB);
   return (lighter + 0.05) / (darker + 0.05);
+}
+
+/** Loading-skeleton shimmer tones, tied to the page background's own hue
+ * rather than a hardcoded light gray. A fixed light shimmer was barely
+ * visible against a light page (fine) but became a glaring near-white
+ * slab against a dark one -- the opposite of a subtle loading cue. Dark
+ * pages get a couple of shades lighter than typical dark-mode skeleton
+ * treatments use (a visible shimmer, not a white flash); light pages
+ * keep close to the original light-gray values. */
+function skeletonTones(pageBg: string, isDark: boolean): { base: string; highlight: string } {
+  const { h, s } = hexToHsl(pageBg);
+  const cappedS = Math.min(s, 10);
+  if (isDark) {
+    return { base: hslToHex(h, cappedS, 24), highlight: hslToHex(h, cappedS, 30) };
+  }
+  return { base: hslToHex(h, cappedS, 93), highlight: hslToHex(h, cappedS, 97) };
 }
 
 export function computePageTokens(pageBg: string): PageTokens {
@@ -149,10 +167,13 @@ export function computePageTokens(pageBg: string): PageTokens {
   const whiteContrast = contrastRatio(bgLum, relativeLuminance('#ffffff'));
   const darkContrast = contrastRatio(bgLum, relativeLuminance('#26262b'));
   const isDark = whiteContrast > darkContrast;
+  const skeleton = skeletonTones(pageBg, isDark);
   return {
     bg: pageBg,
     text: isDark ? '#ffffff' : '#26262b',
     textDim: isDark ? '#c4c4c5' : '#6b6b72',
+    skeletonBase: skeleton.base,
+    skeletonHighlight: skeleton.highlight,
   };
 }
 
@@ -167,6 +188,8 @@ function applyTokens(tokens: ChromeTokens, page: PageTokens): void {
   root.setProperty('--tuneup-page-bg', page.bg);
   root.setProperty('--tuneup-page-text', page.text);
   root.setProperty('--tuneup-page-text-dim', page.textDim);
+  root.setProperty('--tuneup-page-skeleton-base', page.skeletonBase);
+  root.setProperty('--tuneup-page-skeleton-highlight', page.skeletonHighlight);
 }
 
 export function getStoredTheme(): ThemeSettings {
