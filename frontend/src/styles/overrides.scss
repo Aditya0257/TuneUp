@@ -964,8 +964,8 @@ body {
 .lyrics_text {
   margin: 0 0 16px;
   white-space: pre-line;
-  line-height: 1.7;
-  font-size: 1.4rem;
+  line-height: 1.8;
+  font-size: 1.7rem;
   color: var(--tuneup-chrome-text);
 }
 
@@ -1075,4 +1075,91 @@ body {
 
 .test_div {
   cursor: grab;
+}
+
+/* ------------------------------------------------------------------------
+   18. Queue card hover polish -- these had no hover feedback at all
+       (cursor:pointer only), so clicking one felt like clicking a static
+       image. A little life on hover instead: a lift, a deeper shadow, and
+       the play icon growing slightly.
+   ------------------------------------------------------------------------ */
+.first_song_box {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  &:hover .play_button i,
+  &:focus-visible .play_button i {
+    transform: scale(1.15);
+  }
+
+  .play_button i {
+    transition: transform 0.15s ease;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .first_song_box {
+    transition: none;
+
+    &:hover,
+    &:focus-visible {
+      transform: none;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------
+   19. The lyrics panel's idle state ("play a track to see its lyrics")
+       was just a static icon + line of text -- flat and lifeless for a
+       panel that's otherwise the most content-rich part of the player.
+       A gentle animated equalizer instead (the same bars motif as the app
+       icon), and larger lyrics text once something IS playing, since 1.4rem
+       was cramped for something meant to be read while listening.
+   ------------------------------------------------------------------------ */
+.lyrics_column .status_card {
+  gap: 16px;
+}
+
+.lyrics_column .status_icon_large {
+  display: none;
+}
+
+.lyrics_column .status_card::before {
+  content: '';
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5px;
+  width: 64px;
+  height: 40px;
+  margin: 0 auto;
+  background-image:
+    linear-gradient(var(--tuneup-accent), var(--tuneup-accent)),
+    linear-gradient(var(--tuneup-accent), var(--tuneup-accent)),
+    linear-gradient(var(--tuneup-accent), var(--tuneup-accent));
+  background-repeat: no-repeat;
+  background-size: 8px 60%, 8px 100%, 8px 45%;
+  background-position: left bottom, center bottom, right bottom;
+  animation: tuneup_lyrics_wait 1.2s ease-in-out infinite;
+}
+
+@keyframes tuneup_lyrics_wait {
+  0%,
+  100% {
+    background-size: 8px 60%, 8px 100%, 8px 45%;
+  }
+  50% {
+    background-size: 8px 100%, 8px 45%, 8px 90%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lyrics_column .status_card::before {
+    animation: none;
+  }
 }
