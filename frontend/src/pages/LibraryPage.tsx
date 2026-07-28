@@ -180,15 +180,17 @@ export function LibraryPage() {
                         </div>
                         <div className="space_x_medium" />
                         <div className="three_dot_x_icon">
-                          {/* Plays has no real source -- ytmusicapi doesn't
-                              expose a play count at all, so "N/A" here is
-                              honest, not a placeholder that was never wired
-                              up. Duration WAS available (it's on the Song
-                              object at like-time) but got dropped by
-                              LikedSong only keeping videoId/title/artist/
-                              thumbnail -- now carried through. */}
-                          <p>Plays: N/A</p>
-                          <p>Duration: {song.duration ?? 'N/A'}</p>
+                          {/* Plays had no real source at all -- ytmusicapi
+                              doesn't expose a play count -- so it always
+                              read "Plays: N/A", forever, for every song.
+                              Permanently-empty data reads as a broken
+                              feature even when the label is honest about
+                              why; omitting it is more honest than
+                              displaying a placeholder with no path to ever
+                              having real content. Duration IS real data
+                              (carried through from the Song object at
+                              like-time), so that one stays. */}
+                          {song.duration && <p>Duration: {song.duration}</p>}
                           {/* Was a decorative <i>, no menu behind it at all.
                               Same real dropdown Home/Search rows use. */}
                           <TrackDropdown song={song} />

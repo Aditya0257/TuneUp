@@ -754,6 +754,10 @@ body {
   padding: 8px 10px;
   border-radius: 10px;
 
+  /* A deliberate design choice, not a theme bug: the user specifically
+     likes this bright white glow on hover in Recently Played, even
+     against a dark page theme -- left as-is on purpose. Kept hardcoded
+     rather than theme-following, unlike most other row hovers. */
   &:hover {
     background: #f7f7f8;
   }
@@ -1791,18 +1795,22 @@ body {
   gap: 10px;
   flex-shrink: 0;
 
+  /* Was a hardcoded light fill + dark text -- invisible on a dark page
+     theme (dark text on a background that's ALSO now dark). Outline
+     style instead, following the page's own theme text color, so it
+     stays legible regardless of what background color is picked. */
   button {
     font: inherit;
     font-size: 1.2rem;
     padding: 8px 14px;
     border-radius: 8px;
-    border: 1px solid rgba(128, 128, 140, 0.3);
-    background: #f7f7f8;
-    color: #26262b;
+    border: 1px solid rgba(128, 128, 140, 0.35);
+    background: transparent;
+    color: var(--tuneup-page-text);
     cursor: pointer;
 
     &:hover {
-      background: #ececee;
+      background: rgba(128, 128, 140, 0.14);
     }
   }
 }
@@ -1823,8 +1831,11 @@ body {
     border-radius: 10px;
     cursor: pointer;
 
+    /* Same theme-adaptive overlay as .historypage_row's hover -- a
+       hardcoded light fill here was the same white-glow-on-dark-theme
+       problem. */
     &:hover {
-      background: #f7f7f8;
+      background: rgba(128, 128, 140, 0.14);
     }
 
     .artist_no_name_and_img {
@@ -1991,5 +2002,21 @@ body {
 
 .quickPicks_songs_column .image_box {
   height: 78% !important;
+}
+
+/* ------------------------------------------------------------------------
+   36. Same "stuck together" problem as Quick Picks, one column over:
+       .first_artist_row (Recommended Artist, and its loading skeleton,
+       same markup) has no margin-bottom at all in its base mixin, so its
+       4 rows stack directly touching each other.
+   ------------------------------------------------------------------------ */
+.recommended_artist_list .first_artist_row {
+  margin-bottom: 10px !important;
+  border-radius: 10px;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.035);
+  }
 }
 
