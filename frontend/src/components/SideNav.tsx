@@ -68,7 +68,15 @@ export function SideNav() {
           type="button"
           className="navbar_icon_button"
           aria-label="About"
-          onClick={() => setOpenPanel('about')}
+          onClick={() => {
+            // TEMPORARY diagnostic -- remove once About/Settings opening is
+            // confirmed working. If this alert doesn't appear on click, the
+            // click isn't reaching React at all (an extension or something
+            // else is intercepting it); if it does appear but the panel
+            // still doesn't show, the bug is in the panel's own rendering.
+            window.alert('About button clicked -- opening panel now.');
+            setOpenPanel('about');
+          }}
         >
           <i className="fa-regular fa-user" aria-hidden="true" />
         </button>
@@ -100,7 +108,11 @@ export function SideNav() {
           type="button"
           className="navbar_icon_button"
           aria-label="Settings"
-          onClick={() => setOpenPanel('settings')}
+          onClick={() => {
+            // TEMPORARY diagnostic -- see the matching note on the About button.
+            window.alert('Settings button clicked -- opening panel now.');
+            setOpenPanel('settings');
+          }}
         >
           <i className="fa-solid fa-gear" aria-hidden="true" />
         </button>
