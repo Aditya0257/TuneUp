@@ -2070,6 +2070,16 @@ body {
   height: auto !important;
 }
 
+/* The track number sat flush against the thumbnail with nothing but its
+   own (percentage) width providing any separation -- barely any at this
+   row's now-smaller scale. Library's equivalent number has its own
+   explicit gap and reads fine; this didn't, because it's a different
+   classname (.song_thumbnail there, .image_box here) that never picked
+   up the same spacing. */
+.quickPicks_songs_column .sno_play_pause_icon {
+  margin-right: 12px !important;
+}
+
 .quickPicks_songs_column .image_box {
   height: 52px !important;
   width: 52px !important;
