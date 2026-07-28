@@ -85,15 +85,6 @@ export function SideNav() {
             if (event.key === 'Enter' || event.key === ' ') navigate('/playlists/mine');
           }}
         />
-        <button
-          type="button"
-          className="navbar_icon_button"
-          aria-label="About"
-          onClick={() => setOpenPanel('about')}
-        >
-          <i className="fa-regular fa-user" aria-hidden="true" />
-        </button>
-        <hr />
         <i
           className={`fa-regular fa-folder-closed${pathname === '/history' ? ' nav_active' : ''}`}
           role="link"
@@ -105,6 +96,19 @@ export function SideNav() {
             if (event.key === 'Enter' || event.key === ' ') navigate('/history');
           }}
         />
+        <hr />
+        {/* About and Settings are the only two icons that open a popup
+            instead of navigating to a page -- grouped together below the
+            divider, separate from the real pages above it, instead of
+            About sitting in the middle of the page list. */}
+        <button
+          type="button"
+          className="navbar_icon_button"
+          aria-label="About"
+          onClick={() => setOpenPanel('about')}
+        >
+          <i className="fa-regular fa-user" aria-hidden="true" />
+        </button>
       </div>
       <div>
         <button

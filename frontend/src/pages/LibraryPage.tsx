@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { SeeAllToggle } from '@/components/SeeAllToggle';
 import { Skeleton } from '@/components/Skeleton';
 import { EmptyMessage, ErrorMessage } from '@/components/StatusMessage';
+import { TrackDropdown } from '@/components/TrackDropdown';
 import { useExpandable } from '@/hooks/useExpandable';
 import { useLikedSongs } from '@/liked/LikedSongsContext';
 import { usePlayer } from '@/player/PlayerContext';
@@ -188,7 +189,9 @@ export function LibraryPage() {
                               thumbnail -- now carried through. */}
                           <p>Plays: N/A</p>
                           <p>Duration: {song.duration ?? 'N/A'}</p>
-                          <i className="fa-solid fa-ellipsis" aria-hidden="true" />
+                          {/* Was a decorative <i>, no menu behind it at all.
+                              Same real dropdown Home/Search rows use. */}
+                          <TrackDropdown song={song} />
                         </div>
                       </div>
                     </div>

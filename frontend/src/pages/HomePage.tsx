@@ -234,6 +234,7 @@ export function HomePage() {
                       name={song.artist}
                       thumbnail={song.thumbnail}
                       onSelect={() => playTrack(song)}
+                      song={song}
                     />
                   ))}
                 </div>

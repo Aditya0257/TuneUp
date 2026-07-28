@@ -1,3 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
+
+import { TrackDropdown } from '@/components/TrackDropdown';
+import type { Song } from '@/types';
 import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
 
 interface ArtistRowProps {
@@ -9,6 +13,76 @@ interface ArtistRowProps {
   /** `first_artist_row` on the home page, `artist_row` on the search page. */
   variant: 'home' | 'search';
   onSelect?: () => void;
+  /** Home rows are actually tracks under the hood (see the note in
+   * HomePage.tsx) -- passing the song through gets the real Add to
+   * Queue/Play Next/Add to Playlist menu instead of a decorative icon. */
+  song?: Song;
+  /** Search rows are real artists with no backing track -- this opens
+   * their YouTube Music page instead. */
+  browseId?: string | null;
+}
+
+/** A one-item menu for search artists: no backing track to queue or add
+ * to a playlist, just a real artist page to open. Small enough not to
+ * warrant its own file, but kept separate from TrackDropdown since the
+ * two have nothing in common beyond "an ellipsis that opens something". */
+function ArtistExternalMenu({ name, browseId }: { name: string; browseId: string }) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDocumentPointerDown = (event: PointerEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('pointerdown', onDocumentPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onDocumentPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div className="dropdown" ref={containerRef}>
+      <i
+        className="fa-solid fa-ellipsis"
+        role="button"
+        tabIndex={0}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={`More options for ${name}`}
+        onClick={(event) => {
+          event.stopPropagation();
+          setOpen((value) => !value);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            event.stopPropagation();
+            setOpen((value) => !value);
+          }
+        }}
+      />
+      <div className="dropdown-content" style={{ display: open ? 'block' : 'none' }} role="menu">
+        <a
+          href={`https://music.youtube.com/channel/${browseId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          role="menuitem"
+          onClick={(event) => {
+            event.stopPropagation();
+            setOpen(false);
+          }}
+        >
+          View on YouTube Music
+        </a>
+      </div>
+    </div>
+  );
 }
 
 /**
@@ -29,6 +103,8 @@ export function ArtistRow({
   plays,
   variant,
   onSelect,
+  song,
+  browseId,
 }: ArtistRowProps) {
   const interactive = Boolean(onSelect);
   const hasStats = Boolean(followers || plays);
@@ -88,7 +164,15 @@ export function ArtistRow({
         </div>
       </div>
       <div className="three_dot_x_icon">
-        <i className="fa-solid fa-ellipsis" aria-hidden="true" />
+        {/* Was a decorative <i>, no menu behind it at all -- see the two
+            helpers above for why home/search need different menus here. */}
+        {song ? (
+          <TrackDropdown song={song} />
+        ) : browseId ? (
+          <ArtistExternalMenu name={name} browseId={browseId} />
+        ) : (
+          <i className="fa-solid fa-ellipsis" aria-hidden="true" />
+        )}
       </div>
     </div>
   );

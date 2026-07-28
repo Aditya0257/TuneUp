@@ -287,6 +287,7 @@ export function SearchPage() {
                      sometimes returns a real subscriber count -- no fallback
                      to a fake number when it doesn't. */
                   followers={artist.subscribers ? `${artist.subscribers} Followers` : undefined}
+                  browseId={artist.browseId}
                 />
               ))}
             </div>
