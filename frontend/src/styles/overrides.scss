@@ -774,7 +774,9 @@ body {
   background: #ffffff;
   border-radius: 25px;
   padding: 32px 40px;
+  overflow-x: hidden;
   overflow-y: auto;
+  box-sizing: border-box;
   font-family: 'Mukta', sans-serif;
 
   h1 {
@@ -792,8 +794,10 @@ body {
 
 .playlistspage_grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
   gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .playlistspage_card {
@@ -848,4 +852,47 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ------------------------------------------------------------------------
+   13. Skeleton loading. A spinner in an otherwise-empty box (whether one
+       box or several) reads as unfinished. This shimmers placeholders
+       shaped like the real content, in the exact spot it'll occupy, so
+       there's no layout jump once data arrives.
+   ------------------------------------------------------------------------ */
+.tuneup_skeleton {
+  display: inline-block;
+  background: linear-gradient(90deg, #ececee 25%, #f6f6f7 37%, #ececee 63%);
+  background-size: 400% 100%;
+  animation: tuneup_shimmer 1.4s ease infinite;
+}
+
+@keyframes tuneup_shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tuneup_skeleton {
+    animation: none;
+    background: #ececee;
+  }
+}
+
+.tuneup_skeleton_row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.tuneup_skeleton_text_col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
 }

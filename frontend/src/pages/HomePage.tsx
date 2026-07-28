@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '@/api/client';
 import { ArtistRow } from '@/components/ArtistRow';
 import { SeeAllToggle } from '@/components/SeeAllToggle';
+import { Skeleton } from '@/components/Skeleton';
 import { SongRow } from '@/components/SongRow';
-import { EmptyMessage, ErrorMessage, Loading } from '@/components/StatusMessage';
+import { EmptyMessage, ErrorMessage } from '@/components/StatusMessage';
 import { VerticalCarousel } from '@/components/VerticalCarousel';
 import { useAsync } from '@/hooks/useAsync';
 import { useExpandable } from '@/hooks/useExpandable';
@@ -33,13 +34,6 @@ export function HomePage() {
   const recommendedList = useExpandable(recommended, 3);
   const quickPicksList = useExpandable(quickPicks, 5);
 
-  // One GET /api/home call feeds every section on this page -- Recommended
-  // Artist, Quick Picks and New Releases were each showing their own
-  // "loading" card at the same time, so the page looked like a scatter of
-  // disconnected gray boxes instead of one page loading. One unified state
-  // for the whole page instead, same fix as the search results row.
-  const statusOnly = loading || Boolean(error);
-
   return (
     <div id="changable">
       <div className="test_div">
@@ -52,13 +46,86 @@ export function HomePage() {
           </div>
         </div>
 
-        {statusOnly ? (
+        {error ? (
           <div className="home_status_row">
-            {loading && <Loading label="Loading your home feed…" />}
-            {error && (
-              <ErrorMessage message={error} hint="Check that the Flask backend is running and reachable." />
-            )}
+            <ErrorMessage message={error} hint="Check that the Flask backend is running and reachable." />
           </div>
+        ) : loading ? (
+          <>
+            <div className="second_home_row">
+              <Skeleton className="vertical_slider_box" width="62%" height="90%" radius="35px" />
+              <div className="column_songs_section">
+                <div className="top_artist_heading_row">
+                  <div className="inner_heading_row">
+                    <div>
+                      <h2>Recommended Artist</h2>
+                    </div>
+                  </div>
+                </div>
+                <div className="spacer_y_small" />
+                <div className="recommended_artist_list">
+                  {[0, 1, 2].map((i) => (
+                    <div className="tuneup_skeleton_row" key={i}>
+                      <Skeleton width="52px" height="52px" radius="50%" />
+                      <div className="tuneup_skeleton_text_col">
+                        <Skeleton width="60%" height="16px" />
+                        <Skeleton width="40%" height="12px" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="third_home_row">
+              <div className="song_genre_column">
+                <div className="genre">
+                  <h1>For You</h1>
+                  <div className="tuneup_skeleton_row">
+                    <Skeleton width="70px" height="28px" radius="12px" />
+                    <Skeleton width="70px" height="28px" radius="12px" />
+                    <Skeleton width="70px" height="28px" radius="12px" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="quickPicks_column_section">
+                <div className="quickPicks_heading_row">
+                  <div className="inner_heading_row">
+                    <div>
+                      <h2>Quick Picks</h2>
+                    </div>
+                  </div>
+                </div>
+                <div className="quickPicks_songs_column">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <div className="tuneup_skeleton_row" key={i}>
+                      <Skeleton width="48px" height="48px" radius="10px" />
+                      <div className="tuneup_skeleton_text_col">
+                        <Skeleton width="70%" height="16px" />
+                        <Skeleton width="45%" height="12px" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mixed_column_section">
+                <div className="mixed_heading">
+                  <div className="inner_heading_row">
+                    <h2>New Releases</h2>
+                  </div>
+                </div>
+                <div className="mixed_grid_data">
+                  {[0, 1, 2, 3].map((i) => (
+                    <div className="first_grid_block" key={i}>
+                      <Skeleton height="140px" radius="12px" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </>
         ) : (
           <>
             <div className="second_home_row">
