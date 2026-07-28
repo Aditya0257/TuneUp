@@ -131,11 +131,16 @@ export interface PageTokens {
 }
 
 export function computePageTokens(pageBg: string): PageTokens {
-  const isLight = relativeLuminance(pageBg) > 0.5;
+  // Biased toward dark text: a straight 0.5 cutoff judged a light-medium
+  // gray "dark enough" for white text, which read as barely-visible pale
+  // text on a background that still looks light to the eye. Dark text
+  // stays reasonably legible across a much wider range of backgrounds than
+  // white text does, so white only kicks in once it's unambiguously dark.
+  const isDark = relativeLuminance(pageBg) < 0.4;
   return {
     bg: pageBg,
-    text: isLight ? '#26262b' : '#ffffff',
-    textDim: isLight ? '#6b6b72' : '#c4c4c5',
+    text: isDark ? '#ffffff' : '#26262b',
+    textDim: isDark ? '#c4c4c5' : '#6b6b72',
   };
 }
 
