@@ -76,7 +76,11 @@ export function LibraryPage() {
   const savedArtistsList = useExpandable(savedArtists, 6);
 
   const playlistQuery = topArtist(likedSongs) ?? 'Popular Music';
-  const { data: playlistData } = useAsync(() => api.search(playlistQuery, 6), [playlistQuery], true);
+  const { data: playlistData, loading: playlistsLoading } = useAsync(
+    () => api.search(playlistQuery, 6),
+    [playlistQuery],
+    true,
+  );
   const playlists = playlistData?.playlists ?? [];
 
   return (
@@ -217,7 +221,24 @@ export function LibraryPage() {
               <h2>Playlists</h2>
             </div>
             <div className="playlist_grid_blocks">
-              {playlists.length === 0 && (
+              {/* This used to show "No playlists yet" the instant the page
+                  mounted, before the search request had even come back --
+                  a real empty state and a still-loading state look
+                  identical without this, so every visit flashed a false
+                  negative for a moment. */}
+              {playlistsLoading && playlists.length === 0 &&
+                [0, 1, 2].map((i) => (
+                  <div className="playlist_block" key={i} aria-hidden="true">
+                    <div className="playlist_image">
+                      <Skeleton width="100%" height="100%" radius="0" />
+                    </div>
+                    <div className="playlist_details">
+                      <Skeleton width="70%" height="14px" style={{ marginTop: 8 }} />
+                      <Skeleton width="45%" height="11px" style={{ marginTop: 6 }} />
+                    </div>
+                  </div>
+                ))}
+              {!playlistsLoading && playlists.length === 0 && (
                 <EmptyMessage message="No playlists to show yet -- like a few songs to seed recommendations." />
               )}
               {playlists.map((playlist) => {
@@ -258,7 +279,19 @@ export function LibraryPage() {
             <h2>Saved Artists</h2>
             <div className="elevated_card">
               <div className="artist_list">
-                {savedArtists.length === 0 && (
+                {loading && savedArtists.length === 0 &&
+                  [0, 1, 2].map((i) => (
+                    <div className="artist_item" key={i} aria-hidden="true">
+                      <div className="artist_image">
+                        <Skeleton width="100%" height="100%" radius="50%" />
+                      </div>
+                      <div className="artist_details">
+                        <Skeleton width="70%" height="15px" />
+                        <Skeleton width="50%" height="11px" style={{ marginTop: 6 }} />
+                      </div>
+                    </div>
+                  ))}
+                {!loading && savedArtists.length === 0 && (
                   <EmptyMessage message="No artists yet -- artists you like show up here." />
                 )}
                 {savedArtistsList.visible.map((artist) => (

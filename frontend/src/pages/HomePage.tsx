@@ -49,7 +49,23 @@ export function HomePage() {
         ) : loading ? (
           <>
             <div className="second_home_row">
-              <Skeleton className="vertical_slider_box" width="62%" height="90%" radius="35px" />
+              <div className="vertical_slider_box tuneup_skeleton_slide" aria-hidden="true">
+                {/* A flat gray slab read as an empty/broken card rather than
+                    a carousel that hasn't loaded yet. Sketching the real
+                    slide's own shape -- an image filling the frame, a
+                    bottom scrim, a title/subtitle pair, a play button --
+                    makes it obvious this exact spot is about to become a
+                    Featured slide, not just "loading, box shape unknown". */}
+                <Skeleton width="100%" height="100%" radius="35px" />
+                <div className="tuneup_skeleton_slide_text">
+                  <Skeleton width="120px" height="12px" radius="6px" />
+                  <div className="spacer_y_small" />
+                  <Skeleton width="55%" height="20px" radius="6px" />
+                  <div className="spacer_y_small" />
+                  <Skeleton width="35%" height="14px" radius="6px" />
+                </div>
+                <div className="tuneup_skeleton_slide_play" />
+              </div>
               <div className="column_songs_section">
                 <div className="top_artist_heading_row">
                   <div className="inner_heading_row">
@@ -59,15 +75,28 @@ export function HomePage() {
                   </div>
                 </div>
                 <div className="spacer_y_small" />
-                <div className="recommended_artist_list">
+                {/* No mask-fade here (unlike the real, scrollable list) --
+                    the fade is a "there's more below, scroll" cue, and
+                    showing it over a skeleton that isn't scrollable yet
+                    just looked like the last row failing to render. */}
+                <div className="recommended_artist_list is_loading">
                   {/* Reuses the real .first_artist_row markup (not a
                       generic skeleton box) so the shimmer sits in exactly
-                      the same spot the real row's image/text will. */}
+                      the same spot the real row's image/text will. The
+                      real image isn't a circle avatar -- it's a 62%-wide,
+                      85%-tall rounded rect offset 25% from the left inside
+                      a non-square .image_box -- so a plain 100%/50% circle
+                      here rendered as a squashed oval instead of matching. */}
                   {[0, 1, 2, 3].map((i) => (
                     <div className="first_artist_row" key={i}>
                       <div className="artist_name_and_img">
                         <div className="image_box">
-                          <Skeleton width="100%" height="100%" radius="50%" />
+                          <Skeleton
+                            width="62%"
+                            height="85%"
+                            radius="13px"
+                            style={{ marginLeft: '25%' }}
+                          />
                         </div>
                         <div className="artist_text_column">
                           <Skeleton width="65%" height="16px" />
@@ -86,11 +115,22 @@ export function HomePage() {
             <div className="third_home_row">
               <div className="song_genre_column">
                 <div className="genre">
+                  {/* Real content renders two labeled chip rows (genres,
+                      then moods) -- sketching only one made the second
+                      heading and its row of chips pop in from nowhere once
+                      data arrived, instead of a placeholder settling into
+                      real content in the same spot. */}
                   <h1>For You</h1>
                   <div className="tuneup_skeleton_row">
                     <Skeleton width="70px" height="28px" radius="12px" />
                     <Skeleton width="70px" height="28px" radius="12px" />
                     <Skeleton width="70px" height="28px" radius="12px" />
+                  </div>
+                  <h1>Moods &amp; moments</h1>
+                  <div className="tuneup_skeleton_row">
+                    <Skeleton width="90px" height="28px" radius="12px" />
+                    <Skeleton width="60px" height="28px" radius="12px" />
+                    <Skeleton width="80px" height="28px" radius="12px" />
                   </div>
                 </div>
               </div>
@@ -140,7 +180,12 @@ export function HomePage() {
                       <div className="image_box">
                         <Skeleton width="100%" height="100%" radius="0" />
                       </div>
-                      <div className="text_column">
+                      {/* The real .text_column's h2 has its own padding-top
+                          for breathing room below the image; the skeleton
+                          had none, so its two lines sat flush against the
+                          image and each other -- reading as one smeared bar
+                          rather than a title and an artist name. */}
+                      <div className="text_column" style={{ paddingTop: 10, gap: 6 }}>
                         <Skeleton width="70%" height="16px" />
                         <Skeleton width="45%" height="12px" />
                       </div>

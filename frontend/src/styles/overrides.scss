@@ -953,6 +953,45 @@ body {
   flex: 1;
 }
 
+/* The Featured carousel's loading placeholder: same frame, scrim, text
+   block and play button the real slide has (see .tuneup_feature_* above),
+   just shimmering -- a plain gray slab in that slot read as an empty or
+   broken card rather than "a slide is coming". */
+.tuneup_skeleton_slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.tuneup_skeleton_slide_text {
+  position: absolute;
+  left: 6%;
+  bottom: 15%;
+  width: 55%;
+}
+
+.tuneup_skeleton_slide_play {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Real .recommended_artist_list fades its bottom edge as a "scroll for
+   more" cue when its content overflows. The loading state always renders
+   exactly 4 rows that fit the column without overflowing, so the same
+   fade just made the last row look like it was failing to render instead
+   of hinting at more content -- there isn't any yet. */
+.recommended_artist_list.is_loading {
+  overflow: visible;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 /* ------------------------------------------------------------------------
    14. .lyrics_column was a hardcoded `background-color: lightgreen` in the
        original -- an empty placeholder div, never built out (only ever

@@ -22,7 +22,12 @@ function SkeletonRow({ variant }: { variant: 'song' | 'artist' }) {
       <div className="artist_row">
         <div className="artist_name_and_img">
           <div className="image_box">
-            <Skeleton width="100%" height="100%" radius="50%" />
+            {/* .image_box itself isn't square here (22% wide, full row
+                height), and the real <img> only fills 65% of it with a 15%
+                left margin at a 13px rounded-rect radius -- not a circle.
+                Matching that exactly instead of a generic 100%/50% circle
+                is what was rendering as a squashed oval. */}
+            <Skeleton width="65%" height="100%" radius="13px" style={{ marginLeft: '15%' }} />
           </div>
           <div className="artist_text_column">
             <Skeleton width="65%" height="16px" />
@@ -50,6 +55,30 @@ function SkeletonRow({ variant }: { variant: 'song' | 'artist' }) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** Matches .community_playlist's real box model (see search.scss). */
+function CommunitySkeletonCard({ index }: { index: number }) {
+  return (
+    <div className="community_playlist" aria-hidden="true">
+      <div className="community_playlist_cover">
+        <Skeleton width="100%" height="100%" radius="0" />
+      </div>
+      <Skeleton width={index % 2 === 0 ? '70%' : '55%'} height="14px" style={{ marginTop: 10 }} />
+    </div>
+  );
+}
+
+/** Matches .album's real box model (see search.scss). */
+function AlbumSkeletonCard() {
+  return (
+    <div className="album" aria-hidden="true">
+      <div className="album_cover">
+        <Skeleton width="100%" height="220px" radius="20px" />
+      </div>
+      <Skeleton width="80%" height="14px" style={{ marginTop: 10 }} />
     </div>
   );
 }
@@ -151,6 +180,12 @@ export function SearchPage() {
 
           {loading && (
             <>
+              {/* Same four sections real results render (Songs + Community
+                  on the left, Artists + Albums on the right), in the same
+                  order -- a loading state that only sketched two of the
+                  four meant Community and Albums popped in from nowhere
+                  the moment data arrived, instead of settling into a
+                  placeholder that was already there. */}
               <div className="first_song_community_search_column">
                 <div className="first_song_search_heading_row">
                   <div className="inner_heading_row">
@@ -161,6 +196,19 @@ export function SearchPage() {
                   {[0, 1, 2, 3, 4].map((i) => (
                     <SkeletonRow variant="song" key={i} />
                   ))}
+                </div>
+
+                <div className="first_community_search_heading_row">
+                  <div className="inner_heading_row">
+                    <h2>Community</h2>
+                  </div>
+                </div>
+                <div className="community_column">
+                  <div className="playlists_container">
+                    {[0, 1].map((i) => (
+                      <CommunitySkeletonCard index={i} key={i} />
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="space_x_medium" />
@@ -174,6 +222,19 @@ export function SearchPage() {
                   {[0, 1, 2].map((i) => (
                     <SkeletonRow variant="artist" key={i} />
                   ))}
+                </div>
+
+                <div className="second_album_search_heading_row">
+                  <div className="inner_heading_row">
+                    <h2>Albums</h2>
+                  </div>
+                </div>
+                <div className="album_search_column">
+                  <div className="flex_container">
+                    {[0, 1, 2, 3].map((i) => (
+                      <AlbumSkeletonCard key={i} />
+                    ))}
+                  </div>
                 </div>
               </div>
             </>
