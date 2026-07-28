@@ -1560,3 +1560,31 @@ body {
 .searchpage .album_search_column .album {
   margin-bottom: 20px !important;
 }
+
+/* The two result columns used hardcoded widths (50% / 40%) that don't
+   actually add up to the row's full width once the 4% gap between them is
+   accounted for, and don't adapt to the viewport at all -- on a wide
+   screen this left a large dead gap of empty chrome background between
+   Songs/Community and Artists/Albums instead of the columns filling the
+   row. flex-grow in a 5:4 ratio (matching the original 50:40 split) makes
+   them always fill all available width, whatever the screen size. */
+.searchpage .second_search_row {
+  justify-content: flex-start !important;
+}
+
+.searchpage .first_song_community_search_column {
+  width: auto !important;
+  flex: 5 1 0 !important;
+  min-width: 0 !important;
+}
+
+.searchpage .second_artist_album_search_column {
+  width: auto !important;
+  flex: 4 1 0 !important;
+  min-width: 0 !important;
+}
+
+.searchpage .space_x_medium {
+  width: 24px !important;
+  flex: 0 0 auto !important;
+}
