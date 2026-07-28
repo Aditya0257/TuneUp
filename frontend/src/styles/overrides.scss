@@ -1540,6 +1540,40 @@ body {
   height: auto !important;
 }
 
+/* ------------------------------------------------------------------------
+   29b. Songs and Artists now share a top row (.search_top_columns);
+        Community and Albums moved out of that row entirely, each getting
+        the full page width below it instead of being confined to
+        whichever half-column they used to live in. Songs is also capped
+        to a reasonable count now (SearchPage.tsx), so it no longer grows
+        into a single column many screens tall while Community/Albums
+        (each naturally short) sat far below it with a lot of dead space
+        on the shorter side.
+   ------------------------------------------------------------------------ */
+.searchpage .second_search_row {
+  flex-direction: column !important;
+}
+
+.searchpage .search_top_columns {
+  display: flex;
+  width: 100%;
+}
+
+.searchpage .community_column,
+.searchpage .album_search_column {
+  width: 100% !important;
+}
+
+.searchpage .playlists_container .community_playlist {
+  /* Was a fixed 47.5% -- always exactly 2 per row regardless of how much
+     width is actually available. Full page width now, so let cards wrap
+     naturally at a sensible size instead of forcing just 2 columns of an
+     otherwise much wider row. */
+  width: auto !important;
+  flex: 1 1 220px !important;
+  max-width: 280px !important;
+}
+
 .searchpage .songs_column,
 .searchpage .community_column,
 .searchpage .artist_search_column,
