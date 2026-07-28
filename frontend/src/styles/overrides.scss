@@ -1882,3 +1882,28 @@ body {
 .playlistspage .fas.fa-heart {
   color: var(--tuneup-accent) !important;
 }
+
+/* ------------------------------------------------------------------------
+   34. Quick Picks rows (and their loading skeleton, which reuses this
+       exact markup) had almost no room between them -- 1vh margin between
+       19%-tall rows whose thumbnail filled 90% of that height reads as
+       one solid stack of thumbnails rather than a list of distinct rows,
+       especially obvious in the skeleton where every row is the same flat
+       gray and there's no title/subtitle text weight to visually break
+       them apart. More breathing room between rows and a touch less
+       thumbnail height (so it doesn't reach to the row's own edges) reads
+       as a considered list instead of everything mashed together.
+   ------------------------------------------------------------------------ */
+.quickPicks_songs_column .first_song_row {
+  margin-bottom: 14px !important;
+  border-radius: 10px;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.035);
+  }
+}
+
+.quickPicks_songs_column .image_box {
+  height: 78% !important;
+}
