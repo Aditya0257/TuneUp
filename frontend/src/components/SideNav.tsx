@@ -13,11 +13,15 @@ import { SettingsPanel } from '@/components/SettingsPanel';
  * manually re-running the scripts whose listeners the replacement had just
  * destroyed. That is what react-router does properly.
  *
- * The five icons below `NAV_ITEMS` were all decorative in the original
- * layout -- present, but wired to nothing. Each now has a real destination:
- * folder -> a dedicated Playlists page, star -> Library's Liked Songs
- * section, folder-closed -> play history, user -> an About panel, gear ->
- * real settings.
+ * The icons below `NAV_ITEMS` were all decorative in the original layout --
+ * present, but wired to nothing. Each now has a real destination: folder ->
+ * a dedicated Playlists page, folder-closed -> play history, user -> an
+ * About panel, gear -> real settings.
+ *
+ * There used to be a star icon too ("Favorites" -> Library's Liked Songs
+ * section), removed because it pointed at the same page as the Library
+ * icon above -- Liked Songs is already the first thing Library shows, so
+ * the star never went anywhere Library didn't.
  */
 const NAV_ITEMS = [
   { icon: 'fa-solid fa-house', label: 'Home', path: '/' },
@@ -73,16 +77,6 @@ export function SideNav() {
           <i className="fa-regular fa-user" aria-hidden="true" />
         </button>
         <hr />
-        <i
-          className={`fa-regular fa-star${pathname === '/music' ? ' nav_active' : ''}`}
-          role="link"
-          tabIndex={0}
-          aria-label="Favorites"
-          onClick={() => navigate('/music#liked-songs')}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') navigate('/music#liked-songs');
-          }}
-        />
         <i
           className={`fa-regular fa-folder-closed${pathname === '/history' ? ' nav_active' : ''}`}
           role="link"

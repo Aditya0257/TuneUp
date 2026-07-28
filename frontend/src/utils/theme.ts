@@ -130,13 +130,25 @@ export interface PageTokens {
   textDim: string;
 }
 
+/** WCAG contrast ratio between two colors, each already-computed relative luminance. */
+function contrastRatio(lumA: number, lumB: number): number {
+  const lighter = Math.max(lumA, lumB);
+  const darker = Math.min(lumA, lumB);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 export function computePageTokens(pageBg: string): PageTokens {
-  // Biased toward dark text: a straight 0.5 cutoff judged a light-medium
-  // gray "dark enough" for white text, which read as barely-visible pale
-  // text on a background that still looks light to the eye. Dark text
-  // stays reasonably legible across a much wider range of backgrounds than
-  // white text does, so white only kicks in once it's unambiguously dark.
-  const isDark = relativeLuminance(pageBg) < 0.4;
+  // A single luminance-threshold cutoff (e.g. "isDark = luminance < 0.4")
+  // guesses at readability instead of measuring it, and guessed wrong for
+  // light-medium backgrounds: it picked dark text that technically passed
+  // the cutoff but still had weak actual contrast against the background,
+  // reading as washed-out. Compute the real WCAG contrast ratio of the
+  // background against both text candidates and pick whichever the eye
+  // will actually be able to read.
+  const bgLum = relativeLuminance(pageBg);
+  const whiteContrast = contrastRatio(bgLum, relativeLuminance('#ffffff'));
+  const darkContrast = contrastRatio(bgLum, relativeLuminance('#26262b'));
+  const isDark = whiteContrast > darkContrast;
   return {
     bg: pageBg,
     text: isDark ? '#ffffff' : '#26262b',
