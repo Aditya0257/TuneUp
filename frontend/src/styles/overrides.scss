@@ -1272,3 +1272,75 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* ------------------------------------------------------------------------
+   24. The page-text theme override (section 17/18-ish, `.homepage h1,h2,h3,p
+       {color: var(--tuneup-page-text) !important}`) is correct for text
+       sitting directly on the themed page background -- but several cards
+       inside these pages keep their OWN fixed, non-themed background
+       (Library's Playlists/Saved Artists cards, Search's Community cards,
+       the dedicated Playlists page's cards), and that blanket rule swept
+       their text up too. Pick a dark page theme and that text turned
+       white against a card that's still light -- invisible. These restore
+       each one's ORIGINAL fixed color so it keeps matching its own
+       fixed card background, regardless of the page theme.
+   ------------------------------------------------------------------------ */
+.musicpage .playlist_details h3 {
+  color: #333 !important;
+}
+
+.musicpage .playlist_details p {
+  color: #666 !important;
+}
+
+.musicpage .artist_details h3 {
+  color: #333 !important;
+}
+
+.musicpage .artist_details p {
+  color: #666 !important;
+}
+
+.searchpage .community_playlist p {
+  color: #333333 !important;
+}
+
+.playlistspage .playlistspage_card_title {
+  color: #26262b !important;
+}
+
+.playlistspage .playlistspage_card_author {
+  color: #8a8a92 !important;
+}
+
+.historypage .historypage_row_title {
+  color: #26262b !important;
+}
+
+.historypage .historypage_row_artist {
+  color: #8a8a92 !important;
+}
+
+/* ------------------------------------------------------------------------
+   25. .status_card is styled light-context (white pages) throughout this
+       file -- correct for Home/Search/Library/History/Playlists, but
+       "Building your queue..." renders inside #current-queue, which sits
+       on the dark purple backpage chrome. A light gray card floating in
+       dark chrome is exactly the mismatched "bad loading box" look;
+       matches the same chrome-token treatment already used for the
+       lyrics panel's loading/empty states.
+   ------------------------------------------------------------------------ */
+#current-queue .status_card {
+  background: var(--tuneup-chrome-surface) !important;
+  border-color: transparent !important;
+  color: var(--tuneup-chrome-text-dim) !important;
+}
+
+#current-queue .status_message_text {
+  color: var(--tuneup-chrome-text) !important;
+}
+
+#current-queue .status_spinner {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  border-top-color: var(--tuneup-accent) !important;
+}
