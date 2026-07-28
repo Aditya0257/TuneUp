@@ -37,4 +37,5 @@ export const TITLE_MAX_LENGTH = 30;
 export const STORAGE_KEYS = {
   queue: 'songsQueue',
   likedSongs: 'likedSongs',
+  playlists: 'userPlaylists',
 } as const;

@@ -208,6 +208,80 @@ def sync_liked_songs():
 
 
 # --------------------------------------------------------------------------
+# User-created playlists
+#
+# Distinct from ytmusic_service.normalise_playlist()/the "playlists" field
+# on /api/search -- those are read-only external YouTube Music community
+# playlists. These are owned and mutable, so they live under their own
+# /api/playlists path with no naming overlap.
+# --------------------------------------------------------------------------
+
+def _clean_playlist_name(data: dict) -> str | None:
+    name = (data.get("name") or "").strip()
+    if not name or len(name) > 80:
+        return None
+    return name
+
+
+@app.get("/api/playlists")
+def list_playlists():
+    return jsonify({"playlists": store.list_playlists()})
+
+
+@app.post("/api/playlists")
+def create_playlist():
+    name = _clean_playlist_name(request.get_json(silent=True) or {})
+    if name is None:
+        return jsonify({"error": "Bad Request", "detail": "'name' must be 1-80 characters."}), 400
+    playlist = store.create_playlist(name)
+    return jsonify({"playlist": playlist}), 201
+
+
+@app.get("/api/playlists/<playlist_id>")
+def get_playlist(playlist_id: str):
+    playlist = store.get_playlist(playlist_id)
+    if playlist is None:
+        return jsonify({"error": "Not Found", "detail": "No such playlist."}), 404
+    return jsonify({"playlist": playlist})
+
+
+@app.patch("/api/playlists/<playlist_id>")
+def rename_playlist(playlist_id: str):
+    name = _clean_playlist_name(request.get_json(silent=True) or {})
+    if name is None:
+        return jsonify({"error": "Bad Request", "detail": "'name' must be 1-80 characters."}), 400
+    playlist = store.rename_playlist(playlist_id, name)
+    if playlist is None:
+        return jsonify({"error": "Not Found", "detail": "No such playlist."}), 404
+    return jsonify({"playlist": playlist})
+
+
+@app.delete("/api/playlists/<playlist_id>")
+def delete_playlist(playlist_id: str):
+    store.delete_playlist(playlist_id)
+    return jsonify({"deleted": True, "id": playlist_id})
+
+
+@app.post("/api/playlists/<playlist_id>/songs")
+def add_song_to_playlist(playlist_id: str):
+    payload = _clean_song_payload(request.get_json(silent=True) or {})
+    if payload is None:
+        return jsonify({"error": "Bad Request", "detail": "'videoId' is required."}), 400
+    playlist = store.add_song_to_playlist(playlist_id, payload)
+    if playlist is None:
+        return jsonify({"error": "Not Found", "detail": "No such playlist."}), 404
+    return jsonify({"playlist": playlist})
+
+
+@app.delete("/api/playlists/<playlist_id>/songs/<video_id>")
+def remove_song_from_playlist(playlist_id: str, video_id: str):
+    playlist = store.remove_song_from_playlist(playlist_id, video_id)
+    if playlist is None:
+        return jsonify({"error": "Not Found", "detail": "No such playlist."}), 404
+    return jsonify({"playlist": playlist})
+
+
+# --------------------------------------------------------------------------
 # Play history
 # --------------------------------------------------------------------------
 

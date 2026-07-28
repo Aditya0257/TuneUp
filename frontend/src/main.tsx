@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from '@/App';
 import { LikedSongsProvider } from '@/liked/LikedSongsContext';
 import { PlayerProvider } from '@/player/PlayerContext';
+import { PlaylistsProvider } from '@/playlists/PlaylistsContext';
 import { initTheme } from '@/utils/theme';
 
 try {
@@ -38,9 +39,11 @@ createRoot(container).render(
   <StrictMode>
     <BrowserRouter>
       <LikedSongsProvider>
-        <PlayerProvider>
-          <App />
-        </PlayerProvider>
+        <PlaylistsProvider>
+          <PlayerProvider>
+            <App />
+          </PlayerProvider>
+        </PlaylistsProvider>
       </LikedSongsProvider>
     </BrowserRouter>
   </StrictMode>,

@@ -645,7 +645,8 @@ body {
   gap: 16px;
 }
 
-.tuneup_settings_section button {
+.tuneup_settings_section button,
+.tuneup_modal_body button {
   font: inherit;
   font-size: 1.3rem;
   background: var(--tuneup-chrome-surface);
@@ -1587,4 +1588,235 @@ body {
 .searchpage .space_x_medium {
   width: 24px !important;
   flex: 0 0 auto !important;
+}
+
+/* ------------------------------------------------------------------------
+   30. My Playlists feature: the "New Playlist" name field (CreatePlaylist
+       Modal has no precedent to reuse -- every existing modal field so far
+       is a color swatch, not a text input) and TrackDropdown's new "Add to
+       Playlist" checklist section appended below the original two-item
+       Queue/Play Next menu.
+   ------------------------------------------------------------------------ */
+.tuneup_text_field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  color: var(--tuneup-chrome-text-dim);
+
+  input[type='text'] {
+    font: inherit;
+    font-size: 1.4rem;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(128, 128, 140, 0.35);
+    background: var(--tuneup-chrome-surface);
+    color: var(--tuneup-chrome-text);
+
+    &:focus-visible {
+      outline: 2px solid var(--tuneup-accent);
+      outline-offset: 1px;
+    }
+  }
+}
+
+.dropdown-content {
+  min-width: 210px !important;
+  max-height: 320px !important;
+  overflow-y: auto !important;
+
+  a {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 4px 0;
+}
+
+.dropdown-section-label {
+  padding: 8px 16px 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #8a8a92;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dropdown-empty-hint {
+  padding: 2px 16px 8px;
+  font-size: 1.2rem;
+  color: #8a8a92;
+}
+
+/* ------------------------------------------------------------------------
+   31. My Playlists pages (MyPlaylistsPage, PlaylistDetailPage). Both reuse
+       .playlistspage for the page-panel framing (position/margin/radius/
+       background/theme text color all come free from the shared rules
+       above -- these three routes are never rendered at the same time, so
+       there's no conflict sharing the class).
+
+       PlaylistDetailPage also reuses the real SongRow component -- but
+       SongRow's classnames (.first_song_row etc) only have layout rules
+       scoped under their two original contexts (Home's quick-picks column,
+       Search's songs column), both built around percentage heights of a
+       specific ancestor. Neither applies here, so this page gets its own
+       scoped version with plain, auto-sized values instead of copying
+       those fragile percentages into a third context.
+   ------------------------------------------------------------------------ */
+.myplaylistspage_create_button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 20px;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #ffffff;
+  background: var(--tuneup-accent);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.08);
+  }
+}
+
+.playlistdetailpage_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.playlistdetailpage_actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+
+  button {
+    font: inherit;
+    font-size: 1.2rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(128, 128, 140, 0.3);
+    background: #f7f7f8;
+    color: #26262b;
+    cursor: pointer;
+
+    &:hover {
+      background: #ececee;
+    }
+  }
+}
+
+.playlistdetailpage_songs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 70vh;
+  overflow-y: auto;
+
+  .first_song_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background: #f7f7f8;
+    }
+
+    .artist_no_name_and_img {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .spacer_x_small {
+      display: none;
+    }
+
+    .sno_play_pause_icon {
+      width: 24px;
+      flex-shrink: 0;
+      text-align: center;
+
+      h2 {
+        font-size: 1.3rem;
+        color: #8a8a92;
+        font-weight: 500;
+      }
+    }
+
+    .image_box {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    }
+
+    .song_text_column {
+      min-width: 0;
+      flex: 1;
+
+      h2 {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: #26262b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .artist_name_row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: #8a8a92;
+        font-size: 1.1rem;
+
+        p {
+          margin: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    .three_dot_x_icon {
+      flex-shrink: 0;
+
+      .heart_three_dot_row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: #8a8a92;
+      }
+    }
+  }
 }

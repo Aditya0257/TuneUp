@@ -15,8 +15,14 @@ import { SettingsPanel } from '@/components/SettingsPanel';
  *
  * The icons below `NAV_ITEMS` were all decorative in the original layout --
  * present, but wired to nothing. Each now has a real destination: folder ->
- * a dedicated Playlists page, folder-closed -> play history, user -> an
+ * Discover (read-only external YouTube Music playlists), layer-group -> My
+ * Playlists (yours, created here), folder-closed -> play history, user -> an
  * About panel, gear -> real settings.
+ *
+ * The folder icon used to be labeled "Playlists" and point at /playlists;
+ * once user-created playlists needed that name, the external-search page
+ * moved to /discover and this icon relabeled to match, so the two concepts
+ * (external, read-only vs yours, editable) don't share a label.
  *
  * There used to be a star icon too ("Favorites" -> Library's Liked Songs
  * section), removed because it pointed at the same page as the Library
@@ -58,14 +64,25 @@ export function SideNav() {
         ))}
 
         <i
-          className={`fa-regular fa-folder${pathname === '/playlists' ? ' nav_active' : ''}`}
+          className={`fa-regular fa-folder${pathname === '/discover' ? ' nav_active' : ''}`}
           role="link"
           tabIndex={0}
-          aria-label="Playlists"
-          aria-current={pathname === '/playlists' ? 'page' : undefined}
-          onClick={() => navigate('/playlists')}
+          aria-label="Discover"
+          aria-current={pathname === '/discover' ? 'page' : undefined}
+          onClick={() => navigate('/discover')}
           onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') navigate('/playlists');
+            if (event.key === 'Enter' || event.key === ' ') navigate('/discover');
+          }}
+        />
+        <i
+          className={`fa-solid fa-layer-group${pathname.startsWith('/playlists/mine') ? ' nav_active' : ''}`}
+          role="link"
+          tabIndex={0}
+          aria-label="My Playlists"
+          aria-current={pathname.startsWith('/playlists/mine') ? 'page' : undefined}
+          onClick={() => navigate('/playlists/mine')}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') navigate('/playlists/mine');
           }}
         />
         <button

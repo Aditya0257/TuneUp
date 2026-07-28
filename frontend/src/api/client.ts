@@ -6,7 +6,7 @@
  * updateLikedSongs.js -- each of which did its own error handling (or none).
  */
 import { logApiCall } from '@/dev/devLog';
-import type { HomeFeed, LikedSong, Lyrics, SearchResults, Song } from '@/types';
+import type { HomeFeed, LikedSong, Lyrics, SearchResults, Song, UserPlaylist } from '@/types';
 
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
 
@@ -158,5 +158,45 @@ export const api = {
   getHistory: async (limit = 50): Promise<LikedSong[]> => {
     const { songs } = await request<{ songs: LikedSong[] }>(`/api/history?limit=${limit}`);
     return songs;
+  },
+
+  getPlaylists: async (): Promise<UserPlaylist[]> => {
+    const { playlists } = await request<{ playlists: UserPlaylist[] }>('/api/playlists');
+    return playlists;
+  },
+
+  createPlaylist: async (name: string): Promise<UserPlaylist> => {
+    const { playlist } = await request<{ playlist: UserPlaylist }>('/api/playlists', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+    });
+    return playlist;
+  },
+
+  renamePlaylist: async (id: string, name: string): Promise<UserPlaylist> => {
+    const { playlist } = await request<{ playlist: UserPlaylist }>(
+      `/api/playlists/${encodeURIComponent(id)}`,
+      { method: 'PATCH', body: JSON.stringify({ name }) },
+    );
+    return playlist;
+  },
+
+  deletePlaylist: (id: string) =>
+    request<void>(`/api/playlists/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+
+  addSongToPlaylist: async (id: string, song: LikedSong): Promise<UserPlaylist> => {
+    const { playlist } = await request<{ playlist: UserPlaylist }>(
+      `/api/playlists/${encodeURIComponent(id)}/songs`,
+      { method: 'POST', body: JSON.stringify(song) },
+    );
+    return playlist;
+  },
+
+  removeSongFromPlaylist: async (id: string, videoId: string): Promise<UserPlaylist> => {
+    const { playlist } = await request<{ playlist: UserPlaylist }>(
+      `/api/playlists/${encodeURIComponent(id)}/songs/${encodeURIComponent(videoId)}`,
+      { method: 'DELETE' },
+    );
+    return playlist;
   },
 };

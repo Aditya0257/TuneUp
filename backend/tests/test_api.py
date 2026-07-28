@@ -354,6 +354,60 @@ class ApiRouteTests(unittest.TestCase):
         bad = self.client.put("/api/liked-songs", json={"songs": "not a list"})
         self.assertEqual(bad.status_code, 400)
 
+    def test_playlist_lifecycle(self):
+        created = self.client.post("/api/playlists", json={"name": "Road Trip"})
+        self.assertEqual(created.status_code, 201)
+        playlist = created.get_json()["playlist"]
+        self.assertEqual(playlist["name"], "Road Trip")
+        self.assertEqual(playlist["songs"], [])
+        playlist_id = playlist["id"]
+
+        listed = self.client.get("/api/playlists").get_json()["playlists"]
+        self.assertEqual(len(listed), 1)
+
+        fetched = self.client.get(f"/api/playlists/{playlist_id}")
+        self.assertEqual(fetched.status_code, 200)
+        self.assertEqual(self.client.get("/api/playlists/nope").status_code, 404)
+
+        song = {"videoId": "abc123", "title": "Test", "artist": "Tester"}
+        added = self.client.post(f"/api/playlists/{playlist_id}/songs", json=song)
+        self.assertEqual(added.status_code, 200)
+        self.assertEqual(len(added.get_json()["playlist"]["songs"]), 1)
+
+        # Adding the same song twice must not duplicate.
+        self.client.post(f"/api/playlists/{playlist_id}/songs", json=song)
+        again = self.client.get(f"/api/playlists/{playlist_id}").get_json()
+        self.assertEqual(len(again["playlist"]["songs"]), 1)
+
+        renamed = self.client.patch(f"/api/playlists/{playlist_id}", json={"name": "Road Trip 2024"})
+        self.assertEqual(renamed.status_code, 200)
+        self.assertEqual(renamed.get_json()["playlist"]["name"], "Road Trip 2024")
+
+        removed = self.client.delete(f"/api/playlists/{playlist_id}/songs/abc123")
+        self.assertEqual(removed.status_code, 200)
+        self.assertEqual(removed.get_json()["playlist"]["songs"], [])
+
+        deleted = self.client.delete(f"/api/playlists/{playlist_id}")
+        self.assertEqual(deleted.status_code, 200)
+        self.assertEqual(self.client.get(f"/api/playlists/{playlist_id}").status_code, 404)
+
+        # Deleting something absent is still a success (idempotent).
+        self.assertEqual(self.client.delete(f"/api/playlists/{playlist_id}").status_code, 200)
+
+    def test_playlist_requires_valid_name(self):
+        self.assertEqual(self.client.post("/api/playlists", json={}).status_code, 400)
+        self.assertEqual(self.client.post("/api/playlists", json={"name": "  "}).status_code, 400)
+        self.assertEqual(
+            self.client.post("/api/playlists", json={"name": "x" * 81}).status_code, 400
+        )
+
+    def test_playlist_mutations_404_for_unknown_id(self):
+        self.assertEqual(self.client.patch("/api/playlists/nope", json={"name": "x"}).status_code, 404)
+        self.assertEqual(
+            self.client.post("/api/playlists/nope/songs", json={"videoId": "a"}).status_code, 404
+        )
+        self.assertEqual(self.client.delete("/api/playlists/nope/songs/a").status_code, 404)
+
     def test_history_round_trip(self):
         song = {"videoId": "h1", "title": "Played", "artist": "Someone"}
         self.assertEqual(self.client.post("/api/history", json=song).status_code, 204)

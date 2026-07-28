@@ -9,6 +9,8 @@ import { useHorizontalDrag } from '@/hooks/useHorizontalDrag';
 import { HistoryPage } from '@/pages/HistoryPage';
 import { HomePage } from '@/pages/HomePage';
 import { LibraryPage } from '@/pages/LibraryPage';
+import { MyPlaylistsPage } from '@/pages/MyPlaylistsPage';
+import { PlaylistDetailPage } from '@/pages/PlaylistDetailPage';
 import { PlaylistsPage } from '@/pages/PlaylistsPage';
 import { SearchPage } from '@/pages/SearchPage';
 
@@ -55,7 +57,13 @@ export function App() {
           <Route path="/music" element={<LibraryPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/history" element={<HistoryPage />} />
-          <Route path="/playlists" element={<PlaylistsPage />} />
+          {/* External YouTube Music search results (previously "Playlists" --
+              renamed "Discover" once /playlists/mine took that name for the
+              user's own playlists, to avoid two different sidebar entries
+              both claiming the word). */}
+          <Route path="/discover" element={<PlaylistsPage />} />
+          <Route path="/playlists/mine" element={<MyPlaylistsPage />} />
+          <Route path="/playlists/mine/:id" element={<PlaylistDetailPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

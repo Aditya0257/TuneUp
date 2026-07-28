@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
 
+import { CreatePlaylistModal } from '@/components/CreatePlaylistModal';
 import { usePlayer } from '@/player/PlayerContext';
+import { usePlaylists } from '@/playlists/PlaylistsContext';
 import type { Song } from '@/types';
 
 /**
@@ -17,8 +19,12 @@ import type { Song } from '@/types';
  */
 export function TrackDropdown({ song }: { song: Song }) {
   const { addToQueue, playNext } = usePlayer();
+  const { playlists, playlistsContaining, createPlaylist, addSongToPlaylist, removeSongFromPlaylist } =
+    usePlaylists();
   const [open, setOpen] = useState(false);
+  const [creating, setCreating] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const memberOf = playlistsContaining(song.videoId);
 
   useEffect(() => {
     if (!open) return;
@@ -46,6 +52,20 @@ export function TrackDropdown({ song }: { song: Song }) {
     if (action === 'queue') addToQueue(song);
     else playNext(song);
     setOpen(false);
+  };
+
+  // Toggling playlist membership doesn't close the dropdown -- adding a
+  // song to several playlists in one go is the whole point of a
+  // checklist, and closing after the first click would turn that into
+  // "reopen the menu N times" instead.
+  const toggleMembership = (event: MouseEvent, playlistId: string) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (memberOf.has(playlistId)) {
+      void removeSongFromPlaylist(playlistId, song.videoId);
+    } else {
+      void addSongToPlaylist(playlistId, song);
+    }
   };
 
   return (
@@ -76,7 +96,51 @@ export function TrackDropdown({ song }: { song: Song }) {
         <a href="#" role="menuitem" onClick={(event) => choose(event, 'next')}>
           Play Next
         </a>
+        <div className="dropdown-divider" role="separator" />
+        <div className="dropdown-section-label">Add to Playlist</div>
+        {playlists.length === 0 && (
+          <div className="dropdown-empty-hint">No playlists yet</div>
+        )}
+        {playlists.map((playlist) => (
+          <a
+            href="#"
+            role="menuitemcheckbox"
+            aria-checked={memberOf.has(playlist.id)}
+            key={playlist.id}
+            onClick={(event) => toggleMembership(event, playlist.id)}
+          >
+            <i
+              className={memberOf.has(playlist.id) ? 'fa-solid fa-check-square' : 'fa-regular fa-square'}
+              aria-hidden="true"
+            />
+            <span>{playlist.name}</span>
+          </a>
+        ))}
+        <a
+          href="#"
+          role="menuitem"
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            setCreating(true);
+          }}
+        >
+          <i className="fa-solid fa-plus" aria-hidden="true" />
+          <span>New playlist…</span>
+        </a>
       </div>
+
+      {creating && (
+        <CreatePlaylistModal
+          onClose={() => setCreating(false)}
+          onCreate={async (name) => {
+            const playlist = await createPlaylist(name);
+            await addSongToPlaylist(playlist.id, song);
+            setCreating(false);
+            setOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

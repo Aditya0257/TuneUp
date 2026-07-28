@@ -63,6 +63,24 @@ export interface SearchResults {
 /** A liked song only ever needs the fields we display in the Library. */
 export type LikedSong = Pick<Song, 'videoId' | 'title' | 'artist' | 'thumbnail' | 'duration'>;
 
+export interface PlaylistSong extends LikedSong {
+  addedAt?: string;
+}
+
+/**
+ * A user-created playlist -- named `UserPlaylist`, not `Playlist`, because
+ * that name is already taken above by read-only external YouTube Music
+ * search results (SearchResults.playlists). This one is owned, mutable,
+ * and lives at /api/playlists; that one never is and doesn't.
+ */
+export interface UserPlaylist {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  songs: PlaylistSong[];
+}
+
 export interface Lyrics {
   available: boolean;
   lyrics: string | null;

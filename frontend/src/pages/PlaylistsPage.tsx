@@ -12,6 +12,11 @@ import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
  * real destination: a fuller playlist grid, still backed by the same real
  * YouTube Music search (no fake data), seeded by your most-liked artist
  * when you have one.
+ *
+ * Labeled "Discover" (route /discover), not "Playlists" -- that name now
+ * belongs to My Playlists (/playlists/mine), your own created playlists.
+ * These are read-only external YouTube Music community playlists; nothing
+ * here is yours or editable.
  */
 function topArtist(likedSongs: { artist: string }[]): string | null {
   const counts = new Map<string, number>();
@@ -39,10 +44,10 @@ export function PlaylistsPage() {
     <div className="playlistspage">
       {/* Same drag-handle affordance every other page has -- missed on this
           page and History at first. */}
-      <h1>Playlists</h1>
+      <h1>Discover</h1>
       <p className="playlistspage_subtitle">
         {topArtist(likedSongs)
-          ? `Playlists related to ${topArtist(likedSongs)}, your most-liked artist.`
+          ? `Community playlists related to ${topArtist(likedSongs)}, your most-liked artist.`
           : 'Like a few songs to get playlists tailored to your taste.'}
       </p>
 
