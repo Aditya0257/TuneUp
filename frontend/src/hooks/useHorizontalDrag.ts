@@ -10,10 +10,12 @@ import { useEffect, type RefObject } from 'react';
  * Changes: uses pointer events instead of mouse events so it works on touch,
  * clamps against the element's own width rather than `screen.width` (the
  * original compared a CSS pixel offset against physical screen width, which
- * behaved differently on scaled displays), and cleans its listeners up.
+ * behaved differently on scaled displays), cleans its listeners up, and
+ * allows a much wider drag -- the original's 36.8% cap only ever revealed
+ * about a third of the queue/player panel behind it.
  */
 const GRAB_ZONE_PX = 38;
-const MAX_OFFSET_PERCENT = 36.8;
+const MAX_OFFSET_PERCENT = 65;
 
 export function useHorizontalDrag(ref: RefObject<HTMLElement>): void {
   useEffect(() => {

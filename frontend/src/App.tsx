@@ -9,6 +9,7 @@ import { useHorizontalDrag } from '@/hooks/useHorizontalDrag';
 import { HistoryPage } from '@/pages/HistoryPage';
 import { HomePage } from '@/pages/HomePage';
 import { LibraryPage } from '@/pages/LibraryPage';
+import { PlaylistsPage } from '@/pages/PlaylistsPage';
 import { SearchPage } from '@/pages/SearchPage';
 
 /**
@@ -42,6 +43,7 @@ export function App() {
           <Route path="/music" element={<LibraryPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/history" element={<HistoryPage />} />
+          <Route path="/playlists" element={<PlaylistsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

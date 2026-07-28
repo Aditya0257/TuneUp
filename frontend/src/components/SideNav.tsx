@@ -15,8 +15,9 @@ import { SettingsPanel } from '@/components/SettingsPanel';
  *
  * The five icons below `NAV_ITEMS` were all decorative in the original
  * layout -- present, but wired to nothing. Each now has a real destination:
- * folder -> Library's Playlists section, star -> Liked Songs, folder-closed
- * -> play history, user -> an About panel, gear -> real settings.
+ * folder -> a dedicated Playlists page, star -> Library's Liked Songs
+ * section, folder-closed -> play history, user -> an About panel, gear ->
+ * real settings.
  */
 const NAV_ITEMS = [
   { icon: 'fa-solid fa-house', label: 'Home', path: '/' },
@@ -53,13 +54,14 @@ export function SideNav() {
         ))}
 
         <i
-          className="fa-regular fa-folder"
+          className={`fa-regular fa-folder${pathname === '/playlists' ? ' nav_active' : ''}`}
           role="link"
           tabIndex={0}
           aria-label="Playlists"
-          onClick={() => navigate('/music#playlists')}
+          aria-current={pathname === '/playlists' ? 'page' : undefined}
+          onClick={() => navigate('/playlists')}
           onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') navigate('/music#playlists');
+            if (event.key === 'Enter' || event.key === ' ') navigate('/playlists');
           }}
         />
         <i
