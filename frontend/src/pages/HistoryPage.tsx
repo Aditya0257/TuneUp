@@ -26,9 +26,6 @@ export function HistoryPage() {
     <div className="historypage">
       {/* Same drag-handle affordance every other page has for revealing the
           queue/player panel -- missed on this page and Playlists at first. */}
-      <div className="test_div" title="Drag to reveal the queue and player">
-        <div className="vl" />
-      </div>
       <h1>Recently Played</h1>
       <div className="historypage_list">
         {error && songs.length === 0 && (

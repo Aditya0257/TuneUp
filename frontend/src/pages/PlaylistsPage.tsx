@@ -39,9 +39,6 @@ export function PlaylistsPage() {
     <div className="playlistspage">
       {/* Same drag-handle affordance every other page has -- missed on this
           page and History at first. */}
-      <div className="test_div" title="Drag to reveal the queue and player">
-        <div className="vl" />
-      </div>
       <h1>Playlists</h1>
       <p className="playlistspage_subtitle">
         {topArtist(likedSongs)

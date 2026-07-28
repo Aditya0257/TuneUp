@@ -38,6 +38,18 @@ export function App() {
         `.homepage`, and the drag handler targets `#home_DraggableDiv`.
       */}
       <div className="homepage" id="home_DraggableDiv" ref={draggableRef}>
+        {/*
+          One drag handle, shared by every route, instead of five separate
+          copies (one per page) that had drifted out of sync with each
+          other -- some pages' handle rendered flush with the edge, some
+          didn't, because each was positioned relative to that page's own
+          box instead of one consistent reference point. This is always
+          positioned relative to .homepage itself (this div), so it's
+          identical regardless of which page is currently inside it.
+        */}
+        <div className="test_div" title="Drag to reveal the queue and player">
+          <div className="vl" />
+        </div>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/music" element={<LibraryPage />} />

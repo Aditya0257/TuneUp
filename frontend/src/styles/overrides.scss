@@ -1000,32 +1000,18 @@ body {
 }
 
 /* ------------------------------------------------------------------------
-   15. .test_div/.vl (the drag-handle sliver visible at the left edge of
-       every page) only has rules scoped under .homepage/.searchpage/
-       .musicpage in the ported stylesheets. historypage and playlistspage
-       are new pages outside that scope, so the same markup rendered there
-       had no styling at all -- same fix as everything else here: match
-       the original rule, added for the new pages' own root classes.
+   15. .test_div/.vl (the drag-handle sliver) used to be duplicated once
+       per page (five near-identical copies), which is exactly how they
+       drifted out of sync with each other -- some pages' handle sat flush
+       against the edge, some didn't, because each copy was positioned
+       relative to that specific page's own box rather than one shared
+       reference point. There's exactly one instance now (App.tsx), a
+       direct child of the shared .homepage wrapper every route renders
+       inside -- which main.scss's own `.homepage .test_div` rule already
+       matches with no override needed, since descendant selectors match
+       at any depth. The pill-grip restyle further below (was section 17)
+       still applies to it the same as before.
    ------------------------------------------------------------------------ */
-.historypage .test_div,
-.playlistspage .test_div {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 38px;
-  bottom: 0;
-  z-index: 10;
-
-  .vl {
-    border-left: 4px solid grey;
-    height: 100px;
-    border-radius: 15px;
-    position: absolute;
-    top: 39%;
-    left: 25%;
-    margin-left: -3px;
-  }
-}
 
 /* ------------------------------------------------------------------------
    16. The About/Settings sidebar triggers were `<i role="button">` --
@@ -1217,4 +1203,14 @@ body {
   .lyrics_column .status_card::before {
     animation: none;
   }
+}
+
+/* ------------------------------------------------------------------------
+   20. The search bar (position: fixed, independent of any page panel)
+       started overlapping the page panel's top-right corner once the
+       edge-to-edge margin tightening (section 17) made panels a hair
+       wider -- nudged left for clearance.
+   ------------------------------------------------------------------------ */
+.homepage_searchbar {
+  right: 4.5% !important;
 }
