@@ -1956,3 +1956,38 @@ body {
 .quickPicks_songs_column .image_box {
   height: 78% !important;
 }
+
+/* ------------------------------------------------------------------------
+   35. Each search section is its own bounded, independently scrollable
+       compartment instead of one continuously growing page. Search can
+       return a genuinely long tail of song matches -- rendered inline,
+       that many rows stacked together (even capped) reads as
+       overwhelming, and a growing Songs list also pushed Community/Albums
+       further and further down. A fixed-height card with its own scroll
+       bounds how much shows at once regardless of how many results come
+       back: most people scroll Songs a fair amount (it's the primary
+       result), rarely Community/Albums, so Songs gets the most vertical
+       room, the others less.
+   ------------------------------------------------------------------------ */
+.searchpage .songs_column,
+.searchpage .artist_search_column,
+.searchpage .playlists_container,
+.searchpage .album_search_column .flex_container {
+  max-height: 460px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.015);
+}
+
+.searchpage .playlists_container,
+.searchpage .album_search_column .flex_container {
+  max-height: 380px !important;
+}
+
+.searchpage .album_search_column .flex_container {
+  flex-wrap: wrap !important;
+  scroll-snap-type: none !important;
+}

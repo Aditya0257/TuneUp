@@ -105,14 +105,15 @@ function SectionHeading({ title, className }: { title: string; className: string
   );
 }
 
-// Search can return a genuinely long tail of song matches (30-40+) --
-// showing every one of them turned "Songs" into a single column many
-// screens tall, with Community and Albums (each naturally short) stuck
-// far below it and a lot of dead space on the shorter side. Capping to
-// the most relevant handful keeps the top row balanced without bringing
-// back a click-to-expand step.
-const SONGS_LIMIT = 8;
-const ARTISTS_LIMIT = 6;
+// Search can return a genuinely long tail of song matches (30-40+).
+// Rendered as one flat list, that many rows stacked together reads as
+// overwhelming regardless of how the rest of the page is laid out --
+// Songs (and each other section) is its own bounded, independently
+// scrollable compartment now (see overrides.scss #29c), so this cap only
+// needs to keep the *fetched* list from being unreasonably long -- it no
+// longer has to double as "how many rows show on screen at once".
+const SONGS_LIMIT = 20;
+const ARTISTS_LIMIT = 10;
 
 export function SearchPage() {
   const [searchParams] = useSearchParams();
