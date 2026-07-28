@@ -1811,12 +1811,74 @@ body {
     .three_dot_x_icon {
       flex-shrink: 0;
 
+      /* Color comes from section 33's theme-following rule, not here. */
       .heart_three_dot_row {
         display: flex;
         align-items: center;
         gap: 14px;
-        color: #8a8a92;
       }
     }
   }
+}
+
+/* ------------------------------------------------------------------------
+   32. .status_card (Loading/EmptyMessage/ErrorMessage, StatusMessage.tsx)
+       is a fixed light card by design -- correct on every page regardless
+       of theme, same as the Playlists/Community/Saved-Artists cards
+       fixed in section 24. Its own .status_message_text/_hint colors have
+       no !important, so the blanket page-text rule (which does) silently
+       overrode them back to the page's theme text color -- invisible
+       white-on-near-white whenever a dark page theme was active. This hit
+       every status card on every page (Loading spinners included, not
+       just empty states), not only the one that surfaced it first.
+   ------------------------------------------------------------------------ */
+.homepage .status_message_text,
+.searchpage .status_message_text,
+.musicpage .status_message_text,
+.historypage .status_message_text,
+.playlistspage .status_message_text {
+  color: #444449 !important;
+}
+
+.homepage .status_error .status_message_text,
+.searchpage .status_error .status_message_text,
+.musicpage .status_error .status_message_text,
+.historypage .status_error .status_message_text,
+.playlistspage .status_error .status_message_text {
+  color: #c23b3b !important;
+}
+
+.homepage .status_message_hint,
+.searchpage .status_message_hint,
+.musicpage .status_message_hint,
+.historypage .status_message_hint,
+.playlistspage .status_message_hint {
+  color: #85858c !important;
+}
+
+/* ------------------------------------------------------------------------
+   33. The heart/queue-menu icons in every song row had no color rule at
+       all, anywhere -- they simply inherited the browser's default black.
+       That was invisible by definition whenever a page theme went dark:
+       black icons on a black page. The blanket page-text rule never
+       covered them (it only targets h1/h2/h3/p), so they were the one
+       thing left out of "does this page's content follow the theme".
+       Liked (filled) hearts get the accent color instead of the dimmed
+       page text, so "you've liked this" stays visually distinct from a
+       plain secondary icon regardless of theme.
+   ------------------------------------------------------------------------ */
+.homepage .three_dot_x_icon,
+.searchpage .three_dot_x_icon,
+.musicpage .three_dot_x_icon,
+.historypage .three_dot_x_icon,
+.playlistspage .three_dot_x_icon {
+  color: var(--tuneup-page-text-dim) !important;
+}
+
+.homepage .fas.fa-heart,
+.searchpage .fas.fa-heart,
+.musicpage .fas.fa-heart,
+.historypage .fas.fa-heart,
+.playlistspage .fas.fa-heart {
+  color: var(--tuneup-accent) !important;
 }
