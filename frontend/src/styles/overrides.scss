@@ -1541,27 +1541,85 @@ body {
 }
 
 /* ------------------------------------------------------------------------
-   29b. Songs and Artists now share a top row (.search_top_columns);
-        Community and Albums moved out of that row entirely, each getting
-        the full page width below it instead of being confined to
-        whichever half-column they used to live in. Songs is also capped
-        to a reasonable count now (SearchPage.tsx), so it no longer grows
-        into a single column many screens tall while Community/Albums
-        (each naturally short) sat far below it with a lot of dead space
-        on the shorter side.
+   29b. A 2x2 grid instead of one continuously growing page: Songs+Artists
+        (.search_top_columns) on top, Community+Albums
+        (.search_bottom_columns) below, both rows sharing the same
+        column-wrapper classnames and 5:4 width ratio. Each of the four
+        lists scrolls *within its own slot* (flex:1; min-height:0;
+        overflow-y:auto on the actual list/grid element) instead of the
+        page scrolling to reveal more -- all four sections stay visible
+        at once, on one screen, the way none of them dominating the
+        others reads as an actual dashboard rather than a single long
+        list with some cards after it.
    ------------------------------------------------------------------------ */
 .searchpage .second_search_row {
+  display: flex !important;
   flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.searchpage .search_top_columns,
+.searchpage .search_bottom_columns {
+  display: flex;
+  width: 100%;
+  min-height: 0;
 }
 
 .searchpage .search_top_columns {
+  flex: 11 1 0;
+}
+
+.searchpage .search_bottom_columns {
+  flex: 9 1 0;
+  margin-top: 20px;
+}
+
+.searchpage .first_song_community_search_column,
+.searchpage .second_artist_album_search_column {
   display: flex;
-  width: 100%;
+  flex-direction: column;
+  width: auto !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0;
+}
+
+.searchpage .first_song_community_search_column {
+  flex: 5 1 0 !important;
+}
+
+.searchpage .second_artist_album_search_column {
+  flex: 4 1 0 !important;
+}
+
+.searchpage .songs_column,
+.searchpage .artist_search_column {
+  flex: 1;
+  min-height: 0;
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
 }
 
 .searchpage .community_column,
 .searchpage .album_search_column {
-  width: 100% !important;
+  flex: 1;
+  min-height: 0;
+  height: auto !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.searchpage .playlists_container,
+.searchpage .album_search_column .flex_container {
+  flex: 1;
+  min-height: 0;
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  flex-wrap: wrap !important;
+  align-content: flex-start;
+  scroll-snap-type: none !important;
 }
 
 .searchpage .playlists_container {
@@ -1570,68 +1628,46 @@ body {
      it pins them far apart instead of grouping them together at the
      start like a real grid. */
   justify-content: flex-start !important;
-  gap: 16px;
+  gap: 10px;
 }
 
+/* Community/Album cards were sized for a page that scrolled as far as it
+   needed to -- 240px/220px cards left barely two per row inside a much
+   smaller, fixed-height half of the screen. Smaller cards fit several per
+   row and several rows deep in the room actually available. */
 .searchpage .playlists_container .community_playlist {
-  /* Was a fixed 47.5% -- always exactly 2 per row regardless of how much
-     width is actually available. Full page width now, so cards should
-     wrap at a fixed, sensible size instead of forcing just 2 columns of
-     an otherwise much wider row -- flex-grow:1 was the wrong tool for
-     that: with only one or two results, a growing item just consumes
-     all the row's free space (a single result rendered nearly full page
-     width, a real regression this replaces). flex-grow:0 with a fixed
-     basis means every card is always exactly this size, whether there's
-     one result or twenty, and they simply wrap onto more rows as needed.
-   */
-  width: 240px !important;
-  flex: 0 0 240px !important;
+  width: 108px !important;
+  flex: 0 0 108px !important;
+  height: 108px !important;
   max-width: none !important;
-}
+  margin-bottom: 0 !important;
 
-.searchpage .songs_column,
-.searchpage .community_column,
-.searchpage .artist_search_column,
-.searchpage .album_search_column {
-  height: auto !important;
-  overflow: visible !important;
-}
+  .community_playlist_cover {
+    height: 74% !important;
+  }
 
-.searchpage .playlists_container {
-  height: auto !important;
-}
-
-.searchpage .album_search_column .flex_container {
-  flex-wrap: wrap !important;
-  overflow-x: visible !important;
-  scroll-snap-type: none !important;
+  p {
+    font-size: 0.95rem !important;
+    padding: 4px 2px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
 }
 
 .searchpage .album_search_column .album {
-  margin-bottom: 20px !important;
-}
+  width: 100px !important;
+  flex: 0 0 100px !important;
+  margin-right: 12px !important;
+  margin-bottom: 12px !important;
 
-/* The two result columns used hardcoded widths (50% / 40%) that don't
-   actually add up to the row's full width once the 4% gap between them is
-   accounted for, and don't adapt to the viewport at all -- on a wide
-   screen this left a large dead gap of empty chrome background between
-   Songs/Community and Artists/Albums instead of the columns filling the
-   row. flex-grow in a 5:4 ratio (matching the original 50:40 split) makes
-   them always fill all available width, whatever the screen size. */
-.searchpage .second_search_row {
-  justify-content: flex-start !important;
-}
-
-.searchpage .first_song_community_search_column {
-  width: auto !important;
-  flex: 5 1 0 !important;
-  min-width: 0 !important;
-}
-
-.searchpage .second_artist_album_search_column {
-  width: auto !important;
-  flex: 4 1 0 !important;
-  min-width: 0 !important;
+  p {
+    font-size: 0.95rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .searchpage .space_x_medium {
@@ -1957,37 +1993,3 @@ body {
   height: 78% !important;
 }
 
-/* ------------------------------------------------------------------------
-   35. Each search section is its own bounded, independently scrollable
-       compartment instead of one continuously growing page. Search can
-       return a genuinely long tail of song matches -- rendered inline,
-       that many rows stacked together (even capped) reads as
-       overwhelming, and a growing Songs list also pushed Community/Albums
-       further and further down. A fixed-height card with its own scroll
-       bounds how much shows at once regardless of how many results come
-       back: most people scroll Songs a fair amount (it's the primary
-       result), rarely Community/Albums, so Songs gets the most vertical
-       room, the others less.
-   ------------------------------------------------------------------------ */
-.searchpage .songs_column,
-.searchpage .artist_search_column,
-.searchpage .playlists_container,
-.searchpage .album_search_column .flex_container {
-  max-height: 460px !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 14px;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.015);
-}
-
-.searchpage .playlists_container,
-.searchpage .album_search_column .flex_container {
-  max-height: 380px !important;
-}
-
-.searchpage .album_search_column .flex_container {
-  flex-wrap: wrap !important;
-  scroll-snap-type: none !important;
-}

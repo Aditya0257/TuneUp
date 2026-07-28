@@ -74,9 +74,9 @@ function AlbumSkeletonCard() {
   return (
     <div className="album" aria-hidden="true">
       <div className="album_cover">
-        <Skeleton width="100%" height="220px" radius="20px" />
+        <Skeleton width="100%" height="100px" radius="12px" />
       </div>
-      <Skeleton width="80%" height="14px" style={{ marginTop: 10 }} />
+      <Skeleton width="80%" height="12px" style={{ marginTop: 6 }} />
     </div>
   );
 }
@@ -174,12 +174,10 @@ export function SearchPage() {
 
           {loading && (
             <>
-              {/* Songs and Artists share a top row (both naturally short
-                  now that Songs is capped); Community and Albums each get
-                  the full page width below instead of being confined to
-                  whichever half-column they used to live in -- there's no
-                  reason a playlist/album grid should stop at 50% width
-                  when nothing else is competing for the other half. */}
+              {/* A 2x2 grid -- Songs+Artists on top, Community+Albums
+                  below -- so all four sections are visible on one screen
+                  at once, each scrolling within its own slot instead of
+                  the page growing to fit everything end to end. */}
               <div className="search_top_columns">
                 <div className="first_song_community_search_column">
                   <div className="first_song_search_heading_row">
@@ -208,29 +206,35 @@ export function SearchPage() {
                 </div>
               </div>
 
-              <div className="first_community_search_heading_row">
-                <div className="inner_heading_row">
-                  <h2>Community</h2>
+              <div className="search_bottom_columns">
+                <div className="first_song_community_search_column">
+                  <div className="first_community_search_heading_row">
+                    <div className="inner_heading_row">
+                      <h2>Community</h2>
+                    </div>
+                  </div>
+                  <div className="community_column">
+                    <div className="playlists_container">
+                      {[0, 1, 2, 3].map((i) => (
+                        <CommunitySkeletonCard index={i} key={i} />
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="community_column">
-                <div className="playlists_container">
-                  {[0, 1, 2, 3].map((i) => (
-                    <CommunitySkeletonCard index={i} key={i} />
-                  ))}
-                </div>
-              </div>
-
-              <div className="second_album_search_heading_row">
-                <div className="inner_heading_row">
-                  <h2>Albums</h2>
-                </div>
-              </div>
-              <div className="album_search_column">
-                <div className="flex_container">
-                  {[0, 1, 2, 3, 4, 5].map((i) => (
-                    <AlbumSkeletonCard key={i} />
-                  ))}
+                <div className="space_x_medium" />
+                <div className="second_artist_album_search_column">
+                  <div className="second_album_search_heading_row">
+                    <div className="inner_heading_row">
+                      <h2>Albums</h2>
+                    </div>
+                  </div>
+                  <div className="album_search_column">
+                    <div className="flex_container">
+                      {[0, 1, 2, 3, 4, 5].map((i) => (
+                        <AlbumSkeletonCard key={i} />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </>
@@ -275,64 +279,72 @@ export function SearchPage() {
             </div>
           </div>
 
-          <SectionHeading title="Community" className="first_community_search_heading_row" />
-          <div className="community_column">
-            <div className="playlists_container">
-              {playlists.map((playlist) => {
-                const id = playlist.playlistId ?? playlist.browseId;
-                return (
-                  <a
-                    className="community_playlist"
-                    key={id ?? playlist.title}
-                    href={id ? `https://music.youtube.com/playlist?list=${id}` : undefined}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-disabled={!id || undefined}
-                    onClick={(event) => {
-                      if (!id) event.preventDefault();
-                    }}
-                  >
-                    <div className="community_playlist_cover">
-                      <img
-                        src={thumbnailOrFallback(playlist.thumbnail)}
-                        alt=""
-                        loading="lazy"
-                        onError={handleThumbnailError}
-                      />
-                    </div>
-                    <p>{playlist.title}</p>
-                  </a>
-                );
-              })}
+          <div className="search_bottom_columns">
+            <div className="first_song_community_search_column">
+              <SectionHeading title="Community" className="first_community_search_heading_row" />
+              <div className="community_column">
+                <div className="playlists_container">
+                  {playlists.map((playlist) => {
+                    const id = playlist.playlistId ?? playlist.browseId;
+                    return (
+                      <a
+                        className="community_playlist"
+                        key={id ?? playlist.title}
+                        href={id ? `https://music.youtube.com/playlist?list=${id}` : undefined}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-disabled={!id || undefined}
+                        onClick={(event) => {
+                          if (!id) event.preventDefault();
+                        }}
+                      >
+                        <div className="community_playlist_cover">
+                          <img
+                            src={thumbnailOrFallback(playlist.thumbnail)}
+                            alt=""
+                            loading="lazy"
+                            onError={handleThumbnailError}
+                          />
+                        </div>
+                        <p>{playlist.title}</p>
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-          </div>
 
-          <SectionHeading title="Albums" className="second_album_search_heading_row" />
-          <div className="album_search_column">
-            <div className="flex_container">
-              {albums.map((album) => (
-                <a
-                  className="album"
-                  key={album.browseId ?? album.title}
-                  href={album.browseId ? `https://music.youtube.com/browse/${album.browseId}` : undefined}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-disabled={!album.browseId || undefined}
-                  onClick={(event) => {
-                    if (!album.browseId) event.preventDefault();
-                  }}
-                >
-                  <div className="album_cover">
-                    <img
-                      src={thumbnailOrFallback(album.thumbnail)}
-                      alt=""
-                      loading="lazy"
-                      onError={handleThumbnailError}
-                    />
-                  </div>
-                  <p>{album.title}</p>
-                </a>
-              ))}
+            <div className="space_x_medium" />
+
+            <div className="second_artist_album_search_column">
+              <SectionHeading title="Albums" className="second_album_search_heading_row" />
+              <div className="album_search_column">
+                <div className="flex_container">
+                  {albums.map((album) => (
+                    <a
+                      className="album"
+                      key={album.browseId ?? album.title}
+                      href={album.browseId ? `https://music.youtube.com/browse/${album.browseId}` : undefined}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-disabled={!album.browseId || undefined}
+                      onClick={(event) => {
+                        if (!album.browseId) event.preventDefault();
+                      }}
+                    >
+                      <div className="album_cover">
+                        <img
+                          src={thumbnailOrFallback(album.thumbnail)}
+                          alt=""
+                          loading="lazy"
+                          onError={handleThumbnailError}
+                        />
+                      </div>
+                      <p>{album.title}</p>
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
           </>
