@@ -2044,8 +2044,19 @@ body {
        thumbnail height (so it doesn't reach to the row's own edges) reads
        as a considered list instead of everything mashed together.
    ------------------------------------------------------------------------ */
+/* height:19% of .quickPicks_songs_column is a fixed fraction of whatever
+   that column happens to be tall (which varies with viewport/theme
+   margins), not of the row's actual content -- a short one-line title
+   still reserved the same tall box as a two-line one, so most rows sat
+   centered in a box much taller than their real content needed, reading
+   as huge dead gaps between rows rather than a compact list. Height:auto
+   makes each row exactly as tall as its content (a fixed-size thumbnail
+   + title/artist text), the same everywhere regardless of the column's
+   own height. */
 .quickPicks_songs_column .first_song_row {
-  margin-bottom: 14px !important;
+  height: auto !important;
+  margin-bottom: 8px !important;
+  padding: 6px 4px;
   border-radius: 10px;
   transition: background-color 0.15s ease;
 
@@ -2054,8 +2065,21 @@ body {
   }
 }
 
+.quickPicks_songs_column .artist_no_name_and_img,
+.quickPicks_songs_column .song_text_column {
+  height: auto !important;
+}
+
 .quickPicks_songs_column .image_box {
-  height: 78% !important;
+  height: 52px !important;
+  width: 52px !important;
+  margin-right: 12px !important;
+
+  img {
+    width: 52px !important;
+    height: 52px !important;
+    margin-left: 0 !important;
+  }
 }
 
 /* ------------------------------------------------------------------------
