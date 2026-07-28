@@ -10,13 +10,45 @@ import { useAsync } from '@/hooks/useAsync';
 import { useExpandable } from '@/hooks/useExpandable';
 import { handleThumbnailError, thumbnailOrFallback } from '@/utils/format';
 
-function SkeletonRow() {
+/**
+ * Reuses the real .first_song_row/.artist_row markup rather than a generic
+ * skeleton box, so the shimmer sits in exactly the spot the real row's
+ * image/text will -- a generic box of the wrong size/position was reading
+ * as "misaligned" against the content it was standing in for.
+ */
+function SkeletonRow({ variant }: { variant: 'song' | 'artist' }) {
+  if (variant === 'artist') {
+    return (
+      <div className="artist_row">
+        <div className="artist_name_and_img">
+          <div className="image_box">
+            <Skeleton width="100%" height="100%" radius="50%" />
+          </div>
+          <div className="artist_text_column">
+            <Skeleton width="65%" height="16px" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="tuneup_skeleton_row">
-      <Skeleton width="40px" height="40px" radius="8px" />
-      <div className="tuneup_skeleton_text_col">
-        <Skeleton width="65%" height="14px" />
-        <Skeleton width="40%" height="11px" />
+    <div className="first_song_row">
+      <div className="artist_no_name_and_img">
+        <div className="spacer_x_small" />
+        <div className="sno_play_pause_icon">
+          <Skeleton width="16px" height="14px" />
+        </div>
+        <div className="image_box">
+          <Skeleton width="100%" height="100%" radius="13px" />
+        </div>
+        <div className="song_text_column">
+          <Skeleton width="70%" height="15px" />
+          <div className="spacer_y_small" />
+          <div className="artist_name_row">
+            <Skeleton width="45%" height="11px" />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -130,7 +162,7 @@ export function SearchPage() {
                 </div>
                 <div className="songs_column">
                   {[0, 1, 2, 3, 4].map((i) => (
-                    <SkeletonRow key={i} />
+                    <SkeletonRow variant="song" key={i} />
                   ))}
                 </div>
               </div>
@@ -143,7 +175,7 @@ export function SearchPage() {
                 </div>
                 <div className="artist_search_column">
                   {[0, 1, 2].map((i) => (
-                    <SkeletonRow key={i} />
+                    <SkeletonRow variant="artist" key={i} />
                   ))}
                 </div>
               </div>

@@ -28,21 +28,29 @@
        original, added after it, so source order wins the cascade --
        main.scss itself is never edited.
    ------------------------------------------------------------------------ */
+/* !important throughout this block: the original rules for these elements
+   are nested 3-5 levels deep (e.g. .backpage .back_main_column
+   .current_music_block .music_play_column), some behind an #id too --
+   compiled specificity that a flat override selector can't out-rank no
+   matter what order it loads in. Confirmed the hard way: the very first
+   version of this file used flat selectors with no !important and several
+   of these (lyrics_column most visibly) silently kept the original's
+   hardcoded color the whole time. */
 body {
-  background-color: var(--tuneup-chrome-bg);
+  background-color: var(--tuneup-chrome-bg) !important;
 }
 
 .fixed_side_navbar {
-  color: var(--tuneup-chrome-text-dim);
+  color: var(--tuneup-chrome-text-dim) !important;
 }
 
 .backpage {
-  background-color: var(--tuneup-chrome-panel);
+  background-color: var(--tuneup-chrome-panel) !important;
 }
 
 .music_play_column,
 .music_play_column .img_box img {
-  background-color: var(--tuneup-chrome-surface);
+  background-color: var(--tuneup-chrome-surface) !important;
 }
 
 .next_composition_heading h2,
@@ -51,13 +59,13 @@ body {
 .play_pause_loop_row,
 .song_progress_bar_box p,
 #music_progress_bar {
-  color: var(--tuneup-chrome-text);
+  color: var(--tuneup-chrome-text) !important;
 }
 
 #song-repeat-on-loop.active,
 #like-current-song.active,
 #shuffle-songs-icon.active {
-  color: var(--tuneup-accent);
+  color: var(--tuneup-accent) !important;
 }
 
 /* ------------------------------------------------------------------------
@@ -218,6 +226,17 @@ body {
 /* The queue panel is a scrolling list; the original relied on the page height. */
 #current-queue {
   overflow-y: auto;
+}
+
+/* useHorizontalDrag's JS toggles user-select during an active drag, but
+   only once a drag actually starts within the 38px grab zone -- starting a
+   drag gesture anywhere else on this panel still looks like a text-
+   selection drag to the browser. This is a standing backup: nothing in
+   the draggable front page needs to be text-selectable (it's app chrome,
+   not a document), so turn it off here permanently rather than only
+   during the narrow window the JS catches.  */
+#home_DraggableDiv {
+  user-select: none;
 }
 
 /* ------------------------------------------------------------------------
@@ -797,17 +816,24 @@ body {
   margin-bottom: 24px;
 }
 
+/* CSS Grid's auto-fill/auto-fit + minmax kept clipping or overflowing its
+   last column in practice despite several attempts to harden it (scrollbar
+   gutter, safety margins, smaller minimums). Flex-wrap with a fixed card
+   width is a much more predictable algorithm -- a card either fits on the
+   current line or wraps to the next one, full stop, no near-miss track
+   sizing to get wrong. */
 .playlistspage_grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(165px, 100%), 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 18px;
   width: 100%;
-  max-width: 100%;
   box-sizing: border-box;
 }
 
 .playlistspage_card {
   display: block;
+  width: 175px;
+  flex: 0 0 auto;
   text-decoration: none;
   color: inherit;
   border-radius: 12px;
@@ -910,7 +936,12 @@ body {
        which the original's narrow drag cap made unlikely). Real lyrics now.
    ------------------------------------------------------------------------ */
 .lyrics_column {
-  background: var(--tuneup-chrome-surface);
+  /* !important: the original's `.backpage .back_main_column
+     .current_music_block .lyrics_column { background-color: lightgreen }`
+     is nested 4 levels deep -- a flat selector here can never outrank that
+     on specificity, regardless of file load order. Confirmed still green
+     without this. */
+  background: var(--tuneup-chrome-surface) !important;
   border-radius: 16px;
   padding: 20px 22px;
   overflow-y: auto;

@@ -36,11 +36,13 @@ export function HistoryPage() {
         )}
         {loading && songs.length === 0 && !error
           ? [0, 1, 2, 3, 4].map((i) => (
-              <div className="tuneup_skeleton_row" key={i}>
-                <Skeleton width="48px" height="48px" radius="8px" />
-                <div className="tuneup_skeleton_text_col">
-                  <Skeleton width="55%" height="16px" />
-                  <Skeleton width="35%" height="12px" />
+              <div className="historypage_row" key={i}>
+                <div className="historypage_row_main">
+                  <Skeleton width="48px" height="48px" radius="8px" />
+                  <div className="historypage_row_text">
+                    <Skeleton width="55%" height="16px" />
+                    <Skeleton width="35%" height="12px" />
+                  </div>
                 </div>
               </div>
             ))

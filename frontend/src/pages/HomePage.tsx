@@ -64,12 +64,22 @@ export function HomePage() {
                 </div>
                 <div className="spacer_y_small" />
                 <div className="recommended_artist_list">
+                  {/* Reuses the real .first_artist_row markup (not a
+                      generic skeleton box) so the shimmer sits in exactly
+                      the same spot the real row's image/text will. */}
                   {[0, 1, 2].map((i) => (
-                    <div className="tuneup_skeleton_row" key={i}>
-                      <Skeleton width="52px" height="52px" radius="50%" />
-                      <div className="tuneup_skeleton_text_col">
-                        <Skeleton width="60%" height="16px" />
-                        <Skeleton width="40%" height="12px" />
+                    <div className="first_artist_row" key={i}>
+                      <div className="artist_name_and_img">
+                        <div className="image_box">
+                          <Skeleton width="100%" height="100%" radius="50%" />
+                        </div>
+                        <div className="artist_text_column">
+                          <Skeleton width="65%" height="16px" />
+                          <div className="spacer_y_small" />
+                          <div className="artist_detail_row">
+                            <Skeleton width="80px" height="12px" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -98,12 +108,24 @@ export function HomePage() {
                   </div>
                 </div>
                 <div className="quickPicks_songs_column">
+                  {/* Reuses the real .first_song_row markup for the same reason. */}
                   {[0, 1, 2, 3, 4].map((i) => (
-                    <div className="tuneup_skeleton_row" key={i}>
-                      <Skeleton width="48px" height="48px" radius="10px" />
-                      <div className="tuneup_skeleton_text_col">
-                        <Skeleton width="70%" height="16px" />
-                        <Skeleton width="45%" height="12px" />
+                    <div className="first_song_row" key={i}>
+                      <div className="artist_no_name_and_img">
+                        <div className="spacer_x_small" />
+                        <div className="sno_play_pause_icon">
+                          <Skeleton width="18px" height="16px" />
+                        </div>
+                        <div className="image_box">
+                          <Skeleton width="100%" height="100%" radius="13px" />
+                        </div>
+                        <div className="song_text_column">
+                          <Skeleton width="70%" height="16px" />
+                          <div className="spacer_y_small" />
+                          <div className="artist_name_row">
+                            <Skeleton width="45%" height="12px" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -119,7 +141,13 @@ export function HomePage() {
                 <div className="mixed_grid_data">
                   {[0, 1, 2, 3].map((i) => (
                     <div className="first_grid_block" key={i}>
-                      <Skeleton height="140px" radius="12px" />
+                      <div className="image_box">
+                        <Skeleton width="100%" height="100%" radius="0" />
+                      </div>
+                      <div className="text_column">
+                        <Skeleton width="70%" height="16px" />
+                        <Skeleton width="45%" height="12px" />
+                      </div>
                     </div>
                   ))}
                 </div>

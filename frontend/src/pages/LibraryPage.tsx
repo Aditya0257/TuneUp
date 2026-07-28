@@ -113,14 +113,33 @@ export function LibraryPage() {
               </div>
 
               <div className="liked_song_container">
+                {/* Reuses the real .first_song_row/.song_thumbnail markup
+                    (not a generic skeleton box) so the shimmer sits in
+                    exactly the spot the real row's image/text will. */}
                 {loading &&
                   likedSongs.length === 0 &&
                   [0, 1, 2, 3].map((i) => (
-                    <div className="tuneup_skeleton_row" key={i}>
-                      <Skeleton width="44px" height="44px" radius="8px" />
-                      <div className="tuneup_skeleton_text_col">
-                        <Skeleton width="60%" height="15px" />
-                        <Skeleton width="35%" height="11px" />
+                    <div className="song_container" key={i}>
+                      <div className="first_song_row">
+                        <div className="clickable_row">
+                          <div className="artist_no_name_and_img">
+                            <div className="sno_play_pause_icon">
+                              <Skeleton width="16px" height="14px" />
+                            </div>
+                            <div className="spacer_x_small" />
+                            <div className="song_thumbnail">
+                              <Skeleton width="100%" height="100%" radius="8px" />
+                            </div>
+                            <div className="spacer_x_small" />
+                            <div className="song_text_column">
+                              <Skeleton width="60%" height="15px" />
+                              <div className="spacer_y_small" />
+                              <div className="artist_name_row">
+                                <Skeleton width="35%" height="11px" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}

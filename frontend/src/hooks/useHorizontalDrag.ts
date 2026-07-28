@@ -12,10 +12,11 @@ import { useEffect, type RefObject } from 'react';
  * original compared a CSS pixel offset against physical screen width, which
  * behaved differently on scaled displays), cleans its listeners up, and
  * allows a much wider drag -- the original's 36.8% cap only ever revealed
- * about a third of the queue/player panel behind it.
+ * about a third of the queue/player panel behind it. 88% leaves just the
+ * drag handle sliver of the front page visible, full-open like a drawer.
  */
 const GRAB_ZONE_PX = 38;
-const MAX_OFFSET_PERCENT = 65;
+const MAX_OFFSET_PERCENT = 88;
 
 export function useHorizontalDrag(ref: RefObject<HTMLElement>): void {
   useEffect(() => {
