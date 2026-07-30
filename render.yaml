@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: tuneup-api
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      # Set to your deployed frontend's URL after the Vercel step
+      # (e.g. https://tuneup-music.vercel.app). Comma-separate multiple
+      # origins if needed.
+      - key: CORS_ORIGINS
+        sync: false
+      # Optional -- omit entirely to run with the in-memory store.
+      - key: MONGODB_URI
+        sync: false
